@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd 
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+	default-autowire="byName">
+	<!-- 注意上面的default-autowire="byName"，如果没有这个声明那么HibernateDaoSupport中的sessionFactory不会被注入 -->
+
+	<!-- Configures the @Controller programming model -->
+	<mvc:annotation-driven />
+
+	<!-- Forwards requests to the "/" resource to the "welcome" view -->
+	<mvc:view-controller path="/" view-name="welcome" />
+
+	<!-- Configures Handler Interceptors -->
+	<mvc:interceptors>
+		<!-- Changes the locale when a 'locale' request parameter is sent; e.g. /?locale=de -->
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<!-- 多个拦截器,顺序执行，如果不配置或/*,将拦截所有的Controller -->
+        <mvc:interceptor>
+           <mvc:mapping path="/manage/index.html" />
+           <bean class="com.test.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
+	<mvc:resources mapping="/favicon.ico" location="/favicon.ico" />
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/hbcms/**" location="/hbcms/" />
+	<mvc:resources mapping="/journals/**" location="/journals/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/upload/**" location="/upload/" />
+	<mvc:resources mapping="/cover/**" location="/cover/" />
+	<mvc:resources mapping="/miniquiz/**" location="/miniquiz/" />
+	<mvc:resources mapping="/vm/**" location="/vm/" />
+	<mvc:resources mapping="/ueditor/**" location="/ueditor/" />
+
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+	<!-- 从资源集解析视图 -->
+	<bean class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<!-- 从jsp.properties中解析Bean，jsp.properties需要放在WEB-INF目录下 -->  
+		<!--<property name="basename" value="jsp"></property> -->
+		<!--<property name="order" value="0"></property> -->
+	</bean>
+
+	<!-- 定义个缺省的控制适配器 -->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+	<!-- 获取配置文件 -->
+	<bean id="config" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:mysql.properties</value>
+				<value>classpath*:email.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 获取数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"><value>${db.dirverClass}</value></property>
+		<property name="url"><value>${db.url}</value></property>
+		<property name="username"><value>${db.username}</value></property>
+		<property name="password"><value>${db.password}</value></property>
+	</bean>
+	
+	<!-- 配置Jdbc模板 -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+	<!-- sessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.test.model</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 自动扫描组件，这里要把web下面的controller去除，他们是在spring3-servlet.xml中配置的，如果不去除会影响事务管理的。-->
+	<context:component-scan base-package="com.miger.commons,com.test">
+		<context:exclude-filter type="regex" expression="controller.*" />
+	</context:component-scan> 
+	
+	<!-- jsp视图解析器 -->
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /><!-- viewClass指定视图技术 -->
+		<property name="prefix" value="/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="2" />
+	</bean>
+
+	<!-- velocity视图解析器 -->
+	<bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="dateToolAttribute" value="dateTool"/><!--日期函数名称-->
+		<property name="exposeSpringMacroHelpers" value="true" /><!--是否使用spring对宏定义的支持-->
+		<property name="exposeRequestAttributes" value="true" /><!--是否开放request属性-->
+		<property name="exposeSessionAttributes" value="true" /><!--是否开放session属性-->
+		<property name="requestContextAttribute" value="rc" /><!--request属性引用名称-->
+		<property name="allowSessionOverride" value="true" />
+		<property name="toolboxConfigLocation" value="WEB-INF/classes/velocity-toolbox.xml"/><!--toolbox配置文件路径-->
+		<property name="cache" value="true" />
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".vm" />
+		<property name="order" value="1" />
+	</bean>
+	
+	<!-- 文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="100000000" />
+	</bean>
+
+	<!-- velocity环境配置 -->
+	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<!-- velocity配置文件路径 -->
+		<!-- <property name="configLocation"><value>classpath:velocity.properties</value></property>  -->
+		<!-- velocity模板路径 -->
+		<property name="resourceLoaderPath" value="/vm/" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="output.encoding">UTF-8</prop>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="contentType">text/html;charset=utf-8</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!--邮件服务器-->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="protocol" value="${mail.protocol}"/>
+		<property name="host" value="${mail.host}"/>
+		<property name="port" value="${mail.port}"/>
+		<property name="username" value="${mail.username}"/>
+		<property name="password" value="${mail.password}"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!--异步线程执行器-->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="10"/>
+		<property name="maxPoolSize" value="30"/>
+	</bean>
+
+</beans>
