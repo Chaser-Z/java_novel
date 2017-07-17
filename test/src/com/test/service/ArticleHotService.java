@@ -10,4 +10,6 @@ public interface ArticleHotService {
 	
 	List<ArticleHot> getArticleByType(String type) throws Exception;
 	
+	List<ArticleHot> getHome() throws Exception;
+
 }

@@ -60,7 +60,26 @@ public class ArticleHotWebservice {
 			
 		} catch(Exception e) {
 			map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
-			logger.error("Failed to get hot", e);
+			logger.error("Failed to get type Article", e);
+		}
+		
+		JsonMapper mapper = JsonMapper.buildNonDefaultMapper();
+        return mapper.toJson(map);
+	}
+	
+	// Get type Article
+	@RequestMapping(value = "/getHomeArticle", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public @ResponseBody String getHomeArticle(@RequestBody ArticleHotDTO articleHotDTO) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+			List<ArticleHot> articleHots = articleHotService.getHome();
+			map.put("data", convert(articleHots));
+            map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
+			
+		} catch(Exception e) {
+			map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
+			logger.error("Failed to get type Article", e);
 		}
 		
 		JsonMapper mapper = JsonMapper.buildNonDefaultMapper();

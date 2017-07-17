@@ -37,6 +37,14 @@ public class ArticleHotServiceImpl  implements ArticleHotService{
 		return articleHotDao.find("from ArticleHot sa where sa.article_type = ?", type);
 	}
 
-	
+	@Override
+	public List<ArticleHot> getHome() throws Exception {
+		List<ArticleHot> list = articleHotDao.getHome();
+		if (list == null) {
+			return new  ArrayList<ArticleHot>();
+		} else {
+			return list;
+		}
+	}
 
 }

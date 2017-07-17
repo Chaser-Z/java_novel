@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import com.miger.commons.dto.UUIDEntity;
 
 @Entity
-@Table(name = "c_article_list")
+@Table(name = "c_article_hot_list")
 public class ArticleHot extends UUIDEntity {
 	
 	private static final long serialVersionUID = 4152559718898004323L;
