@@ -1,16 +1,29 @@
 package com.test.webservice;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import com.test.model.NovelUser;
 import com.test.model.Session;
@@ -19,6 +32,7 @@ import com.test.service.SessionService;
 import com.test.utils.JsonMapper;
 import com.test.utils.ObjectMapper;
 import com.test.utils.Util;
+import com.test.utils.DigestUtils;
 import com.test.webservice.constants.ErrorCode;
 import com.test.webservice.constants.IdentityTypes;
 import com.test.webservice.constants.UserStatus;
@@ -42,6 +56,8 @@ public class UserWebService {
 	@Autowired
     private SessionService sessionService;
 	
+	 @Autowired
+	private JavaMailSenderImpl mailSender;
 	
 	// Register
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
@@ -226,6 +242,206 @@ public class UserWebService {
         return mapper.toJson(map);
     }
     
+    // Forget password
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public @ResponseBody String resetPassword(@RequestBody LoginParam param) {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            if (param != null) {
+                String identityType = param.getIdentityType();
+                String identifier = param.getIdentifier();
+
+                if (identityType != null && identityType.equals(IdentityTypes.EMAIL)) {
+                    NovelUser novelUser = novelUserService.getByIdentity(identityType, identifier);
+                    if (novelUser != null) {
+                        // Generate a new credential
+                        String newCredential = generateCredential();
+                        novelUser.setCredential(DigestUtils.md5Hex(newCredential));
+                        
+                        // Save the user
+                        novelUserService.updateCredential(novelUser);
+                        
+                        // Send out the email
+                        sendEmail(novelUser, newCredential);
+
+                        // Report success
+                        map.put("data", true);
+                        map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
+                    } else {
+                        map.put(ErrorCode.KEY, ErrorCode.USER_NOT_EXIST);
+                    }
+                } else {
+                    map.put(ErrorCode.KEY, ErrorCode.ONLY_FOR_EMAIL_USER);
+                }
+            } else {
+                map.put(ErrorCode.KEY, ErrorCode.INVALID_PARAMS);
+            }
+        } catch (Exception e) {
+            map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
+            logger.error("Failed to reset password", e);
+        }
+
+        JsonMapper mapper = JsonMapper.buildNonDefaultMapper();
+        return mapper.toJson(map);
+    }
+    
+    // Generate a password with 8 random characters
+    private static String generateCredential() {
+        char[] str = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        StringBuffer credentialBuilder = new StringBuffer();
+        Random r = new Random();
+        int pos = -1;
+        for (int j = 0; j < 6; j++) {
+            pos = Math.abs(r.nextInt(36));
+            credentialBuilder.append(str[pos]);
+        }
+
+        return credentialBuilder.toString();
+    }
+    
+    // Send out the Email
+    private void sendEmail(NovelUser novelUser, String credential) {
+        try {
+            String from = mailSender.getUsername();
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom(from);
+            mailMessage.setTo(novelUser.getIdentifier());
+            mailMessage.setSubject("Reset password for Confucius Institute Magazine App");
+            mailMessage.setText("Your new password is: " + credential + ", please change your password after logon to the App.");
+            mailSender.send(mailMessage);
+        } catch (Exception e) {
+            logger.error("Failed to send reset password email for user: " + novelUser.getId(), e);
+        }
+    }
+
+    // Change password
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public @ResponseBody String changePassword(@RequestBody LoginParam param) {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            if (param != null) {
+                // Check if session is valid
+                String userId = param.getUserId();
+                String sessionId = param.getSessionId();
+                
+                if (sessionService.check(userId, sessionId)) {
+                    String identityType = param.getIdentityType();
+                    String identifier = param.getIdentifier();
+                    String credential = param.getCredential();
+                    String credentialOld = param.getCredentialOld();
+
+                    NovelUser existing = novelUserService.getByIdentity(identityType, identifier);
+                    if (existing != null) {
+                        if (existing.getCredential().equals(credentialOld)) {
+                            existing.setCredential(credential);
+                            novelUserService.updateCredential(existing);
+                            map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
+                        } else {
+                            map.put(ErrorCode.KEY, ErrorCode.USER_OLD_CREDENTIAL_INVALID);
+                        }
+                    } else {
+                        map.put(ErrorCode.KEY, ErrorCode.USER_NOT_EXIST);
+                    }
+                } else {
+                    map.put(ErrorCode.KEY, ErrorCode.INVALID_SESSION);
+                }
+            } else {
+                map.put(ErrorCode.KEY, ErrorCode.INVALID_PARAMS);
+            }
+        } catch (Exception e) {
+            map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
+            logger.error("Failed to change password", e);
+        }
+
+        JsonMapper mapper = JsonMapper.buildNonDefaultMapper();
+        return mapper.toJson(map);
+    }
+
+    // Update user info
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public @ResponseBody String update(@RequestBody NovelUserDTO dto) {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            if (dto != null) {
+                // Check if session is valid
+                String userId = dto.getUserId();
+                String sessionId = dto.getSessionId();
+                
+                if (sessionService.check(userId, sessionId)) {
+                    NovelUser user = convert(dto);
+                    user.setLastUpdateTime(Util.getCurrentUnixTime());
+                    novelUserService.update(user, true);
+                    
+                    NovelUser result = novelUserService.load(userId);
+                    NovelUserDTO resultDTO = convert(result);
+                    resultDTO.setSessionId(sessionId);
+                    map.put("data", resultDTO);
+                    map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
+                } else {
+                    map.put(ErrorCode.KEY, ErrorCode.INVALID_SESSION);
+                }
+            } else {
+                map.put(ErrorCode.KEY, ErrorCode.INVALID_PARAMS);
+            }
+        } catch (Exception e) {
+            map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
+            logger.error("Failed to update", e);
+        }
+
+        JsonMapper mapper = JsonMapper.buildNonDefaultMapper();
+        return mapper.toJson(map);
+    }
+
+    // Update user avatar
+    @RequestMapping(value = "/updateAvatar", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public @ResponseBody String updateAvatar(HttpServletRequest request, @RequestParam("userId") String userId, @RequestParam("sessionId") String sessionId, MultipartFile file) {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            if (userId != null && sessionId != null && file != null) {
+                // Check if session is valid
+                if (sessionService.check(userId, sessionId)) {
+                    // Save the image to local
+                    String root = request.getSession().getServletContext().getRealPath("/");
+                    long random = new Date().getTime();
+                    String name = String.format("%s_%d.jpg", userId, random);
+                    String relativePath = File.separator + "images" + File.separator + "avatar" + File.separator + name;
+                    String avatarPath = root + relativePath;
+                    
+                    Path path = Paths.get(avatarPath);
+                    if (Files.exists(path)) {
+                        Files.delete(path);
+                    }
+                    
+                    InputStream stream = file.getInputStream();
+                    Files.copy(stream, path);
+                    stream.close();
+                    
+                    // Update the user.avatar
+                    NovelUser user = novelUserService.load(userId);
+                    user.setAvatar(relativePath);
+                    novelUserService.update(user, true);
+                    
+                    map.put("data", relativePath);
+                    map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
+                } else {
+                    map.put(ErrorCode.KEY, ErrorCode.INVALID_SESSION);
+                }
+            } else {
+                map.put(ErrorCode.KEY, ErrorCode.INVALID_PARAMS);
+            }
+        } catch (Exception e) {
+            map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
+            logger.error("Failed to update avatar", e);
+        }
+
+        JsonMapper mapper = JsonMapper.buildNonDefaultMapper();
+        return mapper.toJson(map);
+    }
+
     
     private static NovelUserDTO convert(NovelUser user) {
         if (user == null) {
