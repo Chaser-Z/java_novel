@@ -47,7 +47,7 @@ public class UserWebService {
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody String register(@RequestBody RegisterParam param) {
         Map<String, Object> map = new HashMap<String, Object>();
-
+        System.out.println("注册");
         try {
             if (param != null) {
                 // Extract user info

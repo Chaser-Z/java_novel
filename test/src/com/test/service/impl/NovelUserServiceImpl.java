@@ -82,7 +82,7 @@ public class NovelUserServiceImpl implements NovelUserService {
             return null;
         }
 
-        List<NovelUser> list = novelUserDao.find("from CimUser as c where c.isDel = 0 and c.id = ?", id);
+        List<NovelUser> list = novelUserDao.find("from NovelUser as c where c.isDel = 0 and c.id = ?", id);
         return list.size() > 0 ? list.get(0) : null;
     }
 
@@ -92,7 +92,7 @@ public class NovelUserServiceImpl implements NovelUserService {
             return null;
         }
 
-        List<NovelUser> list = novelUserDao.find("from CimUser as c where c.isDel = 0 and c.identityType = ? and c.identifier = ?", identityType, identifier);
+        List<NovelUser> list = novelUserDao.find("from NovelUser as c where c.isDel = 0 and c.identityType = ? and c.identifier = ?", identityType, identifier);
         return list.size() > 0 ? list.get(0) : null;
     }
 
@@ -228,7 +228,7 @@ public class NovelUserServiceImpl implements NovelUserService {
     }
 
     public Map<String, Object> page(String rows, String curr, String name, String identityType) {
-        StringBuffer sb = new StringBuffer("from CimUser as model where model.isDel=0");
+        StringBuffer sb = new StringBuffer("from NovelUser as model where model.isDel=0");
         if (!StringUtil.isNull(name)) {
             sb.append(" and model.nickname like '%").append(name).append("%'");
         }
