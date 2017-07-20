@@ -8,4 +8,7 @@ import com.test.model.ArticleHot;
 public interface ArticleHotDao extends SimpleDao<ArticleHot, String>{
 
 	List<ArticleHot> getHome();
+	
+	List<ArticleHot> getArticleByKeyword(String keyword);
+
 }

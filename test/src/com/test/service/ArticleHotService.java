@@ -12,4 +12,5 @@ public interface ArticleHotService {
 	
 	List<ArticleHot> getHome() throws Exception;
 
+	List<ArticleHot> getArticleByKeyword(String keyword) throws Exception;
 }

@@ -20,6 +20,7 @@ import com.test.utils.ObjectMapper;
 import com.test.webservice.constants.ErrorCode;
 import com.test.webservice.dto.ArticleHotDTO;
 import com.test.webservice.dto.BaseDTO;
+import com.test.webservice.param.ArticleSearchParam;
 
 
 @Controller
@@ -81,6 +82,34 @@ public class ArticleHotWebservice {
 			map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
 			logger.error("Failed to get type Article", e);
 		}
+		
+		JsonMapper mapper = JsonMapper.buildNonDefaultMapper();
+        return mapper.toJson(map);
+	}
+	
+	// Get Article by keyword
+	@RequestMapping(value = "/getArticleByKeyword", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public @ResponseBody String getArticleByKeyword(@RequestBody ArticleSearchParam param) {
+		System.out.println("getArticleByKeyword");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+            if (param != null) {
+                String keyword = param.getKeyword();
+                if (keyword != null && keyword.length() > 0) {
+                    List<ArticleHot> articles = articleHotService.getArticleByKeyword(keyword);
+                    map.put("data", convert(articles));
+                    map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
+                } else {
+                    map.put(ErrorCode.KEY, ErrorCode.ARTICLE_KEYWORD_INVALID);
+                }
+            } else {
+                map.put(ErrorCode.KEY, ErrorCode.INVALID_PARAMS);
+            }
+        } catch (Exception e) {
+            map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
+            logger.error("Failed to get search articles by keyword", e);
+        }
 		
 		JsonMapper mapper = JsonMapper.buildNonDefaultMapper();
         return mapper.toJson(map);

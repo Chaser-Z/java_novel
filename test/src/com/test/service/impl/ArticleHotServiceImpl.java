@@ -46,5 +46,16 @@ public class ArticleHotServiceImpl  implements ArticleHotService{
 			return list;
 		}
 	}
+	
+	@Override
+	public List<ArticleHot> getArticleByKeyword(String keyword) throws Exception {
+		List<ArticleHot> list = articleHotDao.getArticleByKeyword(keyword);
+		if (list == null) {
+			return new  ArrayList<ArticleHot>();
+		} else {
+			return list;
+		}
+	}
+
 
 }

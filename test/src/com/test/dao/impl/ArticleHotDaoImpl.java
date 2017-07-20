@@ -17,6 +17,36 @@ import com.test.model.ArticleHot;
 @Repository("articleHotDao")
 public class ArticleHotDaoImpl extends SimpleDaoImpl<ArticleHot, String> implements ArticleHotDao {
 
+	
+	
+	@Override
+	public List<ArticleHot> getArticleByKeyword(String keyword) {
+		System.out.println(keyword);
+		List<ArticleHot> articleHots = new ArrayList<ArticleHot>();
+		String sql = "select * from c_article_list where title like ?";
+		
+		 try {
+	            Connection conn = ConnManager.takeConn();
+	            PreparedStatement stmt = conn.prepareStatement(sql);
+	            stmt.setString(1, "%" + keyword + "%");
+	            ResultSet rs = stmt.executeQuery();
+	            while (rs.next()) {
+	            	ArticleHot articleHot = convertResultSetToArticle(rs);
+	            	articleHots.add(articleHot);
+	            }
+	            
+	            rs.close();
+	            stmt.close();
+	            
+	            ConnManager.offerConn(conn);
+	        } catch (Exception e) {
+	            logger.error("Failed to getArticleByKeyword", e);
+	        }
+
+	        return articleHots;
+	}
+	
+	
 	@Override
 	public List<ArticleHot> getHome() {
 		
