@@ -24,15 +24,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import com.test.model.NovelUser;
 import com.test.model.Session;
 import com.test.service.NovelUserService;
 import com.test.service.SessionService;
+import com.test.utils.DigestUtils;
 import com.test.utils.JsonMapper;
 import com.test.utils.ObjectMapper;
 import com.test.utils.Util;
-import com.test.utils.DigestUtils;
 import com.test.webservice.constants.ErrorCode;
 import com.test.webservice.constants.IdentityTypes;
 import com.test.webservice.constants.UserStatus;
@@ -307,10 +306,11 @@ public class UserWebService {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom(from);
             mailMessage.setTo(novelUser.getIdentifier());
-            mailMessage.setSubject("Reset password for Confucius Institute Magazine App");
-            mailMessage.setText("Your new password is: " + credential + ", please change your password after logon to the App.");
+            mailMessage.setSubject("免阅APP重置密码");
+            mailMessage.setText("您的新密码是: " + credential + ", please change your password after logon to the App(登录后请更改密码)。");
             mailSender.send(mailMessage);
         } catch (Exception e) {
+        	System.out.println(e);
             logger.error("Failed to send reset password email for user: " + novelUser.getId(), e);
         }
     }
@@ -399,7 +399,6 @@ public class UserWebService {
     @RequestMapping(value = "/updateAvatar", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody String updateAvatar(HttpServletRequest request, @RequestParam("userId") String userId, @RequestParam("sessionId") String sessionId, MultipartFile file) {
         Map<String, Object> map = new HashMap<String, Object>();
-
         try {
             if (userId != null && sessionId != null && file != null) {
                 // Check if session is valid
@@ -415,6 +414,15 @@ public class UserWebService {
                     if (Files.exists(path)) {
                         Files.delete(path);
                     }
+                    
+                    String testPath = root + File.separator + "images" + File.separator + "avatar" + File.separator;
+                    Path testpath = Paths.get(testPath);
+                    if (Files.exists(testpath)) { 
+                    	System.out.println("存在");
+                    } else {
+                    	System.out.println("不存在");
+                    }
+                    
                     
                     InputStream stream = file.getInputStream();
                     Files.copy(stream, path);
