@@ -417,6 +417,7 @@ public class UserWebService {
                     
                     String testPath = root + File.separator + "images" + File.separator + "avatar" + File.separator;
                     Path testpath = Paths.get(testPath);
+                    System.out.println(testpath);
                     if (Files.exists(testpath)) { 
                     	System.out.println("存在");
                     } else {

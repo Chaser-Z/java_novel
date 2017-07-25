@@ -36,7 +36,7 @@ public class ArticleContentWebservice {
 		
 		try {
             if (articleContentDTO != null) {
-                ArticleContent articleContent = articleContentService.getbyDirectoryLink(articleContentDTO.getArticle_directory_link());
+                ArticleContent articleContent = articleContentService.getbyDirectoryLink(articleContentDTO.getArticle_id(),articleContentDTO.getArticle_directory_link());
                 map.put("data", convertArticleContent(articleContent));
                 map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
             } else {
@@ -44,7 +44,7 @@ public class ArticleContentWebservice {
             }
         } catch (Exception e) {
             map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
-            logger.error("Failed to special articles by special id", e);
+            logger.error("Failed to getArticleByDriectoryLink", e);
         }
 
         JsonMapper mapper = JsonMapper.buildNonDefaultMapper();
@@ -67,7 +67,7 @@ public class ArticleContentWebservice {
             }
         } catch (Exception e) {
             map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
-            logger.error("Failed to special articles by special id", e);
+            logger.error("Failed to getArticleContents", e);
         }
 
         JsonMapper mapper = JsonMapper.buildNonDefaultMapper();

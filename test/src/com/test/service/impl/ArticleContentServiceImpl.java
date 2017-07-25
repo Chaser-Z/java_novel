@@ -17,16 +17,24 @@ public class ArticleContentServiceImpl implements ArticleContentService{
 	private ArticleContentDao articleContentDao;
 	
 	@Override
-	public ArticleContent getbyDirectoryLink(String directoryLink) throws Exception {
+	public ArticleContent getbyDirectoryLink(String article_id, String directoryLink) throws Exception {
 		
 		if (directoryLink == null || directoryLink.length() == 0) {
 			return null;
 		}
-		List<ArticleContent> list =  articleContentDao.find("from ArticleContent sa where sa.article_directory_link = ?", directoryLink);
-        if (list != null && list.size() > 0) {
-        	System.out.println(list.size());
-        	return list.get(0);
-        }
+		
+		ArticleContent content = articleContentDao.getbyDirectoryLink(article_id, directoryLink);
+		
+//		List<ArticleContent> list =  articleContentDao.find("from ArticleContent sa where sa.article_id = ? and sa.article_directory_link = ?", article_id, directoryLink);
+//        if (list != null && list.size() > 0) {
+//        	System.out.println(list.size());
+//        	return list.get(0);
+//        }
+		if (content != null) {
+			return content;
+		}
+		
+		
         return null;
 	}
 	
