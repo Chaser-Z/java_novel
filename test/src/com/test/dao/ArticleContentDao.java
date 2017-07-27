@@ -4,9 +4,9 @@ import com.miger.commons.hibernate.SimpleDao;
 import com.test.model.ArticleContent;
 import com.test.model.ArticleHot;
 
-public interface ArticleContentDao extends SimpleDao<ArticleContent, String>{
+public interface ArticleContentDao extends SimpleDao<ArticleContent, Integer>{
 	
-	ArticleContent getbyDirectoryLink(String article_id, String directoryLink);
+	ArticleContent getbyDirectoryLink(Integer id);
 
 
 }

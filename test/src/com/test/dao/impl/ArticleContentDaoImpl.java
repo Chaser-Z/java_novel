@@ -15,22 +15,21 @@ import com.test.dao.helper.ConnManager;
 import com.test.model.ArticleContent;
 
 @Repository("articleContentDao")
-public class ArticleContentDaoImpl extends SimpleDaoImpl<ArticleContent, String> implements ArticleContentDao{
+public class ArticleContentDaoImpl extends SimpleDaoImpl<ArticleContent, Integer> implements ArticleContentDao{
 
 	@Override
-	public ArticleContent getbyDirectoryLink(String article_id, String directoryLink) {
+	public ArticleContent getbyDirectoryLink(Integer id) {
 		
 		
         //String sql = "select * from c_article_detail where article_id = ? and last_update_date > ? and content is not null";
 		
 		List<ArticleContent> articleHots = new ArrayList<ArticleContent>();
-		String sql = "select * from c_article_detail where article_id = ? and article_directory_link = ?";
+		String sql = "select * from c_article_detail where id = ?";
 		
 		 try {
 	            Connection conn = ConnManager.takeConn();
 	            PreparedStatement stmt = conn.prepareStatement(sql);
-	            stmt.setString(1, article_id);
-	            stmt.setString(2, directoryLink);
+	            stmt.setInt(1,id);
 	            ResultSet rs = stmt.executeQuery();
 	            while (rs.next()) {
 	            	ArticleContent articleHot = convertResultSetToArticle(rs);
@@ -51,6 +50,7 @@ public class ArticleContentDaoImpl extends SimpleDaoImpl<ArticleContent, String>
 	private static ArticleContent convertResultSetToArticle(ResultSet rs) throws SQLException {
 		ArticleContent articleInfo = new ArticleContent();
 		
+		articleInfo.setId(rs.getInt("id"));
 		articleInfo.setArticle_id(rs.getString("article_id"));
 		articleInfo.setContent(rs.getString("content"));
 		articleInfo.setArticle_directory(rs.getString("article_directory"));

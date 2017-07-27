@@ -4,17 +4,26 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.miger.commons.dto.IdEntity;
 import com.miger.commons.dto.UUIDEntity;
 
 @Entity
 @Table(name = "c_article_detail")
-public class ArticleInfo extends UUIDEntity{
+public class ArticleInfo extends IdEntity{
 	
 	private static final long serialVersionUID = 4152559748898004323L;
 
 	@Column(name = "article_id")
 	private String article_id;
 	
+	@Override
+	public String toString() {
+		return "ArticleInfo [article_id=" + article_id + ", title=" + title + ", update_status=" + update_status
+				+ ", last_update_date=" + last_update_date + ", last_update_directory=" + last_update_directory
+				+ ", article_directory=" + article_directory + ", article_directory_link=" + article_directory_link
+				+ ", id=" + id + "]";
+	}
+
 	@Column(name = "title")
 	private String title;
 			

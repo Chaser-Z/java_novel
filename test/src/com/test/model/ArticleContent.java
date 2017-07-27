@@ -2,13 +2,15 @@ package com.test.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.miger.commons.dto.IdEntity;
 import com.miger.commons.dto.UUIDEntity;
 
 @Entity
 @Table(name = "c_article_detail")
-public class ArticleContent extends UUIDEntity{
+public class ArticleContent extends IdEntity{
 
 	private static final long serialVersionUID = 415459748898004323L;
 
@@ -26,8 +28,20 @@ public class ArticleContent extends UUIDEntity{
 
 	@Column(name = "article_id")
 	private String article_id;
-	
-	
+//	@Id
+//	@Column(name = "id")
+//	private Integer chapter_id;
+//	
+//	
+//
+//	public Integer getChapter_id() {
+//		return chapter_id;
+//	}
+
+//	public void setChapter_id(Integer chapter_id) {
+//		this.chapter_id = chapter_id;
+//	}
+
 	public String getArticle_id() {
 		return article_id;
 	}

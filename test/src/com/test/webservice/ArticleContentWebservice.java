@@ -36,7 +36,7 @@ public class ArticleContentWebservice {
 		
 		try {
             if (articleContentDTO != null) {
-                ArticleContent articleContent = articleContentService.getbyDirectoryLink(articleContentDTO.getArticle_id(),articleContentDTO.getArticle_directory_link());
+                ArticleContent articleContent = articleContentService.getbyDirectoryLink(articleContentDTO.getId());
                 map.put("data", convertArticleContent(articleContent));
                 map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
             } else {

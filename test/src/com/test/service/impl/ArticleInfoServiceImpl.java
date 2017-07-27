@@ -23,8 +23,8 @@ public class ArticleInfoServiceImpl implements ArticleInfoService{
 		if (articleId == null || articleId.length() == 0) {
             return new ArrayList<ArticleInfo>();
 		}
-		return articleInfoDao.find("from ArticleInfo sa where sa.article_id = ?", articleId);
-		
+		//return articleInfoDao.find("from ArticleInfo sa where sa.article_id = ?", articleId);
+		return articleInfoDao.getByArticleId(articleId);
 	}
 	
 	@Override

@@ -17,11 +17,37 @@ import com.test.model.ArticleInfo;
 
 
 @Repository("articleInfoDao")
-public class ArticleInfoDapImpl extends SimpleDaoImpl<ArticleInfo, String> implements ArticleInfoDao{
+public class ArticleInfoDapImpl extends SimpleDaoImpl<ArticleInfo, Integer> implements ArticleInfoDao{
 
 	
     private static Logger logger = Logger.getLogger(ArticleInfoDao.class);
 
+    
+    @Override
+    public List<ArticleInfo> getByArticleId(String articleId) {
+    	
+        List<ArticleInfo> articleInfos = new ArrayList<ArticleInfo>();
+        String sql = "select id, article_directory, last_update_date, last_update_directory, article_id from c_article_detail where article_id = ?";
+        try {
+            Connection conn = ConnManager.takeConn();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, articleId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+            	ArticleInfo articleInfo = convertResultSetToJournal(rs);
+                articleInfos.add(articleInfo);
+            }
+            rs.close();
+            stmt.close();
+            
+            ConnManager.offerConn(conn);
+        } catch (Exception e) {
+            logger.error("Failed to find latest ActicleInfo", e);
+        }
+        System.out.println(articleInfos);
+        return articleInfos;
+    }
+    
 	
 	@Override
 	public List<ArticleInfo> findLatest(String id, String lastDate) {
@@ -53,14 +79,14 @@ public class ArticleInfoDapImpl extends SimpleDaoImpl<ArticleInfo, String> imple
 	
 	private static ArticleInfo convertResultSetToJournal(ResultSet rs) throws SQLException {
 		ArticleInfo articleInfo = new ArticleInfo();
-		
-		articleInfo.setId(rs.getString("id"));
-		articleInfo.setTitle(rs.getString("title"));
+
+		//articleInfo
+		//articleInfo.setTitle(rs.getString("title"));
+		articleInfo.setId(rs.getInt("id"));
 		articleInfo.setArticle_directory(rs.getString("article_directory"));
-		articleInfo.setArticle_directory_link(rs.getString("article_directory_link"));
+		//articleInfo.setArticle_directory_link(rs.getString("article_directory_link"));
 		articleInfo.setLast_update_date(rs.getString("last_update_date"));
 		articleInfo.setLast_update_directory(rs.getString("last_update_directory"));
-		articleInfo.setUpdate_status(rs.getString("update_status"));
 		articleInfo.setArticle_id(rs.getString("article_id"));
 		
         return articleInfo;
