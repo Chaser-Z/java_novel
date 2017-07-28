@@ -177,11 +177,16 @@ public class UserWebService {
 
                     map.put("data", result);
                     map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
+                    System.out.println(ErrorCode.KEY);
                 }
             } else {
+            	System.out.println("1");
+            	System.out.println(ErrorCode.KEY);
                 map.put(ErrorCode.KEY, ErrorCode.INVALID_PARAMS);
             }
         } catch (Exception e) {
+        	System.out.println("3");
+        	System.out.println(e);
             map.put(ErrorCode.KEY, ErrorCode.UNKNOWN_ERROR);
             logger.error("Failed to login", e);
         }

@@ -16,8 +16,18 @@ public class ArticleInfoDTO extends BaseDTO{
 	
 	private String article_directory_link;
 	
+	private Integer id;
+
 	//private String content;
 
+	public Integer getId() {
+		
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getArticle_id() {
 		return article_id;
 	}
