@@ -51,23 +51,36 @@ public class ArticleHotDaoImpl extends SimpleDaoImpl<ArticleHot, String> impleme
 	public List<ArticleHot> getHome() {
 		
         List<ArticleHot> articleHots = new ArrayList<ArticleHot>();
+//        String sql = "SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '热门'  ORDER BY id desc  LIMIT 3) as a  " 
+//        			 + "  UNION   " 
+//        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '玄幻' ORDER BY id DESC LIMIT 6) as b  "
+//        		     + "  UNION   "
+//        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '修真' ORDER BY id DESC LIMIT 6) as c  "
+//        		     + "  UNION   "
+//        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '都市' ORDER BY id DESC LIMIT 6) as d  "
+//        		     + "  UNION   "
+//        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '历史' ORDER BY id DESC LIMIT 6) as e  "
+//        		     + "  UNION   "
+//        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '网游' ORDER BY id DESC LIMIT 6) as f  "
+//        		     + "  UNION   "
+//        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '科幻' ORDER BY id DESC LIMIT 6) as g  "
+//        		     + "  UNION   "
+//        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '恐怖' ORDER BY id DESC LIMIT 6) as h  "
+//        		     + "  UNION   "
+//        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '全本' ORDER BY id DESC LIMIT 6) as i  ";
+        
+        
         String sql = "SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '热门'  ORDER BY id desc  LIMIT 3) as a  " 
-        			 + "  UNION   " 
-        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '玄幻' ORDER BY id DESC LIMIT 6) as b  "
-        		     + "  UNION   "
-        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '修真' ORDER BY id DESC LIMIT 6) as c  "
-        		     + "  UNION   "
-        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '都市' ORDER BY id DESC LIMIT 6) as d  "
-        		     + "  UNION   "
-        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '历史' ORDER BY id DESC LIMIT 6) as e  "
-        		     + "  UNION   "
-        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '网游' ORDER BY id DESC LIMIT 6) as f  "
-        		     + "  UNION   "
-        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '科幻' ORDER BY id DESC LIMIT 6) as g  "
-        		     + "  UNION   "
-        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '恐怖' ORDER BY id DESC LIMIT 6) as h  "
-        		     + "  UNION   "
-        		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '全本' ORDER BY id DESC LIMIT 6) as i  ";
+   			 + "  UNION   " 
+   		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '玄幻' ORDER BY id DESC LIMIT 6) as b  "
+   		     + "  UNION   "
+   		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '修真' ORDER BY id DESC LIMIT 6) as c  "
+   		     + "  UNION   "
+   		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '都市' ORDER BY id DESC LIMIT 6) as d  "
+   		     + "  UNION   "
+   		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '历史' ORDER BY id DESC LIMIT 6) as e  "
+   		     + "  UNION   "
+   		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '网游' ORDER BY id DESC LIMIT 6) as f  ";
 
         try {
             Connection conn = ConnManager.takeConn();
