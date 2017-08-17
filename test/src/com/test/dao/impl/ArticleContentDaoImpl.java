@@ -46,6 +46,47 @@ public class ArticleContentDaoImpl extends SimpleDaoImpl<ArticleContent, Integer
 
 	        return articleHots.get(0);
 	}
+	
+	@Override
+	public List<ArticleContent> getContentsById(String article_id, Integer id) throws Exception {
+		if (article_id == null || article_id.length() == 0) {
+			return new ArrayList<ArticleContent>();
+		}
+		
+		List<ArticleContent> list = new ArrayList<ArticleContent>();
+		
+		String sql = "";
+		
+		if (id == null) {
+			sql = "select * from c_article_detail where article_id = ?";
+		} else {
+			sql = "select * from c_article_detail where article_id = ? and id > ?";
+		}		
+		
+		 try {
+	            Connection conn = ConnManager.takeConn();
+	            PreparedStatement stmt = conn.prepareStatement(sql);
+	            stmt.setString(1,article_id);
+	            if (id != null) {
+	            	stmt.setInt(2,id);
+	            }
+	            ResultSet rs = stmt.executeQuery();
+	            while (rs.next()) {
+	            	ArticleContent articleHot = convertResultSetToArticle(rs);
+	            	list.add(articleHot);
+	            }
+	            
+	            rs.close();
+	            stmt.close();
+	            
+	            ConnManager.offerConn(conn);
+	        } catch (Exception e) {
+	            logger.error("Failed to getbyDirectoryLink", e);
+	        }
+		 
+		 return list;
+		//return new ArrayList<ArticleContent>();
+	}
 
 	private static ArticleContent convertResultSetToArticle(ResultSet rs) throws SQLException {
 		ArticleContent articleInfo = new ArticleContent();

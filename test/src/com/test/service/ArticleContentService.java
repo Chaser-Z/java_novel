@@ -8,5 +8,5 @@ public interface ArticleContentService {
 
 	ArticleContent getbyDirectoryLink(Integer id) throws Exception;
 	
-	List<ArticleContent> getContentsById(String id) throws Exception;
+	List<ArticleContent> getContentsById(String article_id, Integer id) throws Exception;
 }

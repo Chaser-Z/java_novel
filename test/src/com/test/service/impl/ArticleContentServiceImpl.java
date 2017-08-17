@@ -39,11 +39,15 @@ public class ArticleContentServiceImpl implements ArticleContentService{
 	}
 	
 	@Override
-	public List<ArticleContent> getContentsById(String id) throws Exception {
-		if (id == null || id.length() == 0) {
+	public List<ArticleContent> getContentsById(String article_id, Integer id) throws Exception {
+		if (article_id == null || article_id.length() == 0) {
 			return new ArrayList<ArticleContent>();
 		}
-		return articleContentDao.find("from ArticleContent sa where sa.article_id = ?", id);
+		
+		List<ArticleContent> list = articleContentDao.getContentsById(article_id, id);
+		System.out.println(list);
+		return list;
+		//return articleContentDao.find("from ArticleContent sa where sa.article_id = ?", id);
 	}
 
 }

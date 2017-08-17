@@ -59,7 +59,7 @@ public class ArticleContentWebservice {
 		try {
             if (articleContentDTO != null) {
                 //ArticleContent articleContent = articleContentService.getbyDirectoryLink(articleContentDTO.getArticle_directory_link());
-                List<ArticleContent> list = articleContentService.getContentsById(articleContentDTO.getArticle_id());
+                List<ArticleContent> list = articleContentService.getContentsById(articleContentDTO.getArticle_id(), articleContentDTO.getId());
                 map.put("data", convertArticleContents(list));
                 map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
             } else {
