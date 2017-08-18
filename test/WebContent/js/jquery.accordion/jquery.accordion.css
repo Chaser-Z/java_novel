@@ -1,0 +1,216 @@
+@charset "utf-8";
+/* CSS Document */
+
+.accordion,
+.accordion ul,
+.accordion li,
+.accordion a,
+.accordion span {
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+}
+
+.accordion li {
+	list-style: none;cursor:pointer;
+}
+
+/* Layout & Style */
+
+.accordion li > a {
+	display: block;
+	position: relative;
+	min-width: 110px;
+	padding: 0 10px 0 40px;
+	height: 32px;
+
+	color: #fdfdfd;
+	font: bold 12px/32px Arial, sans-serif;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px rgba(0,0,0, .35);
+
+	background: #6c6e74;
+	background: -moz-linear-gradient(top,  #6c6e74 0%, #4b4d51 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6c6e74), color-stop(100%,#4b4d51));
+	background: -webkit-linear-gradient(top,  #6c6e74 0%,#4b4d51 100%);
+	background: -o-linear-gradient(top,  #6c6e74 0%,#4b4d51 100%);
+	background: -ms-linear-gradient(top,  #6c6e74 0%,#4b4d51 100%);
+	background: linear-gradient(top,  #6c6e74 0%,#4b4d51 100%);
+
+	-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255,255,255, .1), 0px 1px 0px 0px rgba(0,0,0, .1);
+	-moz-box-shadow: inset 0px 1px 0px 0px rgba(255,255,255, .1), 0px 1px 0px 0px rgba(0,0,0, .1);
+	box-shadow: inset 0px 1px 0px 0px rgba(255,255,255, .1), 0px 1px 0px 0px rgba(0,0,0, .1);
+}
+
+.accordion > li:hover > a,
+.accordion > li:target > a,
+/*蓝色*/
+.accordion > li > a.active {
+	color: #3e5706;
+	text-shadow: 1px 1px 1px rgba(255,255,255, .2);
+	
+	background: #7EC0EE;
+	background: -moz-linear-gradient(top,  #7EC0EE 0%, #6CA6CD 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7EC0EE), color-stop(100%,#6CA6CD));
+	background: -webkit-linear-gradient(top,  #7EC0EE 0%,#6CA6CD 100%);
+	background: -o-linear-gradient(top,  #7EC0EE 0%,#6CA6CD 100%);
+	background: -ms-linear-gradient(top,  #7EC0EE 0%,#6CA6CD 100%);
+	background: linear-gradient(top,  #7EC0EE 0%,#6CA6CD 100%);	
+}
+/*绿色*/
+.accordion > li > a.active_ {
+	color: #3e5706;
+	text-shadow: 1px 1px 1px rgba(255,255,255, .2);
+	
+	background: #a5cd4e;
+	background: -moz-linear-gradient(top,  #a5cd4e 0%, #6b8f1a 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a5cd4e), color-stop(100%,#6b8f1a));
+	background: -webkit-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+	background: -o-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+	background: -ms-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+	background: linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);	
+}
+
+.accordion li > a span {
+	display: block;
+	position: absolute;
+	top: 7px;
+	right: 0;
+	padding: 0 10px;
+	margin-right: 10px;
+	
+	font: normal bold 12px/18px Arial, sans-serif;
+	background: #404247;
+	
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+
+	-webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0, .2), 1px 1px 1px rgba(255,255,255, .1);
+	-moz-box-shadow: inset 1px 1px 1px rgba(0,0,0, .2), 1px 1px 1px rgba(255,255,255, .1);
+	box-shadow: inset 1px 1px 1px rgba(0,0,0, .2), 1px 1px 1px rgba(255,255,255, .1);
+}
+
+.accordion > li:hover > a span,
+.accordion > li:target > a span,
+.accordion > li > a.active span {
+	color: #fdfdfd;
+	text-shadow: 0px 1px 0px rgba(0,0,0, .35);
+	background: #3e5706;
+}
+
+/* Images */
+
+.accordion > li > a:before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	content: '';
+	width: 24px;
+	height: 24px;
+	margin: 4px 8px;
+}
+/*微信管理*/
+.accordion li.wx > a:before { background:url('icons/wx.png') no-repeat center center; }
+.accordion li.wx > a:before,
+.accordion li.wx > a:before,
+.accordion li.wx > a.active:before { background:url('icons/wx.png') no-repeat center center; }
+/*账号管理*/
+.accordion li.zh > a:before { background:url('icons/user.png') no-repeat center center; }
+.accordion li.zh:hover > a:before,
+.accordion li.zh:target > a:before,
+.accordion li.zh > a.active:before { background:url('icons/user.png') no-repeat center center; }
+/*系统管理*/
+.accordion li.sys > a:before { background:url('icons/sys.png') no-repeat center center; }
+.accordion li.sys:hover > a:before,
+.accordion li.sys:target > a:before,
+.accordion li.sys > a.active:before { background:url('icons/sys.png') no-repeat center center; }
+/*安卓管理*/
+.accordion li.andirod > a:before { background:url('icons/andirod.png') no-repeat center center; }
+.accordion li.andirod:hover > a:before,
+.accordion li.andirod:target > a:before,
+.accordion li.andirod > a.active:before { background:url('icons/andirod.png') no-repeat center center; }
+/*统计分析*/
+.accordion li.column > a:before { background:url('icons/column.png') no-repeat center center; }
+.accordion li.column:hover > a:before,
+.accordion li.column:target > a:before,
+.accordion li.column > a.active:before { background:url('icons/column.png') no-repeat center center; }
+/*汉语助手*/
+.accordion li.training > a:before { background:url('icons/training.png') no-repeat center center; }
+.accordion li.training:hover > a:before,
+.accordion li.training:target > a:before,
+.accordion li.training > a.active:before { background:url('icons/training.png') no-repeat center center; }
+/*长城汉语*/
+.accordion li.cchy > a:before { background:url('icons/cchy.png') no-repeat center center; }
+.accordion li.cchy:hover > a:before,
+.accordion li.cchy:target > a:before,
+.accordion li.cchy > a.active:before { background:url('icons/cchy.png') no-repeat center center; }
+
+.accordion li.jczn > a:before { background:url('icons/jczn.png') no-repeat center center; }
+.accordion li.jczn:hover > a:before,
+.accordion li.jczn:target > a:before,
+.accordion li.jczn > a.active:before { background:url('icons/jczn.png') no-repeat center center; }
+/*运营管理*/
+.accordion li.report > a:before { background:url('icons/report.png') no-repeat center center; }
+.accordion li.report:hover > a:before,
+.accordion li.report:target > a:before,
+.accordion li.report > a.active:before { background:url('icons/report.png') no-repeat center center; }
+/*杂志管理*/
+.accordion li.journal > a:before { background:url('icons/box_picture.png') no-repeat center center; }
+.accordion li.journal:hover > a:before,
+.accordion li.journal:target > a:before,
+.accordion li.journal > a.active:before { background:url('icons/box_picture.png') no-repeat center center; }
+/*文章管理*/
+.accordion li.article > a:before { background:url('icons/script.png') no-repeat center center; }
+.accordion li.article:hover > a:before,
+.accordion li.article:target > a:before,
+.accordion li.article > a.active:before { background:url('icons/script.png') no-repeat center center; }
+
+/* Sub Menu */
+
+.sub-menu li a {
+	color: #797979;
+	text-shadow: 1px 1px 0px rgba(255,255,255, .2);
+
+	background: #e5e5e5;
+	border-bottom: 1px solid #c9c9c9;
+
+	-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255,255,255, .1), 0px 1px 0px 0px rgba(0,0,0, .1);
+	-moz-box-shadow: inset 0px 1px 0px 0px rgba(255,255,255, .1), 0px 1px 0px 0px rgba(0,0,0, .1);
+	box-shadow: inset 0px 1px 0px 0px rgba(255,255,255, .1), 0px 1px 0px 0px rgba(0,0,0, .1);
+}
+
+.sub-menu li:hover a { background: #efefef; }
+
+.sub-menu li:last-child a { border: none; }
+
+.sub-menu li > a span {
+	color: #797979;
+	text-shadow: 1px 1px 0px rgba(255,255,255, .2);
+	background: transparent;
+	border: 1px solid #c9c9c9;
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.sub-menu em {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-left: 14px;
+	color: #a6a6a6;
+	font: normal 10px/32px Arial, sans-serif;
+}
+
+/* Functionality */
+
+.accordion li > .sub-menu {
+	display: none;
+}
+
+.accordion li:target > .sub-menu {
+	display: block;
+}

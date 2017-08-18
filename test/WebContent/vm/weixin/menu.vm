@@ -1,0 +1,200 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript">
+	//搜索
+	function doSearch(value){
+		$('#list_data').datagrid('load',{
+			name:value
+		});
+		$('#list_data').datagrid('clearSelections');
+	}
+	
+	//新建
+	function doAdd(type){
+		$('#m_form').form('clear');
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+	}
+	
+	//编辑
+	function doEdit(id){
+		$('#m_form').form('clear');
+		$('#m_form').form('load', '../weixin/menuLoad?id='+id);
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+	}
+	
+	//返回一级菜单
+	function doBack(){
+		$("#pid_").val("");
+		$("#level_").val("1");
+		$('#cdgl').panel('setTitle',"微信管理 - 菜单管理");
+		$('#list_data').datagrid('load',{level:'1'});
+		$("#do_back").hide();
+	}
+	
+	//二级菜单
+	function doMeun(id,name){
+		$("#pid_").val(id);
+		$("#level_").val("2");
+		$('#cdgl').panel('setTitle',"微信管理 - 菜单管理 <span style='color:red;'>一级菜单《"+name+"》子菜单</span>");
+		$('#list_data').datagrid('load',{pid:id,level:'2'});
+		$("#do_back").show();
+	}
+	
+	//同步菜单
+	function doSync(){
+		$('#do_sync').linkbutton('disable');
+        jQuery.ajax({
+            type:'post',
+            url:'../weixin/menuSync',
+            dataType:'json',
+            success:function(json){
+				if(json.errmsg=='ok'){
+                    $.messager.show({title:'消息提示',msg:'菜单同步成功！', showType:'show'});
+    				$('#list_data').datagrid('reload');
+				}else{
+                    $.messager.show({title:'消息提示',msg:"菜单同步失败！",showType:'show'});
+				}
+				$('#do_sync').linkbutton('enable');
+            },
+            error:function(){
+                $.messager.show({title:'消息提示',msg:"菜单同步失败！",showType:'show'});
+				$('#do_sync').linkbutton('enable');
+            }
+        });
+	}
+	
+	//提交
+	function doSubmit(){
+		$("#pid").val($("#pid_").val());
+		$("#level").val($("#level_").val());
+		
+        $('#m_form').form('submit', {
+            url:'../weixin/menuSave',
+            onSubmit: function(param){
+        		return $(this).form('enableValidation').form('validate');
+            },
+            success:function(data){
+			   var data = eval('(' + data + ')');
+               if(data.success==true){
+					$('#dialog_edit').dialog('close');
+					$('#list_data').datagrid('reload');
+				}else{
+					alert("error!");
+				}
+            }
+        });
+	}
+	
+	//删除
+	function doDel(id){
+        $.messager.confirm('消息提示', '确定删除?', function(r){
+            if(r){
+        		jQuery.ajax({
+        	    	type:　"post",
+        	    	dataType: 'json',
+        	    	url:　'../weixin/menuDel', 
+        	    	data: { id:id },
+        	    	success:　function(data){
+                        $('#list_data').datagrid('reload');
+        			},
+					error:　function(data){alert('error');}
+           		});
+    		}
+    	});
+	}
+	
+	//级别
+	function jbView(value,row,index){
+		return value+'级';
+	}
+	
+	//按钮
+	function qxButton(value,row,index){
+    	var c1='<a href="javascript:doMeun('+"'"+row.id+"','"+row.name+"'"+')" ><img title="二级菜单" src="../images/icons/into.png" style="vertical-align:middle;"/></a>';
+    	var c2='<a href="javascript:doEdit('+"'"+row.id+"'"+')"><img title="编辑" src="../images/icons/edit.png" style="vertical-align:middle;"/></a>';
+    	var c3='<a href="javascript:doDel('+"'"+row.id+"'"+')"><img title="删除" src="../images/icons/delete.png" style="vertical-align:middle;"/></a>';
+		if(row.level=="1")
+			return c1+'&nbsp;&nbsp;'+c2+'&nbsp;&nbsp;'+c3+'&nbsp;&nbsp;';
+		else 
+			return c2+'&nbsp;&nbsp;'+c3+'&nbsp;&nbsp;';
+	}
+	
+    $(document).ready(function() {
+    	$('#list_data').datagrid({
+			toolbar:"#tb",
+			url:'../weixin/menuList',
+            iconCls:'icon-edit',
+            width: 'auto',
+            height: 'auto',
+            nowrap: false,  
+            striped: true,
+            border: true,
+    		pageSize:15,
+    		showFooter: true,
+    		pageList:[10,15,20],
+            collapsible:false,
+            remoteSort:false,   
+            idField:'id',
+			singleSelect:true,
+			selectOnCheck: true,
+			checkOnSelect: true,
+			autoRowHeight:false,
+            pagination:true,
+            rownumbers:true,
+			fitColumns:true,
+    		loadMsg:'正在加载....',
+            columns:[[
+				{align:'center',field:'name',width:'200',title: '菜单名称' },
+                {align:'center',field:'level',width:'120',formatter:jbView,title: '级别' },
+                {align:'center',field:'sequence',width:'120',title: '排序' },
+                {align:'center',field:'createdTime_',width:'120',title: '创建时间' },
+                {align:'center',field:'operate',width:"80",formatter:qxButton,title: '操作' }
+            ]]
+        });
+    })
+</script>
+<div id="cdgl" class="easyui-panel" fit="true" title="微信管理 - 菜单管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="doAdd()">新建菜单</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-back" onclick="doBack()" style="display:none;" id="do_back">返回一级菜单</a>
+		<a id="do_sync" href="javascript:void(0)" class="easyui-linkbutton" plain="false" iconCls="icon-sync" onclick="doSync()" style="float:right;">微信菜单同步</a>
+    </div>
+</div>
+
+<div id="dialog_edit" style="display:none;width:360px;height:320px;padding:5px;" title="菜单编辑" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:true">
+			<input id="pid_" name="pid_" type="hidden" value="" />
+			<input id="level_" name="level_" type="hidden" value="1" />
+    		<form id="m_form" method="post" style="padding:13px;line-height:10px;">
+            	<input id="id" name="id" type="hidden" value="" />
+				<input id="pid" name="pid" type="hidden" value="" />
+				<input id="level" name="level" type="hidden" value="" />
+                <label ><b>菜单名称</b>：</label><input id="name" name="name"  value="" style="width:200px;" class="easyui-textbox" type="text" data-options="required:true"/>&nbsp;<br/><br/>
+                <label ><b>菜单类型</b>：</label>
+                <select id="type" name="type" class="easyui-combobox">
+					<option value="click" selected >事件</option>
+					<option value="view">链接</option>
+				</select>
+				<br/><br/>
+                <label ><b>菜单KEY</b>：</label><input id="key" name="key"  value="" style="width:200px;" class="easyui-textbox" type="text" data-options="required:false"/>&nbsp;<br/><br/>
+                <label ><b>网页链接</b>：</label><input id="url" name="url"  value="" style="width:200px;" class="easyui-textbox" type="text" data-options="required:false"/>&nbsp;<br/><br/>
+                <label ><b>排序</b>：</label><input id="sequence" name="sequence"  value="" style="width:100px;" class="easyui-numberbox" type="text" data-options="required:false"/>&nbsp;<br/><br/>
+    		</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>

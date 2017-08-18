@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>我要投稿</title>
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <style>
+    	a{color:#507CA9;}
+    </style>
+</head>
+
+<body>
+	<!-- <div class="aboutTitle">我要投稿</div> -->
+	<div><img src="../images/wechat/ci-top.jpg" width="100%" style="display:block;" /></div>
+	<div class="aboutcontent">
+		<!-- <p>欢迎您随时与我们分享您的文字与图片，可以直接回复消息，发送邮件或者登录我们的网站进行投稿。</p> -->
+		<h4>邮箱投稿</h4>
+		<!-- <div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/ying.jpg" /></div>
+			<div class="cellright">中英刊编辑部<br/>项目官员：程也<br/>邮箱：<a href="mailto:chengye@hanban.org">chengye@hanban.org</a><br/>电话：(86)-10-58595915</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/fa.jpg" /></div>
+			<div class="cellright">中法刊编辑部<br/>项目官员：屠芫芫<br/>邮箱：<a href="mailto:tuyuanyuan@hanban.org">caijing@hanban.org</a><br/>电话：(86)-10-58595949</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/a.jpg" /></div>
+			<div class="cellright">中阿刊编辑部<br/>项目官员：孙颖<br/>邮箱：<a href="mailto:sunying@hanban.org">sunying@hanban.org</a><br/>电话：(86)-10-58595953</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/tai.jpg" /></div>
+			<div class="cellright">中泰刊编辑部<br/>项目官员：高燕群<br/>邮箱：<a href="mailto:gaoyanqun@hanban.org">gaoyanqun@hanban.org</a><br/>电话：(86)-10-58595949</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/e.jpg" /></div>
+			<div class="cellright">中俄刊编辑部<br/>项目官员：屠芫芫<br/>邮箱：<a href="mailto:tuyuanyuan@hanban.org">tuyuanyuan@hanban.org</a><br/>电话：(86)-10-58595949</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/xi.jpg" /></div>
+			<div class="cellright">中西刊编辑部<br/>项目官员：高燕群<br/>邮箱：<a href="mailto:gaoyanqun@hanban.org">gaoyanqun@hanban.org</a><br/>电话：(86)-10-58595949</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/ri.jpg" /></div>
+			<div class="cellright">中日刊编辑部<br/>项目官员：孙颖<br/>邮箱：<a href="mailto:sunying@hanban.org">sunying@hanban.org</a><br/>电话：(86)-10-58595953</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/yi.jpg" /></div>
+			<div class="cellright">中意刊编辑部<br/>项目官员：刘砚娜<br/>邮箱：<a href="mailto:liuyanna@hanban.org">liuyanna@hanban.org</a><br/>电话：(86)-10-58595918</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/de.jpg" /></div>
+			<div class="cellright">中德刊编辑部<br/>项目官员：蔡靖<br/>邮箱：<a href="mailto:caijing@hanban.org">caijing@hanban.org</a><br/>电话：(86)-10-58595953</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/pu.jpg" /></div>
+			<div class="cellright">中葡刊编辑部<br/>项目官员：蔡靖<br/>邮箱：<a href="mailto:caijing@hanban.org">caijing@hanban.org</a><br/>电话：(86)-10-58595953</div>
+		</div>
+		<div class="mycell mediacell" style="border-bottom:none;">
+			<div class="cellleft"><img src="../images/wechat/han.jpg" /></div>
+			<div class="cellright">中韩刊编辑部<br/>项目官员：刘砚娜<br/>邮箱：<a href="mailto:liuyanna@hanban.org">liuyanna@hanban.org</a><br/>电话：(86)-10-58595918</div>
+		</div> -->
+		
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/yings.jpg" /></div>
+			<div class="cellright">中英刊编辑部<br/>项目官员：程也<br/>邮箱：<a href="mailto:chengye@hanban.org">chengye@hanban.org</a><br/>电话：(86)-10-58595915</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/fas.jpg" /></div>
+			<div class="cellright">中法刊编辑部<br/>项目官员：屠芫芫<br/>邮箱：<a href="mailto:tuyuanyuan@hanban.org">tuyuanyuan@hanban.org</a><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:revueicm@gmail.com">revueicm@gmail.com</a><br />电话：(86)-10-58595949</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/as.jpg" /></div>
+			<div class="cellright">中阿刊编辑部<br/>项目官员：孙颖<br/>邮箱：<a href="mailto:sunying@hanban.org">sunying@hanban.org</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:egyrehab@gmail.com">egyrehab@gmail.com</a><br/>电话：(86)-10-58595953</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/tais.jpg" /></div>
+			<div class="cellright">中泰刊编辑部<br/>项目官员：高燕群<br/>邮箱：<a href="mailto:gaoyanqun@hanban.org">gaoyanqun@hanban.org</a><br/>电话：(86)-10-58595949</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/es.jpg" /></div>
+			<div class="cellright">中俄刊编辑部<br/>项目官员：屠芫芫<br/>邮箱：<a href="mailto:tuyuanyuan@hanban.org">tuyuanyuan@hanban.org</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:russian.ci@gmail.com">russian.ci@gmail.com</a><br/>电话：(86)-10-58595949</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/xis.jpg" /></div>
+			<div class="cellright">中西刊编辑部<br/>项目官员：高燕群<br/>邮箱：<a href="mailto:gaoyanqun@hanban.org">gaoyanqun@hanban.org</a><br/>电话：(86)-10-58595949</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/ris.jpg" /></div>
+			<div class="cellright">中日刊编辑部<br/>项目官员：孙颖<br/>邮箱：<a href="mailto:sunying@hanban.org">sunying@hanban.org</a><br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:wci@list.waseda.jp">wci@list.waseda.jp</a><br/>电话：(86)-10-58595953</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/yis.jpg" /></div>
+			<div class="cellright">中意刊编辑部<br/>项目官员：刘砚娜<br/>邮箱：<a href="mailto:liuyanna@hanban.org">liuyanna@hanban.org</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:romamagazine2014@gmail.com">romamagazine2014@gmail.com</a><br/>电话：(86)-10-58595918</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/de.jpg" /></div>
+			<div class="cellright">中德刊编辑部<br/>项目官员：蔡靖<br/>邮箱：<a href="mailto:caijing@hanban.org">caijing@hanban.org</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:magazin@konfuziusinstitut-leipzig.de">magazin@konfuziusinstitut-leipzig.de</a><br/>电话：(86)-10-58595953</div>
+		</div>
+		<div class="mycell mediacell">
+			<div class="cellleft"><img src="../images/wechat/pus.jpg" /></div>
+			<div class="cellright">中葡刊编辑部<br/>项目官员：蔡靖<br/>邮箱：<a href="mailto:caijing@hanban.org">caijing@hanban.org</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:revista@institutoconfucio.unesp.br">revista@institutoconfucio.unesp.br</a><br/>电话：(86)-10-58595953</div>
+		</div>
+		<div class="mycell mediacell" style="border-bottom:none;">
+			<div class="cellleft"><img src="../images/wechat/hans.jpg" /></div>
+			<div class="cellright">中韩刊编辑部<br/>项目官员：刘砚娜<br/>邮箱：<a href="mailto:liuyanna@hanban.org">liuyanna@hanban.org</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:djgongja@naver.com">djgongja@naver.com</a><br/>电话：(86)-10-58595918</div>
+		</div>
+		
+		<h4>网站投稿</h4>
+		<p style="text-indent:0em;padding-bottom:20px;"><a href="http://www.cim.chinesecio.com/hbcms/f/readerClub/contribute">http://www.cim.chinesecio.com</a></p>
+		
+		<h4>【版权声明】【Copyright Statement】</h4>
+		<p>温馨提示您：投稿内容与图片等，请确保不侵犯其他任何第三方机构或个人的权利。如果因此而发生纠纷，由您本人承担侵权所造成的一切后果。谢谢。</p>
+		<p style="text-indent:0em;margin-bottom:40px;">We warmed prompt you: please make sure the articles and pictures does not infringe the rights of any the third party organizations or individuals. Otherwise, you have to deal with the dispute caused by you. Thanks a lot.</p>
+		
+		<h4>【允许编辑声明】【Allow Editing Statement】</h4>
+		<p>秉承公正、客观及合理性的原则，本站编辑可能对您投稿的内容进行删减或再编辑，谢谢。</p>
+		<p>In order to fairness, objectivation and rationality, you allow editors to change article.</p>
+	</div>
+</body>
+</html>
+

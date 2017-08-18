@@ -1,0 +1,65 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+
+<script type="text/javascript" src="../js/highcharts-4.0.4/highcharts.js"></script>
+<script type="text/javascript" src="../js/module/weixin.message.js?v=$!dateTool" ></script>
+
+<div class="easyui-panel" fit="true" title="微信管理 - 消息管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<input class="easyui-searchbox" data-options="prompt:'文本内容',searcher:doSearch" style="width:200px"></input>
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-chart_bar" onclick="showStat()" >统计</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="doRefresh()">开始刷新</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="doStop()" style="display:none;">停止刷新</a>
+		<a id="wz" plain="true" class="easyui-linkbutton" style="font-size:12px;color:red;display:none;"></a>
+		<input type="hidden" id="js" name="js" value="">
+		<input type="hidden" id="sx" name="sx" value="">
+    </div>
+</div>
+
+<div id="dialog_edit" style="display:none;width:350px;height:250px;padding:5px;" title="消息回复" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false">
+    		<form id="m_form" method="post">
+            	<input id="id" name="id" type="hidden" value="" />
+            	<input id="openid" name="openid" type="hidden" value="" />
+				<input id="content" name="content" value="" style="width:100%;height:160px;" class="easyui-textbox" data-options="required:true,multiline:true"/>
+    		</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:3px 0 0;height:30px;">
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doReply()" style="width:80px">发送</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_info" style="display:none;width:490px;height:450px;padding:1px;" title="消息详情" iconCls="icon-search">
+    <div class="easyui-layout" data-options="fit:true" style="width:490px;height:380px;">
+        <div title="消息内容" data-options="region:'center',border:true" style="height:300px;padding:6px;" id="dialog_info_detail"></div>
+        <div title="回复内容" data-options="region:'south',border:true" style="height:150px;">
+            <table id="dg" class="easyui-datagrid" data-options="fit:true,region:'center',border:false,nowrap:false">
+                <thead>
+                    <tr>
+                        <th data-options="field:'dg_time'" style="width:25%">时间</th>
+                        <th data-options="field:'dg_text'" style="width:70%">内容</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_stat" style="display:none;width:650px;height:480px;" title="消息统计" iconCls="icon-chart_bar">
+    <div id="tt" class="easyui-tabs" style="width:100%;height:100%;" fit="true" plain="true" border="0">
+         <div title="热门词语搜索排行"><div id="gjz_data" cellspacing="0" cellpadding="0"></div></div>
+         <div title="活跃用户消息排行"><div id="hyh_data" cellspacing="0" cellpadding="0"></div></div>  
+    </div> 
+</div>

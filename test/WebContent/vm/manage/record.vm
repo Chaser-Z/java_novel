@@ -1,0 +1,67 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript">
+	//搜索
+	function doSearch(value){
+		$('#list_data').datagrid('load',{
+			content:value
+		});
+		$('#list_data').datagrid('clearSelections');
+	}
+	
+	//操作
+	function typeView(value,row,index){
+		var label="";
+		if(value=="1"){label="<img src='../images/icons/admin.png' style='vertical-align:middle;'/>系统"}
+		else if(value=="2"){label="<img src='../images/icons/weixin.png' style='vertical-align:middle;'/>微信"}
+		return label;
+	}
+	
+	//列表
+    $(document).ready(function() {
+    	$('#list_data').datagrid({
+			url:'../manage/loglist',
+			toolbar:"#tb",
+            iconCls:'icon-edit',
+            width: 'auto',
+            height: 'auto',
+            nowrap: false,  
+            striped: true,
+            border: true,
+    		pageSize:15,
+    		showFooter: true,
+    		pageList:[10,15,20],
+            collapsible:false,
+            remoteSort:false,   
+            idField:'id',
+			singleSelect:true,
+			selectOnCheck: true,
+			checkOnSelect: true,
+			autoRowHeight:false,
+            pagination:true,
+            rownumbers:true,
+			fitColumns:true,
+    		loadMsg:'正在加载....',
+            columns:[[
+				//{halign:'center',align:'center',field:'userName',width:'100',title: '操作用户' },
+				{halign:'center',align:'center',field:'type',width:'80',formatter:typeView,title: '操作类型' },
+				{halign:'center',align:'center',field:'createdTime_',width:'120',title: '操作时间' },
+                {halign:'center',align:'left',field:'content',width:'400',title: '操作内容' }
+            ]]
+        });
+    })
+</script>
+
+<div class="easyui-panel" fit="true" title="系统管理 - 系统日志" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<input class="easyui-searchbox" data-options="prompt:'请输入操作内容查询',searcher:doSearch" style="width:300px;">
+    </div>
+</div>

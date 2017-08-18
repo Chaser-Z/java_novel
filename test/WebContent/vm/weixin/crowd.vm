@@ -1,0 +1,129 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/themes/default/default.css" />
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/plugins/code/prettify.css" />
+<script charset="utf-8" src="../js/kindeditor-4.1.10/kindeditor.js"></script>
+<script charset="utf-8" src="../js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<style type="text/css">
+	a{text-decoration:none}
+	form {
+		margin: 0;
+	}
+	textarea {
+		display: block;
+	}
+    .ke-icon-wzcj {
+    	background: url(../images/weixin/wxedit.png) 0 -30px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+    .ke-icon-tpcj {
+    	background: url(../images/weixin/wxedit.png) 0 -90px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+    .ke-icon-yycj {
+    	background: url(../images/weixin/wxedit.png) 0 -210px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+    .ke-icon-spcj {
+    	background: url(../images/weixin/wxedit.png) 0 -150px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+    .ke-icon-twxx {
+    	background: url(../images/weixin/wxedit.png) 0 -270px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+</style>
+<script type="text/javascript" src="../js/module/weixin.crowd.js?v=$!dateTool" ></script>
+
+<div class="easyui-panel" fit="true" title="微信管理 - 消息群发" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="doAdd()">新建群发消息</a>
+    </div>
+</div>
+
+<div id="dialog_edit" style="display:none;width:600px;height:460px;padding:5px;" title="新建消息群发" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:true">
+    		<form id="m_form" action="../weixin/crowdSend" method="post" style="padding:13px;line-height:10px;">
+				<input type="hidden" id="id" name="id" value="" />
+				<!-- <input type="hidden" id="media_id" name="media_id" value="" /> -->
+				<input type="hidden" id="msgtype" name="msgtype" value="" />
+				<input type="hidden" id="isPreview" name="isPreview" value="false" />
+                <label ><b>群发对象</b>：</label>
+                <select class="easyui-combobox" id="type" name="type" style="width:100px;" editable="false" data-options="required:true" >
+                	<option value="all" selected ="selected">全部用户</option>
+                    <option value="group">按分组选择</option>
+                </select>
+				<span id="group_span" style="display:none;">
+                <select class="easyui-combobox" id="group_id" name="group_id"  editable="false">
+					#foreach($group in $groupList)
+					<option value="$group.id">$group.name</option>
+					#end
+                </select>
+				</span>
+				<br/><br/>
+				#* 
+                <label ><b>性　　别</b>：</label>
+                <select class="easyui-combobox" name="sex" style="width:80px;">
+                	<option value="1">全部</option>
+                    <option value="2">男</option>
+                    <option value="3">女</option>
+                </select>
+				<br/><br/>
+                <label ><b>群发地区</b>：</label>
+                <select class="easyui-combobox" id="country" name="country" style="width:80px;">
+                	<option value="1">全部</option>
+                </select>
+				<br/><br/>				
+				<textarea id="content" name="content" style="width:100%;height:300px;"></textarea>
+				*#
+				<div id="news_data"></div>
+			</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton c2" data-options="iconCls:'icon-preview'" href="javascript:void(0)" onclick="javascript:doPreview()" style="width:80px" id="m_form_preview">预览</a>
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px" id="m_form_submit">发送</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_tw" style="display:none;width:700px;height:500px;padding:5px;" title="选择图文" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false">
+    		 <div id="tw_data" cellspacing="0" cellpadding="0"></div>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_tw').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_mt" style="display:none;width:670px;height:500px;padding:5px;" title="选择素材" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false">
+    		 <div id="mt_data" cellspacing="0" cellpadding="0"></div>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_mt').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+<div style="display:none;overflow:hidden;padding:3px;width:950px;height:850px;" id="dialog_wxeditor">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" id="wxeditorDetailSrc"  scrolling="no"  width="900" height="600"></iframe>
+	<div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+       <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px">保存</a>
+       <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+    </div>
+</div>

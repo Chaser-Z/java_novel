@@ -1,0 +1,419 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/ueditor.config.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/ueditor.all.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/zeroclipboard/ZeroClipboard.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/wwei_editor.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	//var content_editor = UE.getEditor('content_editor');
+});
+</script>
+<script type="text/javascript">
+   var content_editor = null;
+	//搜索
+	function doSearch(){
+		//alert("SSS");
+		var articleTitle = $("#articleTitle").val();
+		var journal_Name = $("#journal_Name").val();
+		var programa = $("#programa").val();
+		var pid = $("#serach_pid").val()
+		$('#list_data').datagrid('load',{
+			articleTitle:articleTitle,
+			programa:programa,
+			journal_Name:journal_Name,
+			pid:pid
+		});
+		$('#list_data').datagrid('clearSelections');
+	}
+	
+	//返回
+	function doBack(){
+		$('#list_data').datagrid('load',{pid:''});
+		$("#_pid").val('');
+		$("#serach_pid").val("");
+		$("#back").hide();
+	}
+	
+	//子菜单
+	function doChild(pid){
+		$('#list_data').datagrid('load',{pid:pid});
+		$("#_pid").val(pid);
+		$("#serach_pid").val(pid);
+		$("#back").show();
+	}
+	
+	//新建
+	function doAdd(type){
+		$('#m_form').form('clear');
+		content_editor.setContent("");
+		$("#coverLinkimg").find("img").attr("src","");
+    	$("#coverLinkimg").hide();
+		$("#pid").val($("#_pid").val());
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+	}
+	
+	//编辑
+	function doEdit(id){
+		$('#m_form').form('clear');
+		$("#coverLinkimg").find("img").attr("src","");
+    	$("#coverLinkimg").hide();
+		//$('#m_form').form('load', '../manage/articleLoad?id='+id);
+		$.ajax({url:'../manage/articleLoad?id='+id,success:function(result){
+	        var res = eval("("+result+")");
+	        $("#id").val(res.id);
+	        $("#coverLink").val(res.coverLink);
+	        if(typeof(res.coverLink) != 'undefined' && res.coverLink != null && res.coverLink != '' ){
+	        	var src = res.coverLink;
+	        	if(src.indexOf("/resize_180x180")!=-1){
+					src = src.replace("/resize_180x180","");
+				}
+	        	$("#coverLinkimg").find("img").attr("src","../"+src)
+	        	$("#coverLinkimg").show();
+	        }
+	        $("#pid").val(res.parentId);
+			$('#title').textbox('setValue',res.title);
+			$('#subTitle').textbox('setValue',res.subTitle);
+			$('#digest').textbox('setValue',res.digest);
+			$('#link').textbox('setValue',res.link);
+			$('#journallink').textbox('setValue',res.journalLink);
+			$('#source').textbox('setValue',res.source);
+			$('#hsk').textbox('setValue',res.hsk);
+            content_editor = null;
+			content_editor = UE.getEditor('content_editor');
+			content_editor.addListener("ready", function () { 
+                // editor准备好之后才可以使用
+                content_editor.setContent(res.content); 
+              });
+              content_editor.setContent(res.content);
+           
+			if((typeof(res.menuId) != 'undefined' && res.menuId != null && res.menuId != '') ||
+					( typeof(res.topic) != 'undefined' && res.topic != null && res.topic != '')){
+				var menuvalue =$('#menuId').combobox('getData');
+				$.each(menuvalue,function(index,value){
+					var value0 = value.value.split("_")[0];
+					var value1 = value.value.split("_")[1];
+					if(value0 == res.menuId ||  value1 == res.topic){
+						$('#menuId').combobox('setValue',value.value);
+					}
+				});
+				
+			}
+			
+			if((typeof(res.langCode) != 'undefined' && res.langCode != null && res.langCode != '')
+				||( typeof(res.langName) != 'undefined' && res.langName != null && res.langName != '')){
+				
+				var langCodevalue =$('#langCode').combobox('getData');
+				$.each(langCodevalue,function(index,value){
+					var value0 = value.value.split("_")[0];
+					var value1 = value.value.split("_")[1];
+					if(value0 == res.langCode ||  value1 == res.langName){
+						$('#langCode').combobox('setValue',value.value);
+					}
+				});
+				
+			//$('#langCode').combobox('setValue',res.langCode+"_"+(res.langName).replace(/(^\s+)|(\s+$)/g,""));
+			}
+			if((typeof(res.journalId) != 'undefined' && res.journalId != null && res.journalId != '')
+				||( typeof(res.journalName) != 'undefined' && res.journalName != null && res.journalName != '')){
+				
+				var journalNamevalue =$('#journalName').combobox('getData');
+				$.each(journalNamevalue,function(index,value){
+					var value0 = value.value.split("_")[0];
+					var value1 = value.value.split("_")[1];
+					if(value0 == res.journalId ||  value1 == res.journalName){
+						$('#journalName').combobox('setValue',value.value);
+					}
+				});
+			//$('#journalName').combobox('setValue',res.journalId+"_"+(res.journalName).replace(/(^\s+)|(\s+$)/g,""));
+			}
+	    }});
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+	}
+	
+	//提交
+	function doSubmit(){
+        $('#m_form').form('submit', {
+            url:'../manage/articleSave',
+            onSubmit: function(param){
+            	var v = $(this).form('enableValidation').form('validate');
+            	if(!v){
+            		return false;
+            	}
+            	return true;
+            },
+            success:function(data){
+			   var data = eval('(' + data + ')');
+               if(data.success==true){
+					$('#dialog_edit').dialog('close');
+					$('#list_data').datagrid('reload');
+				}else{
+					alert("error!");
+				}
+            }
+        });
+	}
+	
+	//删除
+	function doDel(id){
+        $.messager.confirm('消息提示', '确定删除?', function(r){
+            if(r){
+        		jQuery.ajax({
+        	    	type:"post",
+        	    	dataType: 'json',
+        	    	url:'../manage/articleDel', 
+        	    	data: {
+        				id:id
+        			},
+        			error:function(data){
+        				alert('error');
+        			},
+        	    	success:function(data){
+                        $('#list_data').datagrid('reload');
+        			}
+           		});
+    		}
+    	});
+	}
+	
+	//表格
+    $(document).ready(function() {
+    	content_editor = UE.getEditor('content_editor');
+    	//按钮
+    	function qxButton(value,row,index){
+        	var c1='<a href="javascript:doChild('+"'"+row.id+"'"+')"><img title="二级菜单" src="../images/icons/into.png" style="vertical-align:middle;"/></a>';
+        	var c2='<a href="javascript:doEdit('+"'"+row.id+"'"+')"><img title="编辑" src="../images/icons/edit.png" style="vertical-align:middle;"/></a>';
+        	var c3='<a href="javascript:doDel('+"'"+row.id+"'"+')"><img title="删除" src="../images/icons/delete.png" style="vertical-align:middle;"/></a>';
+    		if(row.parentId!=''&& typeof(row.parentId) != 'undefined' && row.parentId != null){
+    			return c2+'&nbsp;&nbsp;'+c3+'&nbsp;&nbsp;';
+    		}
+    		//alert(row.parentId);
+    		return c1+'&nbsp;&nbsp;'+c2+'&nbsp;&nbsp;'+c3+'&nbsp;&nbsp;';
+    	}
+    	$('#list_data').datagrid({
+			url:'../manage/articlelist',
+			toolbar:"#tb",
+            iconCls:'icon-edit',
+            width: 'auto',
+            height: 'auto',
+            nowrap: false,  
+            striped: true,
+            border: true,
+    		pageSize:10,
+    		showFooter: true,
+    		pageList:[10,15,20],
+            collapsible:false,
+            remoteSort:false,   
+            idField:'id',
+			singleSelect:true,
+			selectOnCheck: true,
+			checkOnSelect: true,
+			autoRowHeight:false,
+            pagination:true,
+            rownumbers:true,
+			fitColumns:true,
+    		loadMsg:'正在加载....',
+            columns:[[
+				{halign:'center',align:'center',field:'id',width:'220',title: 'id',hidden:true },
+				{halign:'center',align:'center',field:'parentId',width:'220',title: '父节点',hidden:true },
+                {halign:'center',align:'left',field:'title',width:'250',title: '标题' },
+                {halign:'center',align:'center',field:'subTitle',width:'150',title: '二级标题',hidden:true },
+                {halign:'center',align:'center',field:'coverLink',width:"100",title: '封面' ,formatter:txView},
+                {halign:'center',align:'center',field:'topic',width:"100",title: '栏目' },
+                {halign:'center',align:'center',field:'digest',width:"300",title: '摘要',hidden:true },
+                {halign:'center',align:'center',field:'langName',width:"100",title: '语种' ,formatter: function(value,row,index){if(value=='' || value == undefined){return '中文';}}},
+                {halign:'center',align:'center',field:'langCode',width:"100",title: 'langCode',hidden:true },
+                {halign:'center',align:'center',field:'journalName',width:"200",title: '杂志名称' },
+                {halign:'center',align:'center',field:'source',width:"90",title: '作者' },
+                {halign:'center',align:'center',field:'publishDate',width:"150",title: '发布时间',formatter: function(value,row,index){
+                	return myformatter(new Date(row.createTime*1000));
+                } },
+    	        {halign:'center',align:'center',field:'operate',width:"80",formatter:qxButton,title: '操作'}
+                
+            ]]
+        });
+    	
+    	function txView(value,row,index){
+    		if(typeof(value)==='undefined'){ return ""; }
+    		if(value.indexOf("/resize_180x180")!=-1){
+    			value = value.replace("/resize_180x180","");
+			}
+    		return "<img src='.."+value+"' style='height:80px;width:80px;'>";
+    	}
+    	//格式化日期
+    	function myformatter(date){
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			var d = date.getDate();
+			return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
+		}
+    });
+</script>
+
+<div class="easyui-panel" fit="true" title="文章管理 - 文章列表" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="doAdd()">新建文章</a>
+		<input type="hidden" value='' id="serach_pid" />
+		<input id="articleTitle" class="easyui-textbox" data-options="prompt:'文章标题'" style="width:200px" />&nbsp;
+		<input id="journal_Name" class="easyui-textbox" data-options="prompt:'杂志名称'" style="width:200px" />&nbsp;
+		栏目：<select id="programa" class="easyui-combobox" name="topic" editable="false" style="width:100px;">
+		                 #foreach($info in $menulist)
+	            	         <option value=${info.id}_${info.title}>${info.title}</option>
+	            	       #end
+		</select>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">Search</a>
+		
+		 <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-back" onclick="doBack()" style="display:none;" id="back">返回</a>
+    </div>
+</div>
+
+<div id="dialog_edit" style="display:none;width:800px;height:600px;padding:5px;" title="杂志编辑" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:true">
+             <input id="_pid" name="_pid" type="hidden" value="" />
+    		<form id="m_form" method="post" style="padding:13px;line-height:10px;" enctype="multipart/form-data">
+            	<input id="id" name="id" type="hidden" value="" />
+            	<input id="pid" name="pid" type="hidden" value="" />
+            	
+            	<table style="width: 100%;">
+            	 <tr style="">
+	            	 <td><label ><b>标题</b>：</label></td>
+	            	 <td><input id="title" name="title"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/></td>
+            	 </tr>
+            	 <tr style=""> 
+	            	 <td><label ><b>二级标题</b>：</label></td>
+	            	 <td><input id="subTitle" name="subTitle"  value="" style="width:390px;" class="easyui-textbox" data-options="required:false"/></td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>栏目</b>：</label></td>
+	            	 <td><!-- <input id="menuId" name="menuId"  value="" style="width:390px;" class="easyui-textbox" data-options="required:false"/> -->
+	            	    <select id="menuId" class="easyui-combobox" name="menuId" style="width:390px;" data-options="required:true,editable:false">
+	            	       #foreach($info in $menulist)
+	            	         <option value=${info.id}_${info.title}>${info.title}</option>
+	            	       #end
+	            	      </select>
+	            	 
+	            	 </td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>封面图片</b>：</label></td>
+	            	 <td><!-- <input id="cover" name="cover"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/> -->
+	            	 <input type="file" name = "mediacoverLink"/>
+	            	 <input id="coverLink" name="coverLink" type="hidden" value="">
+	            	 </td>
+            	 </tr>
+            	 <tr id="coverLinkimg" style="display: none;"><td><label ><b>当前封面:</b></label></td><td><img alt="" src="" style="width: 80px;height: 80px;"></td></tr>
+            	 <!-- <tr style="">
+	            	 <td><label ><b>pdfFile</b>：</label></td>
+	            	 <td><input id="cover" name="cover"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/>
+	            	 <input type="file" name = "pdfFile"/></td>
+            	 </tr> -->
+            	 <tr style="">
+	            	 <td><label ><b>摘要</b>：</label></td>
+	            	 <td>
+	            	 <input id="digest" name="digest" class="easyui-textbox" data-options="required:true,multiline:true" value="" style="width:400px;height:100px">
+	            	     <!-- <textarea id="digest" name="digest" class="easyui-textbox" style="width:400px;height: 100px;" data-options="required:true"></textarea> -->
+	            	 </td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>文章链接</b>：</label></td>
+	            	 <td><input id="link" name="link"  value="" style="width:390px;" class="easyui-textbox" /></td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>语种</b>：</label></td>
+	            	 <td><!-- <input id="langCode" name="langCode"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/> -->
+	            	 <select id="langCode" class="easyui-combobox" name="langCode" style="width:390px;" data-options="editable:false">
+	            	       #foreach($info in $languageList)
+	            	         <option value=${info.id}_${info.shortEn}>${info.nameCn}_${info.nameEn}</option>
+	            	       #end
+	            	      </select>
+	            	 </td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>所属杂志</b>：</label></td>
+	            	 <td><!-- <input id="journalName" name="journalName"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/> -->
+	            	   <select id="journalName" class="easyui-combobox" name="journalName" style="width:390px;" data-options="editable:false">
+	            	       #foreach($info in $jorunalList)
+	            	         <option value=${info.id}_${info.title}>${info.title}</option>
+	            	       #end
+	            	      </select>
+	            	 </td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>杂志链接</b>：</label></td>
+	            	 <td><input id="journallink" name="journalName"  value="" style="width:390px;" class="easyui-textbox" /></td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>作者</b>：</label></td>
+	            	 <td><input id="source" name="source"  value="" style="width:390px;" class="easyui-textbox" /></td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>hsk级别</b>：</label></td>
+	            	 <td><input id="hsk" name="hsk"  value="" style="width:390px;" class="easyui-textbox" /></td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>文章内容</b>：</label></td>
+	            	 <td><!-- <input id="content" name="content"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/> -->
+	            	    <textarea id="content_editor" name="content_editor" style="width:550px;height: 400px;" data-options="required:true"></textarea>
+	            	 </td>
+            	 </tr>
+            	 <!-- <tr style="">
+	            	 <td><label ><b>langCode</b>：</label></td>
+	            	 <td><input id="langCode" name="langCode"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/>
+	            	      <select id="langCodes" class="easyui-combobox" name="langCode" style="width:390px;" data-options="required:true,editable:false">
+	            	        <option value="1">中法</option>
+	            	        <option value="2">中阿</option>
+	            	        <option value="3">中泰</option>
+	            	        <option value="4">中俄</option>
+	            	        <option value="5">中英</option>
+	            	        <option value="6">中西</option>
+	            	        <option value="7">中日</option>
+	            	        <option value="8">中意</option>
+	            	        <option value="9">中德</option>
+	            	        <option value="10">中葡</option>
+	            	        <option value="11">中韩</option>
+	            	      </select>
+	            	 </td>
+            	 </tr> -->
+            	 <!-- <tr style="">
+	            	 <td><label ><b>liveIssue</b>：</label></td>
+	            	 <td><input id="liveIssue" name="liveIssue"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/>
+	            	     <select id="liveIssue" class="easyui-combobox" name="liveIssue" style="width:390px;" data-options="required:true,editable:false">
+	            	        <option value="01">1</option>
+	            	        <option value="02">2</option>
+	            	        <option value="03">3</option>
+	            	        <option value="04">4</option>
+	            	        <option value="05">5</option>
+	            	        <option value="06">6</option>
+	            	        <option value="07">7</option>
+	            	        <option value="08">8</option>
+	            	        <option value="09">9</option>
+	            	        <option value="10">10</option>
+	            	        <option value="11">11</option>
+	            	      </select>
+	            	 </td>
+            	 </tr>
+            	 <tr style="">
+	            	 <td><label ><b>issue</b>：</label></td>
+	            	 <td><input id="issue" name="issue"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/></td>
+            	 </tr> -->
+            	</table>
+    		</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>

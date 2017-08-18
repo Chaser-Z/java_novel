@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="../js/wxEditor1.0.0/css/bootstrap/css/bootstrap.css?2023" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" href="../js/wxEditor1.0.0/css/bootstrap/css/bootstrap-ie6.css?2023">
+<![endif]-->
+<!--[if lte IE 7]>
+<link rel="stylesheet" type="text/css" href="../js/wxEditor1.0.0/css/bootstrap/css/ie.css?2023">
+<![endif]-->
+<link href="../js/wxEditor1.0.0/css/site.css?2023" rel="stylesheet" type="text/css">
+<link href="../js/wxEditor1.0.0/css/wwei_editor.css?2023" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="../js/wxEditor1.0.0/wxeditor/css/jquery.jgrowl.css">
+<link href="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/themes/default/css/ueditor.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/codemirror/codemirror.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/css/bootstrap/js/bootstrap.min.js"></script>
+<script src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/lang/zh-cn/zh-cn.js" type="text/javascript" defer="defer"></script>
+<script src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/codemirror/codemirror.js" type="text/javascript" defer="defer"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript" src="../js/module/weixin.media.js?v=$dateTool" ></script>
+<style id="style-1-cropbar-clipper">
+	.en-markup-crop-options {
+	    top: 18px !important;
+	    left: 50% !important;
+	    margin-left: -100px !important;
+	    width: 200px !important;
+	    border: 2px rgba(255,255,255,.38) solid !important;
+	    border-radius: 4px !important;
+	}
+	.en-markup-crop-options div div:first-of-type {
+	    margin-left: 0px !important;
+	}
+	#media_img{
+		height:inherit;
+		line-height:inherit;
+		font-size:12px;
+	}
+	.row-fluid .span12{ text-align:right;margin-left:0;}
+</style>
+</head>
+<div class="easyui-panel" fit="true" title="微信管理 - 素材管理 - 图文消息" border="0">
+	<form id="tw_form" method="post" action="../weixin/pushSave">
+		<div class="row-fluid" style="box-sizing:border-box; padding:15px 100px;">
+			<div class="span12"><span style="color:#ff0000">*</span> 标题：<input id="title" name="title" value="" style="width:85%;" class="easyui-textbox" data-options="required:true"/></div>
+			<div class="span12">子标题：<input id="subTitle" name="subTitle" value="" style="width:85%;" class="easyui-textbox" /></div>
+			<div class="span12">原标题：<input id="originTitle" name="originTitle" value="" style="width:85%;" class="easyui-textbox" /></div>
+			<div class="span12">刊次：<input id="journalIssue" name="journalIssue" value="" style="width:85%;" class="easyui-textbox" /></div>
+			<div class="span12">封面：<input id="coverLink" name="coverLink" value="" style="width:85%;" class="easyui-textbox" /></div>
+			<div class="span12" style="margin-bottom:8px;">摘要：<input id="digest" name="digest" value="" style="width:85%;height:60px;" class="easyui-textbox" data-options="multiline:true" /></div>
+			<div class="span12">微信链接：<input id="link" name="link" value="" style="width:85%;" class="easyui-textbox" /></div>
+			<div class="span12">原文链接：<input id="originlink" name="originlink" value="" style="width:85%;" class="easyui-textbox" /></div>
+			<div class="span12">关联文章ID：<input id="articleId" name="articleId" value="" style="width:85%;" class="easyui-textbox" /></div>
+			<div class="span12">作者：<input id="source" name="source" value="" style="width:85%;" class="easyui-textbox" /></div>
+			<div class="span12" style="margin-left:0; padding-top:5px;">
+				
+				<div class="span12" id="wxcontent">
+					<div style="float:left;width:152px;text-align:right"><span style="color:#ff0000">*</span> 内容：</div>
+					<fieldset>
+						<div style="width:500px;">
+							<span class="pull-right">
+								<a href="javascript:void(0);" id="copy-editor-html" class="btn btn-primary disabled">复制正文</a>
+								<a href="javascript:void(0);" id="clear-editor" class="btn btn btn-danger disabled">清空</a>
+							</span>
+							<label><!-- 正文 --></label>
+						</div>
+						<div style="clear:both"></div>
+						<div>
+							<textarea id="wwei_editor" name="content" style="width:500px;height: 480px;" data-options="required:true"></textarea>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<!-- <input type="hidden" name="id" /> -->
+		<input type="hidden" id="graphicMsgId" name="graphicMsgId" />
+	</form>
+	<div data-options="region:'south',border:false" style="text-align:right;padding:0 50px 30px 0;height:30px;">
+        <a class="easyui-linkbutton c1" data-options="iconCls:'icon-save'" href="javascript:void(0)" onclick="javascript:doSubmitPush()" style="width:80px">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-back'" href="javascript:void(0)" onclick="window.location.href='../weixin/mediaView'" style="width:80px">返回</a>
+    </div>	
+</div>
+
+
+
+<script src="../js/wxEditor1.0.0/wxeditor/css/jquery.jgrowl.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/less.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/colorPicker.js"></script>
+<!-- <script>
+	var UEDITOR_HOME_URL = "../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/";
+</script> -->
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/ueditor.config.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/ueditor.all.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/zeroclipboard/ZeroClipboard.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/wwei_editor.js"></script>
+<script type="text/javascript">
+	var less_parser = new less.Parser;
+	ZeroClipboard.config({ swfPath: "../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/zeroclipboard/ZeroClipboard.swf" } );
+	
+	var wwei_editor = UE.getEditor('wwei_editor');
+	
+	$(function () {
+		/*模板Tab */
+		var dataType = 'title';
+		
+		function _loadtemp(dataType){
+			$("#template-loading").show();
+			$.ajax({
+				type: "POST",
+				url: "../weixin/loadtemp",
+				data: {"type":dataType},
+				success: function(data){
+					$("#template-loading").hide();
+					var tabPane = $("#temp-"+dataType);
+					tabPane.html(data);
+					var _tempLi = tabPane.find('.template-list li');
+					_tempLi.hover(function(){
+						$(this).css({"background-color":"#f5f5f5"});
+					},function(){
+						$(this).css({"background-color":"#fff"});
+					});
+					_tempLi.click(function(){
+						if(dataType=='tpl')
+						{
+							var _tempHtml = $(this).find('.tpl-code').html();
+							wwei_editor.setContent("");
+							wwei_editor.execCommand('insertHtml', _tempHtml);
+						}else
+						{
+							var _tempHtml = $(this).html();
+							insertHtml(_tempHtml + "<p><br/></p>");
+						}
+						
+					});
+				}
+			});
+		}
+		_loadtemp(dataType);//加载
+		//TAB切换
+		$('#templateTab a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+			
+			dataType = $(this).attr("data-type");
+			if(dataType)
+			{
+				var tabPane = $("#temp-"+dataType);
+				if(tabPane.find('.template-list').length<=0)
+				{
+					_loadtemp(dataType);
+				}
+			}
+		});
+
+	
+		//清空
+		$('#clear-editor').click(function(){
+			if(confirm('是否确认清空内容，清空后内容将无法恢复')){
+				wwei_editor.setContent("");
+			}        
+		});
+		//复制
+		var client = new ZeroClipboard( $('#copy-editor-html') );
+		client.on( 'ready', function(event) {
+			client.on( 'copy', function(event) {
+				  event.clipboardData.setData('text/html', getEditorHtml());
+				  event.clipboardData.setData('text/plain', getEditorHtml());
+				  showSuccessMessage("已成功复制到剪切板");
+			});
+		});
+
+		//预览效果
+		$("#wx-template-name").blur(function(){
+			var val = $(this).val();
+			if(val)
+			{
+				$("#wxpreview h4").html(val);
+			}
+		});
+		$("#wx-template-dateline").blur(function(){
+			var val = $(this).val();
+			if(val)
+			{
+				$("#wxpreview em").html(val);
+			}
+		});
+		$("#wx-template-cover").blur(function(){
+			var val = $(this).val();
+			if(val)
+			{
+				$("#wxpreview .wxpreimg").html('<img src="'+ val +'" width="290" height="209">');
+			}
+		});
+		
+		$("#wx-template-intro").blur(function(){
+			var val = $(this).val();
+			if(val)
+			{
+				$("#wxpreview .wxstr").html(val);
+			}
+		});
+
+		$("#wx-template-wxid").change(function(){
+			var val = $(this).find("option:selected").val(),text = $(this).find("option:selected").text(),url=$(this).find("option:selected").attr("data-url");
+
+			if(text)
+			{
+				if(val==0) text = '';
+				if(!url) url = 'javascript:void(0);';
+				$("#wxpreview .wxhao").html('<a href="'+url+'" target="_blank">'+text+'</a>');
+			}
+		});
+		//定制效果
+		$("#is_show_title").click(function(){
+			var cked = $(this).attr("checked");
+			if(cked==undefined)
+			{
+				$("#wx_show_title").hide();
+				
+			}else
+			{
+				$("#wx_show_title").show();
+			}
+		});
+		$("#is_show_statis").click(function(){
+			var cked = $(this).attr("checked");
+			if(cked==undefined)
+			{
+				$("#wxpreview .wxfoot").hide();
+				
+			}else
+			{
+				$("#wxpreview .wxfoot").show();
+			}
+		});
+		
+		//颜色选择
+		$('.colorPicker').colorPicker({
+			customBG: '#222',
+			init: function(elm, colors) { // colors is a different instance (not connected to colorPicker)
+			  elm.style.backgroundColor = elm.value;
+			  elm.style.color = colors.rgbaMixCustom.luminance > 0.22 ? '#222' : '#ddd';
+			}
+		});
+		
+		//初始化单图文消息表单
+		var id = "$!request.getParameter('id')";
+		if(id!=''){
+			initForm(id);	
+		}			
+	});
+</script>
+</html>

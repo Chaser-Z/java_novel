@@ -1,0 +1,285 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript">
+	//搜索
+	function doSearch(value){
+		$('#list_data').datagrid('load',{
+			name:value
+		});
+		$('#list_data').datagrid('clearSelections');
+	}
+	
+	//详情
+	function doInfo(id){
+		$('#m_form').form('clear');
+		$('#m_form').form('load', '../weixin/userLoad?id='+id);
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+        jQuery.ajax({
+            type:'post',
+            url:'../weixin/userLoad',
+            data:{id:id},
+            dataType:'json',
+            success:function(json){
+                $("#headimgurl").html("<img src='"+json.headimgurl+"' style='width:46px;'/>");
+                $("#nickname").html(json.nickname);
+                $("#sex").html(json.sex);
+                $("#country").html(json.country);
+                $("#province").html(json.province);
+                $("#city").html(json.city);
+            },
+            error:function(){
+			
+            }
+        });
+	}
+	
+	//移动分组
+    function doGroup(groupid,openid){
+		$('#group_form').form('clear');
+		$('#group_edit').show();
+        $('#group_edit').dialog({modal:true});
+		$('#groupid').combobox('select',groupid);
+		$('#openid').val(openid);
+    }
+	
+	//移动分组
+    function doGroupSubmit(){
+        $('#group_form').form('submit', {
+            url:'../weixin/groupMoveSave',
+            onSubmit: function(param){
+        		return $(this).form('enableValidation').form('validate');
+            },
+            success:function(data){
+			   var data = eval('(' + data + ')');
+               if(data.errcode==0){
+					$('#group_edit').dialog('close');
+					$('#list_data').datagrid('reload');
+					$.messager.show({title:'消息提示',msg:"分组成功！",showType:'show'});
+				}else{
+                	$.messager.show({title:'消息提示',msg:"分组失败！",showType:'show'});
+				}
+            }
+        });
+    }
+	
+  	//设置预览用户对话框
+    function doSetPreview(id){
+		$('#preview_form').form('clear');
+		$('#preview_dialog').show();
+        $('#preview_dialog').dialog({modal:true});
+		$('#preview_form').find("input[name='id']").val(id);
+    }
+  	
+  	//提交预览用户
+    function doPreviewSubmit(){
+        $('#preview_form').form('submit', {
+            url:'../weixin/previewUserSave',
+            onSubmit: function(param){
+        		return $(this).form('enableValidation').form('validate');
+            },
+            success:function(data){
+               if(data=="success"){
+					$('#preview_dialog').dialog('close');
+					$('#list_data').datagrid('reload');
+					$.messager.show({title:'消息提示',msg:"设置成功！",showType:'show'});
+				}else{
+                	$.messager.show({title:'消息提示',msg:"设置失败！",showType:'show'});
+				}
+            }
+        });
+    }
+	
+	//用户同步
+	function doSync(){
+		$('#do_sync').linkbutton('disable');
+        jQuery.ajax({
+            type:'post',
+            url:'../weixin/userSync',
+            dataType:'json',
+            success:function(json){
+                $.messager.show({title:'消息提示',msg:''+json.msg,showType:'show'});
+				$('#list_data').datagrid('reload');
+				$('#do_sync').linkbutton('enable');
+            },
+            error:function(){
+                $.messager.show({title:'消息提示',msg:"用户同步失败！",showType:'show'});
+				$('#do_sync').linkbutton('enable');
+            }
+        });
+	}
+	
+	//是否关注
+	function gzView(value,row,index){
+		if(value=="1"){
+			return "<img src='../images/icons/check.png' style='vertical-align:middle;'/>";
+		}else{
+			return "<img src='../images/icons/stop.png' style='vertical-align:middle;'/>";
+		}
+	}
+	
+	//分组
+	function groupView(value,row,index){
+		if(value=="未分组"){
+			return "<img src='../images/icons/stop.png' style='vertical-align:middle;'/>";
+		}else{
+			return value;
+		}
+	}
+	
+	//对接
+	function nameView(value,row,index){
+		if(typeof(value)!="undefined"){
+			return "<img src='../images/icons/connect.png' style='vertical-align:middle;'/><br/>"+value;
+		}else{
+			return value;
+		}
+	}
+	
+	//性别
+	function xbView(value,row,index){
+		if(value=="1"){
+			return '男';
+		}else if(value=="2"){
+			return '女';
+		}else{
+			return '未知';
+		}
+	}
+	
+	//头像
+	function txView(value,row,index){
+		if(typeof(value)==='undefined'){ return ""; }
+		if(row.preview==1){
+			return "<img src='"+value+"' style='height:35px;width:35px;float:left;'><div style='position:absolute;padding:0px;'><div style='left:27px;top:10px;position:relative;float:left;' class=''><img src='../images/icons/star.png' style='float:left;'></div>";
+		}
+		return "<img src='"+value+"' style='height:35px;width:35px;float:left;'>";
+	}
+	
+	//地区
+	function dqView(value,row,index){
+		if(typeof(value)==='undefined'){ value= ""; }
+		if(typeof(row.province)==='undefined'){ row.province= ""; }
+		if(typeof(row.city)==='undefined'){ row.city= ""; }
+		return value+"&nbsp;"+row.province+"&nbsp;"+row.city;
+	}
+	
+	//按钮
+	function qxButton(value,row,index){
+		var c1='<a href="javascript:doInfo('+"'"+row.id+"'"+')" style="color:red;">详情</a>';
+		return c1;
+	}
+	
+	//按钮
+	function czButton(value,row,index){
+		var c1='<a href="javascript:doGroup('+"'"+row.groupid+"','"+row.openid+"'"+')"><img title="移动组" src="../images/icons/transfer.png" style="vertical-align:middle;"/></a>';
+		var c2='<a href="javascript:doSetPreview('+"'"+row.id+"'"+')"><img title="设为预览用户" src="../images/icons/award_star_add.png" style="vertical-align:middle;"/></a>';
+		return c1+"&nbsp;&nbsp;"+c2;
+	}
+	
+	//表格
+    $(document).ready(function() {
+    	$('#list_data').datagrid({
+			url:'../weixin/userList',
+			toolbar:"#tb",
+            iconCls:'icon-edit',
+            width: 'auto',
+            height: 'auto',
+            nowrap: false,  
+            striped: true,
+            border: true,
+    		pageSize:15,
+    		showFooter: true,
+    		pageList:[10,15,20],
+            collapsible:false,
+            remoteSort:false,   
+            idField:'id',
+			singleSelect:true,
+			selectOnCheck: true,
+			checkOnSelect: true,
+			autoRowHeight:false,
+            pagination:true,
+            rownumbers:true,
+			fitColumns:true,
+    		loadMsg:'正在加载....',
+            columns:[[
+				{align:'center',field:'headimgurl',width:'35',formatter:txView,title: '头像' },
+				{align:'center',field:'nickname',width:'80',title: '用户昵称' },
+				{align:'center',field:'sex',width:'40',formatter:xbView,title: '性别' },
+				{align:'center',field:'country',formatter:dqView,width:'120',title: '地区' },
+				{align:'center',field:'subscribe',width:'60',formatter:gzView,title: '是否关注' },
+				{align:'center',field:'groupName',formatter:groupView,width:'60',title: '分组' },
+				/* {align:'center',field:'loginName',formatter:nameView,width:'60',title: '网站接入' }, */
+                {align:'center',field:'attenTime_',width:'120',title: '关注时间' },
+                {align:'center',field:'createdTime_',width:'120',title: '创建时间' },
+                {align:'center',field:'cz',width:'120',formatter:czButton,title: '操作' }
+            ]]
+        });
+    })
+</script>
+<div class="easyui-panel" fit="true" title="微信管理 - 用户管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<input class="easyui-searchbox" data-options="prompt:'昵称',searcher:doSearch" style="width:200px"></input>
+		<a id="do_sync" href="javascript:void(0)" class="easyui-linkbutton" plain="false" iconCls="icon-sync" onclick="doSync()" style="float:right;">微信用户同步</a>
+    </div>
+</div>
+
+<div id="dialog_edit" style="display:none;width:350px;height:350px;padding:5px;" title="用户信息" iconCls="icon-edit">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center',border:false" style="">
+                <div><label><b>头像</b>：</label><span id="headimgurl"></span></div>
+                <div><label><b>昵称</b>：</label><span id="nickname"></span></div>
+                <div><label><b>性别</b>：</label><span id="sex"></span></div>
+                <div><label><b>国家</b>：</label><span id="country"></span></div>
+                <div><label><b>省份</b>：</label><span id="province"></span></div>
+                <div><label><b>城市</b>：</label><span id="city"></span></div>
+            </div>
+            <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+            </div>
+        </div>
+</div>
+
+<div id="group_edit" style="display:none;width:300px;height:150px;padding:5px;" title="分组信息" iconCls="icon-edit">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center',border:false" style="padding:10px;">
+				<form id="group_form" method="post" action="">
+				<input type="hidden" id="openid" name="openid" value=""/>
+                <div>
+					<label><b>组名</b>：</label>
+                    <select id="groupid" name="groupid" style="width:200px;" class="easyui-combobox" data-options="required:true" editable="false">
+						#foreach($group in $groupList)
+						<option value="$group.id">$group.name</option>
+						#end
+                    </select>
+				</div>
+				</form>
+            </div>
+            <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+				<a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doGroupSubmit()" style="width:80px">保存</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#group_edit').dialog('close')" style="width:80px">关闭</a>
+            </div>
+        </div>
+</div>
+<div id="preview_dialog" style="display:none;width:300px;height:150px;padding:5px;" title="设置预览用户">
+	<div class="easyui-layout" data-options="fit:true">
+         <div data-options="region:'center',border:false" style="padding:10px;">
+			<form id="preview_form" method="post" action="">
+				<input type="hidden" name="id" value=""/>
+		        <div>您确定要设置该用户为图文消息预览用户吗？</div>
+			</form>
+         </div>
+         <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+		 	<a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doPreviewSubmit()" style="width:80px">确定</a>
+         	<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#preview_dialog').dialog('close')" style="width:80px">关闭</a>
+         </div>
+     </div>
+</div>

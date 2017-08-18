@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>期刊</title>
+    <link rel="stylesheet" href="../js/jquery-weui-build/dist/lib/weui.min.css">
+	<link rel="stylesheet" href="../js/jquery-weui-build/dist/css/jquery-weui.css">
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <style>
+    	*{box-sizing:border-box;}
+    	.weui_cells{margin-top:0;font-size:15px;color:#666;}
+    	.weui_cell{padding:15px;}
+    </style>
+</head>
+
+<body>
+	<div class="detailCover"><img src="../images/wechat/yuankantop-02.jpg" /></div>
+	<div class="detailTitle">${journal.title}</div>
+	<div class="weui_cells weui_cells_access">
+		#foreach($article in $articles)
+        <a class="weui_cell" href="../wechat/articlDetail?id=$!{article.id}">
+          <div class="weui_cell_bd weui_cell_primary">
+            <p>${article.title}</p>
+          </div>
+          <div class="weui_cell_ft">
+          </div>
+        </a>
+        #end
+        <!-- <a class="weui_cell" href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">
+          <div class="weui_cell_bd weui_cell_primary">
+            <p>2015年孔子学院总部工作汇报</p>
+          </div>
+          <div class="weui_cell_ft">
+          </div>
+        </a>
+        <a class="weui_cell" href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">
+          <div class="weui_cell_bd weui_cell_primary">
+            <p>孔子学院总部第五届理事会成员名单</p>
+          </div>
+          <div class="weui_cell_ft">
+          </div>
+        </a>
+        <a class="weui_cell" href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">
+          <div class="weui_cell_bd weui_cell_primary">
+            <p>第十届全球孔子学院大会开幕刘延东出席并致辞</p>
+          </div>
+          <div class="weui_cell_ft">
+          </div>
+        </a>
+        <a class="weui_cell" href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">
+          <div class="weui_cell_bd weui_cell_primary">
+            <p>适应需求 融合发展 为促进世界文明多元多彩贡献力量——在第十届孔子学院大会开幕式上的主旨演讲 刘延东</p>
+          </div>
+          <div class="weui_cell_ft">
+          </div>
+        </a>
+        <a class="weui_cell" href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">
+          <div class="weui_cell_bd weui_cell_primary">
+            <p>对外汉语教学是文化交流的窗口</p>
+          </div>
+          <div class="weui_cell_ft">
+          </div>
+        </a> -->
+      </div>
+</body>
+</html>
+

@@ -1,0 +1,106 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript">
+	//搜索
+	function doSearch(value){
+		$('#list_data').datagrid('load',{
+			name:value
+		});
+		$('#list_data').datagrid('clearSelections');
+	}
+	
+	//详情
+	function doInfo(id){
+		$('#m_form').form('clear');
+		$('#m_form').form('load', '../weixin/userLoad?id='+id);
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+        jQuery.ajax({
+            type:'post',
+            url:'../weixin/userLoad',
+            data:{id:id},
+            dataType:'json',
+            success:function(json){
+                $("#headimgurl").html("<img src='"+json.headimgurl+"' style='width:46px;'/>");
+                $("#nickname").html(json.nickname);
+                $("#sex").html(json.sex);
+                $("#country").html(json.country);
+                $("#province").html(json.province);
+                $("#city").html(json.city);
+            },
+            error:function(){
+			
+            }
+        });
+	}
+	
+	function myformatter(date){
+		var y = date.getFullYear();
+		var m = date.getMonth()+1;
+		var d = date.getDate();
+		return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
+	}
+	
+	function showCover(value,row,index){
+		return "<img src='../"+row.cover+"' height='60' />";
+	}
+	
+	function czButton(value,row,index){
+		return "<a href='javascript:doEdit("+'"'+row.id+'"'+")'>发布到App</a>";
+	}
+	
+	function doEdit(id){
+		window.location.href = "../weixin/pushEditor?id="+id;
+	}
+	
+	//表格
+    $(document).ready(function() {
+    	$('#list_data').datagrid({
+			url:'../weixin/graphicMsgList',
+			//toolbar:"#tb",
+            iconCls:'icon-edit',
+            width: 'auto',
+            height: 'auto',
+            nowrap: false,  
+            striped: true,
+            border: true,
+    		pageSize:15,
+    		showFooter: true,
+    		pageList:[10,15,20],
+            collapsible:false,
+            remoteSort:false,   
+            idField:'id',
+			singleSelect:true,
+			selectOnCheck: true,
+			checkOnSelect: true,
+			autoRowHeight:false,
+            pagination:true,
+            rownumbers:true,
+			fitColumns:true,
+    		loadMsg:'正在加载....',
+            columns:[[
+				{align:'left',field:'title',width:'300',title: '标题' },
+				{align:'center',field:'author',width:'100',title: '作者' },
+				{align:'center',field:'createdTime',width:'140',title: '创建时间',formatter:function(value,row,index){
+                	return myformatter(new Date(row.createdTime));
+                } },
+				{align:'center',field:'cover',width:'160',formatter:showCover,title: '封面' },
+                {align:'center',field:'cz',width:'120',formatter:czButton,title: '操作' }
+            ]]
+        });
+    })
+</script>
+<div class="easyui-panel" fit="true" title="微信管理 - 推送管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <!-- <div id="tb" style="padding:3px">
+		<input class="easyui-searchbox" data-options="prompt:'昵称',searcher:doSearch" style="width:200px"></input>
+		<a id="do_sync" href="javascript:void(0)" class="easyui-linkbutton" plain="false" iconCls="icon-sync" onclick="doSync()" style="float:right;">微信用户同步</a>
+    </div> -->
+</div>

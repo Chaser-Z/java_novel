@@ -1,0 +1,31 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+
+<script src="../js/echarts-2.1.10/build/dist/echarts.js"></script>
+<script type="text/javascript" src="../js/module/weixin.statistics.js?v=$date"></script>
+<div class="easyui-panel" fit="true" title="微信管理 - 统计分析" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="tt_wx" class="easyui-tabs" style="width:100%;"  fit="true" plain="true">
+        <div title="微信用户分布" closable="true" style="padding:10px;">
+			<div id="c1" style="height:500px;padding:10px;"></div>
+        </div>
+        <div title="活跃用户排行" closable="true" style="padding:10px;">
+            <div id="c2" style="height:500px;padding:10px;"></div>
+        </div>
+        <div title="消息时段分析" closable="true" style="padding:10px;">
+            <div id="c3" style="height:500px;padding:10px;"></div>
+        </div>
+        <div title="搜索词语排行" closable="true" style="padding:10px;">
+			<div id="c4" style="height:500px;padding:10px;"></div>
+        </div>
+        <!-- <div title="资源浏览分析" closable="true" style="padding:10px;">
+			<div style="height:500px;padding:10px;">
+    			<div id="c51"  style='height:500px;width:49%;float:left;'></div>
+                <div id="c52"  style='height:500px;width:49%;float:right;'></div>
+			</div >
+        </div> -->
+    </div>
+</div>

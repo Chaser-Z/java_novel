@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+    	window.onload=function(){
+    		var winH =  $(window).height();
+    		var certH = $(".certificate").height();
+    		$(".certificate").css("margin-top",winH/2-certH/2-30);
+    	}
+    </script>
+</head>
+
+<body>
+	<div style="text-align:center; padding:10px 0; font-size:18px; background:#15975B; color:#fff; border-bottom:solid 2px #58b389;">移动应用下载</div>
+	<div class="certificate">
+		<!-- <img src="../images/wechat/creating.jpg" width="100%" /> -->
+		<div class="qrcode"><img src="../images/wechat/app_download.png" width="100%" /></div>
+		<div class="qrcodetext" style="margin-bottom:30px;"><a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.hytc.cim.cimandroid">点击下载</a> 或 扫描二维码下载</div>
+		
+		<!-- <div class="qrcode"><img src="../images/wechat/android_download.png" width="100%" /></div>
+		<div class="qrcodetext">Android <a href="http://url.cn/45Alpm3">点击下载</a> 或 扫描二维码下载</div> -->
+	</div>
+</body>
+</html>
+

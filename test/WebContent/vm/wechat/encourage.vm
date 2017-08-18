@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>遗憾</title>
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script>
+	  	//获取url中的参数
+	    function getUrlParam(name) {
+	        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	        if (r != null) return unescape(r[2]); return null; //返回参数值
+	    }
+	  	$(document).ready(function(){
+	  		var score = getUrlParam('score');
+	  		$("#score").text(score);
+	  		
+	  		var winH = $(window).height();
+	  		$(".cry").css("margin-top",winH/2-180);
+	  	});
+    </script>
+</head>
+
+<body>
+	<div class="cry"><img src="../images/wechat/cry.jpg" /></div>
+	<div class="cry_text">很遗憾，您只答对了<span id="score" style="color:#ff0000;margin:0 3px;"></span>题。</div>
+	<div class="repeat"><input type="button" class="repeatBtn" value="再来一次" onclick="window.location.href='../wechat/quiz'" /></div>
+</body>
+</html>
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <style>
+    	a{color:#507CA9;}
+    </style>
+</head>
+
+<body>
+	<div class="aboutcontent">
+		<h4>《Confucius Institute》 Multi-language Publications</h4>
+		<p>Confucius Institute is a multilingual journal series sponsored by Confucius Institute Headquarters (Hanban). In March 2009, the Chinese-English version of Confucius Institute was first published. Madame Liu Yandong, then Chinese State Councilor and Chairwoman of the Council of the Confucius Institute Headquarters, wrote the foreword for the journal to express her earnest expectation that Confucius Institute would become “a bridge of heart-to-heart communication”a spiritual bridge and an information bridge” between Chinese people and peoples of various countries who love Chinese language and culture.</p>
+		<p>In order to enrich its content, broaden its international perspectives, and meet various demands in different countries for learning Chinese language and understanding Chinese culture, many other bilingual versions of Confucius Institute successively have begun publications since 2010, including Chinese-Spanish, Chinese-French, Chinese-Russian, Chinese-Japanese, Chinese-Korean, Chinese-Thai, Chinese-Arabic, Chinese-German, Chinese-Italian, Chinese-Portuguese, etc. The Editorial Office at the Confucius Institute Headquarters and overseas Confucius Institutes have worked together to produce innovative ideas, enrich the content of the journal and improve its quality. Thanks to their efforts, the 11 bilingual versions of Confucius Institute have become complementary to each other and presented respective regional characteristics, jointly offering a panoramic view of the development of Confucius Institutes all over the world, the international promotion of Chinese language, and the rapid spreading of Chinese culture.</p>
+		<p>The multilingual journal series Confucius Institute will help readers better appreciate Chinese culture and “visit” this nation of great culture.</p>
+		<p>- Releasing authoritative information, exchanging study experience, exploring Chinese language teaching, and introducing Chinese culture.</p>
+		<p>- Rich content, unique perspectives, in-depth interviews, refreshing styles, and diverse columns and articles from various sources.</p>
+		<p>- With a global circulation of about 200,000 per issue, the multilingual journal series Confucius Institute is distributed to over 50 million Chinese language learners in over 130 countries and regions across the world. Its growing influence is shown by the increasing circulation and a wide readership in China and abroad .</p>
+		<p>- Quality is the very essence of the journal, and readers’ participation is the source of its vitality. We have been striving to meet the needs of every reader and highlighting the distinctive culture of each language, in a sincere hope that the journal will guide readers of various countries through the happy process of learning Chinese and give them an insight into the splendid Chinese culture.</p>
+		<h4>Contact Us</h4>
+		<div class="mycell">
+			<div class="cellleft"><label>Address：</label></div>
+			<div class="cellright">129 Deshengmenwai Street, Xicheng District, Beijing,China</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>Post Code：</label></div>
+			<div class="cellright">100088</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>Telephone：</label></div>
+			<div class="cellright">86-10-58595915</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>Fax：</label></div>
+			<div class="cellright">86-10-58595900</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>Email：</label></div>
+			<div class="cellright">kongzi@hanban.org</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>Website：</label></div>
+			<div class="cellright"><a href="http://www.cim.chinesecio.com">http://www.cim.chinesecio.com</a></div>
+		</div>
+	</div>
+</body>
+</html>
+

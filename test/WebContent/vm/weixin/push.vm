@@ -1,0 +1,91 @@
+##最新一期
+<style type="text/css">
+	a{text-decoration:none;}
+	.t_bd {border-collapse:collapse;border:solid #95B8E7;border-width:1px 0 0 1px;width:100%;font-zize:12px;}
+	.t_bd th,table td {border:solid #95B8E7;border-width:0 1px 1px 0;padding:2px;} 
+</style>
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/themes/default/default.css" />
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/plugins/code/prettify.css" />
+<script charset="utf-8" src="../js/kindeditor-4.1.10/kindeditor.js"></script>
+<script charset="utf-8" src="../js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+
+<script type="text/javascript" src="../js/module/weixin.push.js?v=$date"></script>
+<div class="easyui-panel" fit="true" title="微信管理 - 最新一期" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="teacher_data" cellspacing="0" cellpadding="0"></div>
+    <div id="teacher_tb" style="padding:3px">
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="doAdd()">新建</a>
+        <input class="easyui-searchbox" data-options="prompt:'请输入标题查询',menu:'#teacher_mm',searcher:doSearch" style="width:300px;">
+        <div id="teacher_mm">
+            <div data-options="name:' '">全部</div>
+            <div data-options="name:'1'">最新一期</div>
+        </div>
+    </div>
+</div>
+
+<div id="teacher_edit" style="display:none;width:750px;height:580px;padding:5px;" title="教师必看编辑" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false">
+    		<form id="teacher_form" method="post" action="../wechat/lookSave" style="line-height:10px;">
+            	<input id="id" name="id" type="hidden" value="" />
+            	<input id="teacher_cover" name="cover" type="hidden" value="" />
+				<table class="t_bd">
+				<tr>
+    				<td width="width:20%;"><label><b>状态</b>：</label></td>
+    				<td width="width:20%;">
+						<select class="easyui-combobox" name="status" editable="false" data-options="required:true" style="width:70px;">
+							<option value="1">编辑</option>
+							<option value="2">发布</option>
+						</select>
+					</td>
+    				<td width="width:15%;" align="center"><label><b>排序</b>：</label></td>
+    				<td width="width:15%;">
+						<input id="teacher_sequence" name="sequence"  value="" style="width:80px;" class="easyui-numberbox" type="text" data-options="required:true"/>
+					</td>
+    				<td width="width:15%;" align="center"><label><b>分类</b>：</label></td>
+    				<td width="width:15%;">
+						<select id="teacher_type" name="type" class="easyui-combobox" data-options="required:true" editable="false" style="width:100px;"> 
+                            <option value="1">最新一期</option>
+						</select>
+    				</td>
+				</tr>
+				<tr>
+    				<td><label><b>封面</b>：</label></td>
+					<td colspan="5"><div id="teacher_cover_" style="width:320px;height:160px;border: 1px dotted;"></div><a href="javascript:void(0)" class="easyui-linkbutton c4" plain="true" iconCls="icon-add" onclick="showUploadImg()">上传素材</a></td>
+				</tr>
+				<tr>
+    				<td><label><b>标题</b>：</label></td>
+					<td colspan="5"><input id="teacher_title" name="title"  value="" style="width:100%;" class="easyui-textbox" type="text" data-options="required:true"/></td>
+				</tr>
+				<tr>
+    				<td><label><b>内容</b>：</label></td>
+					<td colspan="5"><textarea id="teacher_content" name="content" style="width:100%;height:230px;"></textarea></td>
+				</tr>
+				</table>
+    		</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#teacher_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+
+##上传图片
+<div id="img_info" style="display:none;width:450px;height:180px;" title="上传图片" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true" style="width:350px;height:180px;">
+        <div title="" data-options="region:'center',border:false" style="height:210px;padding-left:16px;">
+    		<form id="img_form" action="../wechat/imgUpload" method="post" enctype="multipart/form-data">
+				<br/><b>说明</b>：封面建议尺寸，900像素 * 500像素。<br/><br/>
+    			<b>文件</b>：<input id="media_img" type="file" name="media"/><br/><br/>
+				<a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doUploadImg()" style="width:80px">上传</a>
+            </form> 
+		</div>
+    </div>
+</div>

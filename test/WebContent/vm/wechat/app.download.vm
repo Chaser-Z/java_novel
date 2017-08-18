@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content=" initial-scale=1.0,user-scalable=no" />
+    <title>应用下载</title>
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var winH = $(window).height();
+			var winW = $(window).width();
+			$(".qrcode").css("margin-top",winH/2-(winW-100)/2);
+		});
+	</script>
+    <style>
+    	body{background:#f4f4f4;}
+    </style>
+</head>
+
+<body>
+	<div class="qrcode">
+		<img src="../images/wechat/code.png" />
+	</div>
+	<div class="qrcodetext">长按识别二维码，下载APP</div>
+</body>
+</html>
+

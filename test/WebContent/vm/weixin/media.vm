@@ -1,0 +1,179 @@
+<style type="text/css">
+	a{text-decoration:none}
+    .c-label{display:inline-block;width:100px;font-weight:bold;}
+</style>
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/themes/default/default.css" />
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/plugins/code/prettify.css" />
+<script charset="utf-8" src="../js/kindeditor-4.1.10/kindeditor.js"></script>
+<script charset="utf-8" src="../js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script type="text/javascript" src="../js/module/weixin.media.js?v=$dateTool" ></script>
+<div class="easyui-panel" fit="true" title="微信管理 - 素材管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="tt" class="easyui-tabs" style="width:100%;height:100%;" fit="true" plain="true" border="0">
+         <div title="图文消息">
+            <div class="easyui-panel" fit="true" title="" plain="true" border="0" style="padding:1px;">
+                <div id="tw_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+                <div id="tw_tb" style="padding:3px">
+            		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-picture" onclick="showTW()">单图文消息</a>
+            		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-picture" onclick="showMore()">多图文消息</a>
+                </div>
+            </div>
+          </div>
+          <div title="素材管理">
+            <div class="easyui-panel" fit="true" title="" plain="true" border="0" style="padding:1px;" tools="#media_tools">
+    			<!-- <div id="media_tools"  border="true">
+    				<div class="easyui-panel" fit="true" title="" plain="true" border="true" style="padding:3px">
+                		<a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-search"  onclick="doSearch('')">全部</a>
+                		<a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-picture" onclick="doSearch('image')">图片</a>
+                		<a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-audio"   onclick="doSearch('voice')">语音</a>
+                		<a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-video"   onclick="doSearch('video')">视频</a>
+                		<a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-picture"   onclick="doSearch('thumb')">缩略图</a>
+        				<a href="javascript:void(0)" class="easyui-linkbutton c1" iconCls="icon-add" onclick="showUpload()">上传图片</a>
+    					<div style="padding:7px;float:right;color:red;">
+    						媒体文件在后台保存时间为3天，即3天后失效。
+                        </div>
+    				</div>
+                </div> -->
+                <div id="tb" style="padding:3px">
+					<a href="javascript:void(0)" class="easyui-linkbutton c1" iconCls="icon-add" onclick="showUpload()">上传图片</a>
+			  	</div>
+    			<div class="easyui-panel" fit="true" title="" plain="true" border="false" style="padding-top:1px;" >
+    				<div id="media_data" cellspacing="0" cellpadding="0" style="margin-top:1px;" border="false"></div>
+                </div>
+            </div>
+          </div>
+    </div> 
+</div> 
+
+##上传媒体文件
+<div id="media_info" style="display:none;width:450px;height:350px;" title="上传文件" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true" style="width:350px;height:250px;">
+        <div title="" data-options="region:'center',border:false" style="height:180px;padding-left:13px;">
+    		<form id="sc_form" action="../weixin/mediaUpload" method="post" enctype="multipart/form-data">
+				<br/>
+				<b>名称</b>：<input type="text" id="name" name="name"/><br/><br/>
+    			<b>类型</b>：<input type="radio" name="type" value="image" />图片<!-- &nbsp;<input type="radio" name="type" value="voice"/>语音&nbsp;<input type="radio" name="type" value="video"/>视频&nbsp;<input type="radio" name="type" value="thumb"/>缩略图 --><br/><br/>
+    			<b>文件</b>：<input type="file" id="media" name="media"/><br/><br/>
+				<a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doUpload()" style="width:80px" id="sc_form_button">上传</a>
+            </form> 
+		</div>
+        <!-- <div title="上传的多媒体文件有格式和大小限制，如下" data-options="region:'south',border:false" style="height:145px;padding-left:13px;">
+                <p>1.图片：1M，支持JPG格式；</p>
+                <p>2.语音：2M，播放长度不超过60s，支持AMR\MP3格式；</p>
+                <p>3.视频：10MB，支持MP4格式；</p>
+                <p>4.缩略图：64KB，支持JPG格式。</p>
+        </div> -->
+    </div>
+</div>
+
+##上传图片
+<div id="img_info" style="display:none;width:450px;height:220px;" title="上传图片" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true" style="width:350px;height:210px;">
+        <div title="" data-options="region:'center',border:false" style="height:210px;padding-left:16px;">
+    		<form id="img_form" action="../weixin/mediaUpload" method="post" enctype="multipart/form-data">
+				<br/><b>说明</b>：不大于1M，支持JPG格式。封面建议尺寸，900像素 * 500像素。<br/><br/>
+				<input type="hidden" id="img_type" name="type" value="image" />
+				<input type="hidden" id="isCover" name="isCover" value="1" />
+    			<b>文件</b>：<input id="media_img" type="file" name="media"/><br/><br/>
+				<a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doUploadImg()" style="width:80px">上传</a>
+            </form> 
+		</div>
+    </div>
+</div>
+
+##单图文消息
+<div id="tw_edit" style="display:none;width:600px;height:550px;padding:5px;" title="单图文消息" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false" style="padding:5px;">
+    		<form id="tw_form" method="post" action="../weixin/graphicSave">
+            	<input type="hidden" id="tw_id" name="id" value="" />
+				<input type="hidden" id="tw_type" name="type" value="" />
+				<input type="hidden" id="tw_cover" name="cover" value="" />
+            	<input type="hidden" id="tw_thumb_media_id" name="thumb_media_id" value="" />
+            	<input type="hidden" id="tw_show_cover_pic" name="show_cover_pic" value="0" />
+				<table style="width:100%;border-collapse:collapse;border:solid thin #9D9D9D;font-size:12px;" border="1">
+				<tr><td style="width:18%;text-align:center;">标　　题：</td><td style="width:82%"><input id="title" name="title" value="" style="width:100%;" class="easyui-textbox" data-options="required:true"/></td></tr>
+				<tr><td style="width:15%;text-align:center;">作　　者：</td><td style="width:85%"><input id="author" name="author" value="" style="width:100%;" class="easyui-textbox" data-options="required:false"/></td></tr>
+				<tr><td style="width:15%;text-align:center;">封　　面：</td>
+					<td style="width:85%">
+						<div style="float:left;height:100px;width:100%;">
+							<div style="float:left;width:50%;height:auto;">
+        				        <a href="javascript:void(0)" class="easyui-linkbutton c4" plain="true" iconCls="icon-add" onclick="showUploadImg()">上传素材</a>
+        				        ##<a href="javascript:void(0)" class="easyui-linkbutton c4" plain="true" iconCls="icon-add" onclick="javascript:doTPK()">从图片库选择</a><br/>
+							</div>
+							<div style="float:right;width:50%;height:auto;">
+								<div style="height:98px;border:0px solid #9D9D9D;text-align:center;background-color:#ECECEC;" id="tw_fm">
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr><td style="width:15%;text-align:center;">摘　　要：</td><td style="width:85%"><input id="digest" name="digest" value="" style="width:100%;height:60px;" class="easyui-textbox" data-options="required:false,multiline:true"/></td></tr>
+				<tr><td style="width:15%;text-align:center;">正　　文：</td><td style="width:85%"><textarea id="content" name="content" style="width:100%;height:200px;"></textarea></td></tr>
+				<tr><td style="width:15%;text-align:center;">原文链接：</td><td style="width:85%"><input id="content_source_url" name="content_source_url" value="" style="width:100%;" class="easyui-textbox" data-options="required:false"/></td></tr>
+				</table>
+    		</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:3px 0 0;height:30px;">
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmitTW()" style="width:80px">提交</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#tw_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+
+##多图文消息
+<div id="more_edit" style="display:none;width:750px;height:550px;padding:5px;" title="多图文消息" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'west',border:true" split="false" title="" style="width:200px;">
+            <div id="more_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+            <div id="more_tb" style="padding:3px">
+        		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="addMore()">新增</a>
+            </div>
+			<input type="hidden" id="temp_id" name="id" value="" />
+		</div>  
+        <div data-options="region:'center',border:true" style="padding:5px;">
+    		<form id="more_form" method="post" action="../weixin/graphicMoreSave">
+            	<input type="hidden" id="more_id" name="id" value="" />
+            	<input type="hidden" id="more_msgid" name="msgid" value="" />
+				<input type="hidden" id="more_refer" name="refer" value="" />
+				<input type="hidden" id="more_type" name="type" value="" />
+				<input type="hidden" id="more_cover" name="cover" value="" />
+            	<input type="hidden" id="more_thumb_media_id" name="thumb_media_id" value="" />
+            	<input type="hidden" id="more_show_cover_pic" name="show_cover_pic" value="1" />
+				<table style="width:100%;border-collapse:collapse;border:solid thin #9D9D9D;font-size:12px;" border="1">
+				<tr><td style="width:18%;text-align:center;">标　　题：</td><td style="width:82%"><input id="more_title" name="title" value="" style="width:100%;" class="easyui-textbox" data-options="required:true"/></td></tr>
+				<tr><td style="width:15%;text-align:center;">作　　者：</td><td style="width:85%"><input id="more_author" name="author" value="" style="width:100%;" class="easyui-textbox" data-options="required:false"/></td></tr>
+				<tr><td style="width:15%;text-align:center;">封　　面：</td>
+					<td style="width:85%">
+						<div style="float:left;height:100px;width:100%;">
+							<div style="float:left;width:40%;height:auto;">
+        				        <a href="javascript:void(0)" class="easyui-linkbutton c4" plain="true" iconCls="icon-add" onclick="showUploadImg()">上传素材</a>
+        				        ##<a href="javascript:void(0)" class="easyui-linkbutton c4" plain="true" iconCls="icon-add" onclick="javascript:doTPK()">从图片库选择</a><br/>
+							</div>
+							<div style="float:right;width:230px;height:auto;">
+								<div style="height:98px;border:0px solid #9D9D9D;text-align:center;background-color:#ECECEC;" id="more_fm">
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr><td style="width:15%;text-align:center;">摘　　要：</td><td style="width:85%"><input id="more_digest" name="digest" value="" style="width:100%;height:60px;" class="easyui-textbox" data-options="required:false,multiline:true"/></td></tr>
+				<tr><td style="width:15%;text-align:center;">正　　文：</td><td style="width:85%"><textarea id="more_content" name="content" style="width:100%;height:200px;"></textarea></td></tr>
+				<tr><td style="width:15%;text-align:center;">原文链接：</td><td style="width:85%"><input id="more_content_source_url" name="content_source_url" value="" style="width:100%;" class="easyui-textbox" data-options="required:false"/></td></tr>
+				</table>
+    		</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:3px 0 0;height:30px;">
+            <a class="easyui-linkbutton c1" data-options="iconCls:'icon-save'" href="javascript:void(0)" onclick="javascript:doSubmitMore('save')" style="width:80px">保存</a>
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmitMore('submit')" style="width:120px">保存并提交</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#more_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+

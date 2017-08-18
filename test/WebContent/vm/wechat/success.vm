@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>成功加入</title>
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var winH = $(window).height();
+			$(".success").css("top",winH/2-100);
+		});
+	</script>
+    <style>
+    	html{height:100%;}
+    	body{height:100%; background:url(../images/wechat/club-bg4.jpg) no-repeat; background-size:100% 100%;}    	
+    </style>
+</head>
+
+<body>
+	<div class="success">
+		<i></i>
+		<div>您已成功加入读者俱乐部！<br />访问我们的网站了解更多<br/>
+			<a href="http://www.cim.chinesecio.com">http://www.cim.chinesecio.com</a>
+		</div>
+	</div>
+</body>
+</html>
+

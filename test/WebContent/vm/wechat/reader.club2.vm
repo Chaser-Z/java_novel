@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>读者俱乐部</title>
+    <link rel="stylesheet" href="../js/jquery-weui-build/dist/lib/weui.min.css">
+	<link rel="stylesheet" href="../js/jquery-weui-build/dist/css/jquery-weui.css">
+    <link rel="stylesheet" href="../js/slide-master/demo1/demo.css" />
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <style>
+    	*{box-sizing:border-box;}
+    </style>
+</head>
+
+<body>
+	<div class="slide_div">
+	    <div class="slide_page_1 slide_page">
+	    	<div class="readerClubTop"><img src="../images/wechat/reader-club-top.jpg" width="100%" /></div>
+	    	<!-- <div class="ci-club-brand"><img src="../images/wechat/club-top-text.png" width="100%" /></div> -->
+	    	<div class="club-introduce">
+	    		<div class="club_intro-bt">
+	    			<div class="zh">读者俱乐部</div>
+	    			<div class="en">Reader's Club Introduction</div>
+	    		</div>
+	    		<div class="club-intro-content">
+	    			<p>《孔子学院》是孔子学院总部/国家汉办主办的系列出版物。2009年3月创刊，11个语种，面向全球逾130多个国家和地区、超5000万汉语学习者发行，每期发行20万册左右。2016年，《孔子学院》荣获“中国最美期刊”称号。</p>
+					<p>办刊质量是立足之本，读者参与是活力之源。期刊努力贴近每一位读者的需求，形成各语种本土化特色，真诚希望《孔子学院》成为引领各国朋友徜徉快乐汉语世界，感受灿烂中国文化的精品读物。</p>
+	    		</div>
+	    	</div>
+	    </div>
+	    <div class="slide_page_2 slide_page">
+	    	<!-- <div class="club-introduce-top" style="margin-bottom:0;">
+	    		<img src="../images/wechat/club-introduce-top.png" width="100%" />
+	    	</div> -->
+	    	<div class="readerClubTop"><img src="../images/wechat/reader-club-top.jpg" width="100%" /></div>
+	    	<div class="club-form">
+	    		<div class="reg-bt">请注册</div>
+	    		<div class="club-input"><input type="text" name="loginname" placeholder="登录名" /></div>
+	    		<div class="club-input"><input type="password" name="password" placeholder="密码" /></div>
+	    		<div class="club-input"><input type="text" name="email" placeholder="邮箱" /></div>
+	    		<div class="club-input"><input type="text" name="addr" placeholder="地址" /></div>
+	    		<div class="club-input"><input type="text" id="country" name="country" placeholder="国籍" /></div>
+	    		<div class="club_submit"><input type="button" id="submitBtn" value="提交" /></div>
+	    	</div>
+	    </div>
+	</div>
+</body>
+<script src="../js/slide-master/zepto.js"></script>
+<script src="../js/slide-master/demo1/demo.js"></script>
+<script src="../js/jquery-weui-build/dist/js/jquery-weui.js"></script>
+<script>
+   	$(document).ready(function(){
+   		var winH = $(window).height();
+   		var winW = $(window).width();
+   		var formW = $(".formarea").width();
+   		//$(".slide_page_1").css("padding-top",winH/2-230);
+   		$(".club-form").css("margin-left",-$(".club-form").width()/2);
+   		if(winH<=480){
+   			//$(".slide_page_1").css("padding-top",10);
+   			$(".ci-brand").css("margin","0 18px 3px 18px");
+   			//$(".club-introduce").css("margin","0 5%");
+   			$(".club-intro-content p").css({"font-size":"12px","line-height":"18px"});
+   			$(".club_intro-bt").css("margin-bottom","5px");
+   			$(".club_intro-bt .zh").css({"font-size":"15px","line-height":"16px"});
+   			$(".club_intro-bt .en").css({"font-size":"13px","line-height":"14px"});
+   			$(".club-input input").css({"height":"26px","line-height":"26px","margin-bottom":"3px"});
+   			$(".club-form").css({"padding":"60px 30px 40px 30px"});
+   		}
+   		$(".formarea").css("left",winW/2-formW/2);
+   		$(".formarea").css("bottom",20);
+   		
+   		var oHeight = $(document).height(); //浏览器当前的高度
+		$(window).resize(function(){
+			if($(document).height() < oHeight){
+		   	    $(".club-introduce").hide();
+		   	 	$(".slide_page").css("background-size","100% 100%");
+		   	 	$(".slide_page_2").css("min-height","100%");
+	   	   	}else{
+	   	   		$(".slide_page_2").removeAttr("style");
+	   	   		$(".club-introduce").show();
+	   	    }			
+		});
+   		
+   		$.ajax({
+   			url:"../wechat/loadCountrys",
+   			type:"post",
+   			async:false,
+   			success:function(result){
+   				$("#country").select({
+   			        title: "选择国籍",
+   			        /* items: [{title:"阿富汗",value:"1"},{title:"阿尔巴尼亚",value:"2"},{title:"阿尔及利亚",value:"3"},{title:"安道尔",value:"4"},{title:"安哥拉",value:"5"},{title:"安提瓜和巴布达",value:"6"},{title:"阿根廷",value:"7"},{title:"亚美尼亚",value:"8"},{title:"澳大利亚",value:"9"},{title:"奥地利",value:"10"},{title:"阿塞拜疆",value:"11"},{title:"巴哈马",value:"12"},{title:"巴林",value:"13"},{title:"孟加拉国",value:"14"},{title:"巴巴多斯",value:"15"},{title:"白俄罗斯",value:"16"},{title:"比利时",value:"17"},{title:"伯利兹",value:"18"},{title:"贝宁",value:"19"},{title:"不丹",value:"20"},{title:"玻利维亚",value:"21"},{title:"波黑",value:"22"},{title:"博茨瓦纳",value:"23"},{title:"巴西",value:"24"},{title:"文莱",value:"25"},{title:"保加利亚",value:"26"},{title:"布基纳法索",value:"27"},{title:"布隆迪",value:"28"},{title:"柬埔寨",value:"29"},{title:"喀麦隆",value:"30"},{title:"加拿大",value:"31"},{title:"佛得角",value:"32"},{title:"中非共和国",value:"33"},{title:"乍得",value:"34"},{title:"智利",value:"35"},{title:"中国",value:"36"},{title:"哥伦比亚",value:"37"},{title:"科摩罗",value:"38"},{title:"刚果共和国",value:"39"},{title:"刚果民主共和国",value:"40"},{title:"哥斯达黎加",value:"41"},{title:"科特迪瓦",value:"42"},{title:"克罗地亚",value:"43"},{title:"古巴",value:"44"},{title:"塞浦路斯",value:"45"},{title:"捷克",value:"46"},{title:"丹麦",value:"47"},{title:"吉布提",value:"48"},{title:"多米尼克",value:"49"},{title:"多米尼加",value:"50"},{title:"厄瓜多尔",value:"51"},{title:"埃及",value:"52"},{title:"萨尔瓦多",value:"53"},{title:"赤道几内亚",value:"54"},{title:"厄立特里亚",value:"55"},{title:"爱沙尼亚",value:"56"},{title:"埃塞俄比亚",value:"57"},{title:"斐济",value:"58"},{title:"芬兰",value:"59"},{title:"法国",value:"60"},{title:"加蓬",value:"61"},{title:"冈比亚",value:"62"},{title:"格鲁吉亚",value:"63"},{title:"德国",value:"64"},{title:"加纳",value:"65"},{title:"希腊",value:"66"},{title:"格林纳达",value:"67"},{title:"危地马拉",value:"68"},{title:"几内亚",value:"69"},{title:"几内亚比绍",value:"70"},{title:"圭亚那",value:"71"},{title:"海地",value:"72"},{title:"洪都拉斯",value:"73"},{title:"匈牙利",value:"74"},{title:"冰岛",value:"75"},{title:"印度",value:"76"},{title:"印度尼西亚",value:"77"},{title:"伊朗",value:"78"},{title:"伊拉克",value:"79"},{title:"爱尔兰",value:"80"},{title:"以色列",value:"81"},{title:"意大利",value:"82"},{title:"牙买加",value:"83"},{title:"日本",value:"84"},{title:"约旦",value:"85"},{title:"哈萨克斯坦",value:"86"},{title:"肯尼亚",value:"87"},{title:"基里巴斯",value:"88"},{title:"韩国",value:"89"},{title:"科威特",value:"90"},{title:"吉尔吉斯斯坦",value:"91"},{title:"老挝",value:"92"},{title:"拉脱维亚",value:"93"},{title:"黎巴嫩",value:"94"},{title:"莱索托",value:"95"},{title:"利比里亚",value:"96"},{title:"利比亚",value:"97"},{title:"列支敦士登",value:"98"},{title:"立陶宛",value:"99"},{title:"卢森堡",value:"100"},{title:"马其顿",value:"101"},{title:"马达加斯加",value:"102"},{title:"马拉维",value:"103"},{title:"马来西亚",value:"104"},{title:"马尔代夫",value:"105"},{title:"马里",value:"106"},{title:"马耳他",value:"107"},{title:"马绍尔群岛",value:"108"},{title:"毛里塔尼亚",value:"109"},{title:"毛里求斯",value:"110"},{title:"墨西哥",value:"111"},{title:"密克罗尼西亚联邦",value:"112"},{title:"摩尔多瓦",value:"113"},{title:"摩纳哥",value:"114"},{title:"蒙古国",value:"115"},{title:"黑山",value:"116"},{title:"摩洛哥",value:"117"},{title:"莫桑比克",value:"118"},{title:"缅甸",value:"119"},{title:"纳米比亚",value:"120"},{title:"瑙鲁",value:"121"},{title:"尼泊尔",value:"122"},{title:"荷兰",value:"123"},{title:"新西兰",value:"124"},{title:"尼加拉瓜",value:"125"},{title:"尼日尔",value:"126"},{title:"尼日利亚",value:"127"},{title:"挪威",value:"128"},{title:"阿曼",value:"129"},{title:"巴基斯坦",value:"130"},{title:"帕劳",value:"131"},{title:"巴拿马",value:"132"},{title:"巴布亚新几内亚",value:"133"},{title:"巴拉圭",value:"134"},{title:"朝鲜",value:"135"},{title:"秘鲁",value:"136"},{title:"菲律宾",value:"137"},{title:"波兰",value:"138"},{title:"葡萄牙",value:"139"},{title:"卡塔尔",value:"140"},{title:"罗马尼亚",value:"141"},{title:"俄罗斯",value:"142"},{title:"卢旺达",value:"143"},{title:"圣基茨和尼维斯",value:"144"},{title:"圣卢西亚",value:"145"},{title:"圣文森特和格林纳丁斯",value:"146"},{title:"萨摩亚",value:"147"},{title:"圣马力诺",value:"148"},{title:"圣多美和普林西比",value:"149"},{title:"沙特阿拉伯",value:"150"},{title:"塞内加尔",value:"151"},{title:"塞尔维亚",value:"152"},{title:"塞舌尔",value:"153"},{title:"塞拉利昂",value:"154"},{title:"新加坡",value:"155"},{title:"斯洛伐克",value:"156"},{title:"斯洛文尼亚",value:"157"},{title:"所罗门群岛",value:"158"},{title:"索马里",value:"159"},{title:"南非",value:"160"},{title:"南苏丹",value:"161"},{title:"西班牙",value:"162"},{title:"斯里兰卡",value:"163"},{title:"苏丹",value:"164"},{title:"苏里南",value:"165"},{title:"斯威士兰",value:"166"},{title:"瑞典",value:"167"},{title:"瑞士",value:"168"},{title:"叙利亚",value:"169"},{title:"塔吉克斯坦",value:"170"},{title:"坦桑尼亚",value:"171"},{title:"泰国",value:"172"},{title:"东帝汶",value:"173"},{title:"多哥",value:"174"},{title:"汤加",value:"175"},{title:"特立尼达和多巴哥",value:"176"},{title:"突尼斯",value:"177"},{title:"土耳其",value:"178"},{title:"土库曼斯坦",value:"179"},{title:"图瓦卢",value:"180"},{title:"乌干达",value:"181"},{title:"乌克兰",value:"182"},{title:"阿联酋",value:"183"},{title:"英国",value:"184"},{title:"美国",value:"185"},{title:"乌拉圭",value:"186"},{title:"乌兹别克斯坦",value:"187"},{title:"瓦努阿图",value:"188"},{title:"梵蒂冈",value:"189"},{title:"委内瑞拉",value:"190"},{title:"越南",value:"191"},{title:"也门",value:"192"},{title:"赞比亚",value:"193"},{title:"津巴布韦",value:"194"}] */
+   			        items: eval("("+result+")")
+   			    });
+   			}
+   		});
+		//注册提交
+		$("#submitBtn").click(function(){
+			var loginname = $("input[name='loginname']").val();
+			var password = $("input[name='password']").val();
+			var email = $("input[name='email']").val();
+			var addr = $("input[name='addr']").val();
+			var country = $("input[name='country']").attr("data-values");
+			if(!loginname) $.toptip('请输入登录名');
+			if(!password) $.toptip('请输入密码');
+			if(!addr) $.toptip('请输入地址');
+			if(!email || !/\w+[@]{1}\w+[.]\w+/.test(email)) $.toptip('请输入邮箱');
+			if(!country) $.toptip('请选择国籍');
+			$.ajax({
+				url:"../wechat/register",
+				data:"loginname="+loginname+"&password="+password+"&email="+email+"&addr="+addr+"&country="+country,
+				type:"post",
+				success:function(result){
+					var result = eval("("+result+")");
+					if(result.errcode==0){
+						$.toast("注册成功");
+						$(".club-form").html("恭喜您！<br>您已是读者俱乐部的一员了<br><a href='http://www.cim.chinesecio.com'>www.cim.chinesecio.com</a>");
+						$(".club-form").css({"color":"#fff","text-align":"center"});
+						$(".club-form a").css("color","#0066cc");
+					}else{
+						$.toast(result.errmsg,"forbidden");
+					}
+				}
+			});
+		});
+   	});
+</script>
+</html>
+

@@ -1,0 +1,185 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript">
+	//搜索
+	function doSearch(value){
+		$('#list_data').datagrid('load',{
+			name:value
+		});
+		$('#list_data').datagrid('clearSelections');
+	}
+	
+	//新建
+	function doAdd(type){
+		$('#m_form').form('clear');
+		
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+	}
+	
+	//编辑
+	function doEdit(id,name){
+		$('#m_form').form('clear');
+		$('#id').val(id);
+		$('#name').textbox("setValue",name);
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+	}
+	
+	//同步
+	function doSync(id){
+		$('#do_sync').linkbutton('disable');
+    	jQuery.ajax({
+        	type:　"post",
+        	dataType: 'json',
+        	url:　'../weixin/groupSync', 
+        	data: {
+    			id:id
+    		},
+    		error:　function(data){
+				jQuery.messager.show({title:'消息提示',msg:"<span style='color:red;'>分组同步异常！</span>",showType:'show'});
+				$('#do_sync').linkbutton('enable');
+    		},
+        	success:　function(data){
+				if(typeof(data.errcode)!='undefined'){
+					jQuery.messager.show({title:'消息提示',msg:"<span style='color:red;'>"+data.errlabel+"！</span>",showType:'show'});
+				}else{
+					jQuery.messager.show({title:'消息提示',msg:"<span style='color:green;'>分组同步成功！</span>",showType:'show'});
+					$('#list_data').datagrid('reload');
+				}
+				$('#do_sync').linkbutton('enable');
+    		}
+    	});
+	}
+	
+	//提交
+	function doSubmit(){
+        $('#m_form').form('submit', {
+            url:'../weixin/groupSave',
+            onSubmit: function(param){
+        		return $(this).form('enableValidation').form('validate');
+            },
+            success:function(data){
+			   var data = eval('(' + data + ')');
+               if(data.group!=''){
+					$('#dialog_edit').dialog('close');
+					var row  = $('#list_data').datagrid('getSelected');
+					if(row){
+						var index =$('#list_data').datagrid('getRowIndex',row);
+                        $('#list_data').datagrid('updateRow',{
+                        	index: index,
+                        	row: {
+                        		name: $("#name").val(),
+                        	}
+                        });
+					}
+					doSync();
+				}else{
+					alert("error!");
+				}
+            }
+        });
+	}
+	
+	//删除
+	function doDel(id){
+        $.messager.confirm('消息提示', '确定删除?', function(r){
+            if(r){
+        		jQuery.ajax({
+        	    	type:　"post",
+        	    	dataType: 'json',
+        	    	url:　'../account/groupDel', 
+        	    	data: {
+        				id:id
+        			},
+        			error:　function(data){
+        				alert('error');
+        			},
+        	    	success:　function(data){
+                        $('#list_data').datagrid('reload');
+        			}
+           		});
+    		}
+    	});
+	}
+	
+	//是否关注
+	function gzView(value,row,index){
+		if(value=="1"){
+			return '是';
+		}else{
+			return '<span style="color:red;">否</span>';
+		}
+	}
+	
+	//按钮
+	function qxButton(value,row,index){
+		var c1='<a href="javascript:doEdit('+"'"+row.id+"','"+row.name+"'"+')"><img title="编辑" src="../images/icons/edit.png" style="vertical-align:middle;"/></a>';
+		if(row.id>=100)
+			return c1;
+		else 
+			return '';
+	}
+	
+	//表格
+    $(document).ready(function() {
+    	$('#list_data').datagrid({
+			url:'../weixin/groupList',
+			toolbar:"#tb",
+            iconCls:'icon-edit',
+            width: 'auto',
+            height: 'auto',
+            nowrap: false,  
+            striped: true,
+            border: true,
+    		pageSize:20,
+    		showFooter: true,
+    		pageList:[10,15,20],
+            collapsible:false,
+            remoteSort:false,   
+            idField:'id',
+			singleSelect:true,
+			selectOnCheck: true,
+			checkOnSelect: true,
+			autoRowHeight:false,
+            pagination:true,
+            rownumbers:true,
+			fitColumns:true,
+    		loadMsg:'正在加载....',
+            columns:[[
+				{align:'center',field:'name',width:'200',title: '组名' },
+				{align:'center',field:'count',width:'80',title: '人数' },
+                {align:'center',field:'operate',width:"80",formatter:qxButton,title: '操作' }
+            ]]
+        });
+    })
+</script>
+<div class="easyui-panel" fit="true" title="微信管理 - 分组管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="doAdd()">新建分组</a>
+		<a id="do_sync" href="javascript:void(0)" class="easyui-linkbutton" plain="false" iconCls="icon-sync" onclick="doSync()" style="float:right;">微信分组同步</a>
+    </div>
+</div>
+
+<div id="dialog_edit" style="display:none;width:350px;height:140px;padding:5px;" title="编辑分组" iconCls="icon-edit">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center',border:true">
+        		<form id="m_form" method="post" style="padding:10px;">
+                	<input id="id" name="id" type="hidden" value="" />
+                    <label><b>名称</b>：</label><input id="name" name="name" value="" style="width:80%;" class="easyui-textbox" type="text" data-options="required:true"/>
+        		</form>
+            </div>
+            <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+                <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px">保存</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+            </div>
+        </div>
+</div>

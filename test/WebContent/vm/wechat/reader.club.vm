@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>读者俱乐部</title>
+    <link rel="stylesheet" href="../js/slide-master/demo1/demo.css" />
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <style>
+    	*{box-sizing:border-box;}
+    	#add1{position:absolute; top:calc(100%/3 + 1%); left:50%; margin-left:1%;}
+    	#add2{position:absolute; top:calc(100%/3 + 2.5%); left:50%; margin-left:-20%;}
+    	#add3{position:absolute; top:calc(100%/3 + 4.6%); left:50%; margin-left:2%}
+    	#plus1{position:absolute; top:calc(100%/3*2); left:50%; margin-left:-8%;}
+    	#plus2{position:absolute; top:calc(100%/3*2 + 1.8%); left:50%; margin-left:-16%;}
+    	#plus3{position:absolute; top:calc(100%/3*2 + 1.8%); left:50%;}
+    </style>
+</head>
+
+<body>
+	<div class="slide_div">
+	    <div class="slide_page_1 slide_page" style="padding-top:20px">
+	    	<div class="ci-brand"><img src="../images/wechat/club-top-brand.jpg" width="100%" /></div>
+	    	<div class="ci-club-brand"><img src="../images/wechat/club-top-text.png" width="100%" /></div>
+	    	<!-- <div class="ci-club-title">
+	    		<div class="ci-club-titlezh">孔子学院杂志读者俱乐部</div>
+	    		<div class="ci-club-titleen">Confucius Institute Magazine<br/>Reader's Club</div>
+	    	</div> -->
+	    	<div class="club-journal">
+	    		<ul>
+	    			<li><img src="../images/journal_cover_small/EN201604.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/GE201601.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/FR201601.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/RU201506.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/IT201601.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/SP201501.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/PO201601.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/JA201601.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/KO201501.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/AR201601.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/TH201501.jpg" /></li>
+	    			<li><img src="../images/journal_cover_small/year2015.jpg" /></li>
+	    		</ul>
+	    	</div>
+	    </div>
+	    <div class="slide_page_2 slide_page">
+	    	<!-- <div class="animation">
+		    	<img id="add1" src="../images/wechat/add.gif" width="20%" />
+		    	<img id="add2" src="../images/wechat/add.gif" width="25%" />
+		    	<img id="add3" src="../images/wechat/add.gif" width="18%" />
+	    	</div>
+	    	<div class="club-introduce-bt">读者俱乐部介绍<br/><span>Reader's Club Introduction</span></div>
+	    	<div class="club-introduce">了解最新的活动<br/>收藏最喜欢的文章<br/>发布新博客</div> -->
+	    	<div class="club-introduce-top">
+	    		<img src="../images/wechat/club-introduce-top.png" width="100%" />
+	    	</div>
+	    	<div class="club-introduce">
+	    		<div class="club_intro-bt">
+	    			<div class="zh">读者俱乐部</div>
+	    			<div class="en">Reader's Club Introduction</div>
+	    		</div>
+	    		<div class="club-intro-content">
+	    			<p>《孔子学院》是孔子学院总部/国家汉办主办的系列出版物。2009年3月创刊，11个语种，面向全球逾130多个国家和地区、超5000万汉语学习者发行，每期发行20万册左右。2016年，《孔子学院》荣获“中国最美期刊”称号。</p>
+					<p>办刊质量是立足之本，读者参与是活力之源。期刊努力贴近每一位读者的需求，形成各语种本土化特色，真诚希望《孔子学院》成为引领各国朋友徜徉快乐汉语世界，感受灿烂中国文化的精品读物。</p>
+	    		</div>
+	    	</div>
+	    </div>
+	    <!-- <div class="slide_page_3 slide_page">
+	    	<div class="club-introduce-bt">为什么加入读者俱乐部<br/><span>Why join the readers' club?</span></div>
+	    	<div class="club-introduce2"><p>通过阅读，开阔视野，强大精神；通过结交朋友，让每一个人都感受友爱；通过学习写作和思考，培养自强和健康的和身心。</p></div>
+	    </div> -->
+	    <div class="slide_page_3 slide_page" style="position:relative;">
+	    	<!-- <div class="animation">
+		    	<img id="plus1" src="../images/wechat/plus.gif" width="20%" />
+		    	<img id="plus2" src="../images/wechat/plus.gif" width="20%" />
+		    	<img id="plus3" src="../images/wechat/plus.gif" width="17%" />
+	    	</div>
+	    	<div class="formarea">
+		    	<div class="form-text"><span>欢迎加入读者俱乐部！</span><br/>现在输入你的个人信息吧</div>
+		    	<div class="form">
+		    		<form method="post">
+		    			<div><input type="text" name="realname" class="form-input" placeholder="姓名（必填）" /></div>
+		    			<div><input type="text" name="password" class="form-input" placeholder="密码" /></div>
+		    			<div><input type="text" name="email" class="form-input" placeholder="邮箱" /></div>
+		    			<div><input type="text" name="address" class="form-input" placeholder="地址" /></div>
+		    			<div><input type="text" name="country" class="form-input" placeholder="国籍" /></div>
+		    			<div style="margin-top:20px;margin-bottom:0;"><input type="button" value="提交" class="form-btn" /></div>
+		    		</form>
+		    	</div>
+	    	</div> -->
+	    	<div class="club-introduce-top" style="margin-bottom:0;">
+	    		<img src="../images/wechat/club-introduce-top.png" width="100%" />
+	    	</div>
+	    	<!-- <div class="board"><img src="../images/wechat/club-reg-bg.png" width="100%" /></div> -->
+	    	<div class="club-form">
+	    		<div class="reg-bt">请注册</div>
+	    		<div class="club-input"><input type="text" name="姓名" placeholder="姓名" /></div>
+	    		<div class="club-input"><input type="text" name="密码" placeholder="密码" /></div>
+	    		<div class="club-input"><input type="text" name="邮箱" placeholder="邮箱" /></div>
+	    		<div class="club-input"><input type="text" name="地址" placeholder="地址" /></div>
+	    		<div class="club-input"><input type="text" name="国籍" placeholder="国籍" /></div>
+	    		<div class="club_submit"><input type="button" value="提交" /></div>
+	    	</div>
+	    </div>
+	</div>
+</body>
+<script src="../js/slide-master/zepto.js"></script>
+<script src="../js/slide-master/demo1/demo.js"></script>
+<script>
+   	$(document).ready(function(){
+   		var winH = $(window).height();
+   		var winW = $(window).width();
+   		var formW = $(".formarea").width();
+   		//$(".slide_page_1").css("padding-top",winH/2-230);
+   		$(".club-form").css("margin-left",-$(".club-form").width()/2);
+   		if(winH<=480){
+   			$(".slide_page_1").css("padding-top",10);
+   			$(".ci-brand").css("margin","0 18px 3px 18px");
+   			$(".club-introduce").css("margin","0 3%");
+   			$(".club-intro-content p").css({"font-size":"12px","line-height":"18px"});
+   			$(".club_intro-bt").css("margin-bottom","5px");
+   			$(".club_intro-bt .zh").css({"font-size":"15px","line-height":"16px"});
+   			$(".club_intro-bt .en").css({"font-size":"13px","line-height":"14px"});
+   			$(".club-input input").css({"height":"23px","line-height":"23px"});
+   			/* $(".ci-club-titlezh").css("margin-bottom",5);
+   			$(".ci-club-titlezh").css("font-size",16);
+   			$(".ci-club-titleen").css("font-size",13);
+   			$(".ci-club-titleen").css("line-height","16px"); */
+   		}
+   		//$(".slide_page_2").css("padding-top",winH/2-135);
+   		//$(".slide_page_3").css("padding-top",winH/2-150);
+   		$(".formarea").css("left",winW/2-formW/2);
+   		$(".formarea").css("bottom",20);
+   		$(document).keyup(function(){
+   			if($("input[name='realname']").val()!=''){
+   				//$(".form-btn").css("background","#eb8233");
+   				$(".form-btn").addClass("abel");
+   			}else{
+   				$(".form-btn").removeClass("abel");
+   			}
+   		});
+   		$(".form-btn").click(function(){
+   			if($(this).hasClass("abel")){
+   				window.location.href="../wechat/success";
+   			}else{
+   				return;
+   			}
+   		});
+   		var oHeight = $(document).height(); //浏览器当前的高度
+   	   
+		$(window).resize(function(){
+			if($(document).height() < oHeight){
+		   	    $(".club-introduce").hide();
+		   	 	$(".slide_page").css("background-size","100% 100%");
+	   	   	}else{
+	   	   		$(".club-introduce").show();
+	   	    }			
+		});
+   	});
+</script>
+</html>
+

@@ -1,0 +1,46 @@
+##常见问题
+<style type="text/css">
+	a{text-decoration:none}
+	.t_bd {border-collapse:collapse;border:solid #95B8E7;border-width:1px 0 0 1px;width:100%;font-zize:12px;}
+	.t_bd th,table td {border:solid #95B8E7;border-width:0 1px 1px 0;padding:2px;} 
+</style>
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/themes/default/default.css" />
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/plugins/code/prettify.css" />
+<script charset="utf-8" src="../js/kindeditor-4.1.10/kindeditor.js"></script>
+<script charset="utf-8" src="../js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+
+<script type="text/javascript" src="../js/module/weixin.faq.js?v=$dateTool" ></script>
+<div class="easyui-panel" fit="true" title="微信管理 - 常见问题" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+		<div title="常见问题">
+            <div id="faq_data" cellspacing="0" cellpadding="0"></div>
+            <div id="faq_tb" style="padding:3px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="doAdd()">新建</a>
+				 <input class="easyui-searchbox" data-options="prompt:'请输入问题查询',searcher:doSearch" style="width:300px;">
+            </div>
+        </div>
+</div>
+
+<div id="faq_edit" style="display:none;width:500px;height:330px;padding:5px;" title="常见问题编辑" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false">
+    		<form id="faq_form" method="post" action="../wechat/faqSave" style="line-height:10px;">
+            	<input id="id" name="id" type="hidden" value="" />
+				<table class="t_bd">
+                    <tr><td><label ><b>问题</b>：</label></td><td><input id="faq_question" name="question"  value="" style="width:100%;" class="easyui-textbox" data-options="required:true"/></td></tr>
+                    <tr><td><label ><b>答案</b>：</label></td><td><input id="faq_answer" name="answer"  value="" class="easyui-textbox" data-options="required:true,multiline:true" style="width:100%;height:200px"/></td></tr>
+				</table>
+			</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#faq_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>

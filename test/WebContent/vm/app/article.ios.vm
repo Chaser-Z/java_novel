@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content=" initial-scale=1.0,user-scalable=no" />
+    <title>文章详情</title>
+    <link href="../js/swipebox/css/swipebox.css" rel="stylesheet" />
+    <link href="../css/wechat.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script>
+    	window.onload = function(){
+    		$(".articleContent img").each(function(){
+    			var imgSrc = $(this).attr("src");
+    			$(this).wrap("<a rel='gallery-1' href='"+imgSrc+"' class='swipebox'></a>");
+    			if($(this).width()>120){
+    				$(this).css({"display":"table","margin":"0 auto 8px auto"});
+    			}else if($(this).width()<=0){
+    				$(this).css({"display":"none"});
+    			}
+    		});
+    		$(".articleContent img").click(function(){
+    			var curImg = $(this);
+    			$(".articleContent img").each(function(i){
+    				if($(this).attr("src")==curImg.attr("src")){
+    					curImg.parent().attr("href","ios:@" + i);
+    				}
+    			});
+    		});
+    	}
+    	$(document).ready(function(){
+    		//去除文章中自带的缩进样式
+    		$(".articleContent p").each(function(){
+    			if($(this).find("img").length>0){
+    				$(this).css("text-indent","0em");
+    				$(this).find("span").css("text-indent","0em");
+    				if($(this).text().trim()<=0){
+    					$(this).css("text-align","center");
+    				}
+    				//图片题注居中
+    				if($(this).next().text().length<35&&$(this).next().find("strong").length==0&&$(this).text().trim().length==0){
+    					$(this).next().css("text-align","center");
+    				}
+    			}
+    		});
+    		
+    		$(".articleContent img").each(function(){
+    			if($(this).attr("src").indexOf("file:")==0){
+    				$(this).remove();
+    			}
+    		});
+    		
+    		//过滤文章中的链接
+    		$(".articleContent a").each(function(){
+    			var thisHref = $(this).attr("href");
+    			if(thisHref.indexOf("http")!=0){
+    				$(this).removeAttr("href");
+    				$(this).css("color","#666");
+    			}
+    		});
+    		
+    		//多语种选择
+    		$(".lanSel").click(function(){
+    			if($(this).find("ul").is(":hidden")){
+    				$(this).find("ul").show();
+    			}else{
+    				$(this).find("ul").hide();
+    			}
+    			return false;
+    		});
+    		$(".lanSel a").click(function(e){
+    			e.stopPropagation();
+    		});
+    		$(document).click(function(){
+    			$(".lanSel").find("ul").hide();
+    		});
+    	});
+    </script>
+    <style>
+		/* body{padding:5px 10px;} */
+		.articleContent img{max-width:100%; vertical-align:middle;}
+		.articleInfo span{ display:inline-block;}
+		a{color:#0066cc;}
+		/* .articleContent a{color:#666;} */
+		.articleContent p{ word-wrap:break-word; margin-left:0 !important; margin-right:0 !important;}
+		.articleHide{ overflow:hidden;/*  text-overflow:ellipsis;-webkit-box-orient:vertical; -webkit-line-clamp:2; */}
+		.more{ display:none; text-align:center; font-size:14px; padding-top:12px;}
+		.more a{ color:#327eca;}
+		.more a span{ position:relative; top:-1px;}
+		#if($!article.langCode==2)
+			.articleTitle{ direction:rtl;}
+			.articleInfo{ text-align:right;}
+			.articleContent p{ direction:rtl; text-align:right !important;}
+			.articleContent p span{ font-size:20px !important;}
+		#end
+	</style>
+</head>
+
+<body>
+    <div class="articleBody">
+    	<div class="articleTitle">$!{article.title}</div>
+    	<div class="articleInfo">
+    		#if($!{article.journalName})<span>$!{article.journalName}</span>#end
+    		<span>
+    			#if($!{article.source})
+					$!{article.source}
+				#else
+					院刊编辑部 
+				#end
+			</span>
+    		<span>$!{article.publishDate}</span>
+    	</div>
+    	
+    	<!-- #if($article.coverLink) <img src="..${article.coverLink}" />#end -->
+    	<!-- <div style="margin:0 -10px;"><img src="../images/wechat/article-line.png" width="100%" /></div> -->
+    	<div style="margin:15px -10px; border-bottom:solid 1px #ccc"></div>
+    	<div class="articleContent">
+    		$!{article.content}
+    	</div>
+    	<!-- <div style="margin:20px 0;"><img src="../images/wechat/mmbizgif.gif" width="100%" /></div> -->
+    	<!-- <div id="logogif" style="text-align:center;"><img src="" data-src="../images/wechat/logo-bottom.gif" /></div> -->
+    	<!-- <div class="articleCode">
+    		<div><img src="../images/wechat/erweima.jpg" width="100%" /></div>
+    		<div style="text-align:center; padding-bottom:10px; font-size:14px;">长按指纹、识别二维码关注</div>
+    		<div class="articleCodetext">孔子学院杂志<br/>http://www.cim.chinesecio.com</div>
+    	</div> -->
+    </div>
+</body>
+<script src="../js/swipebox/js/jquery.swipebox.js"></script>
+</html>

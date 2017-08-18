@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>问答</title>
+    <link href="../js/icheck-1.x/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>    
+	<script src="../js/icheck-1.x/icheck.js"></script>
+	
+    <style>
+    	body{background:#eee;}
+    </style>
+</head>
+
+<body>
+	<div class="qu_pos">1/3</div>
+	<div class="questions">
+		<div id="qu1" class="question">
+			<div class="qu_stem">
+				(1) 北宋的皇帝宋徽宗赵佶最大爱好是什么？
+			</div>
+			<div class="qu_option">
+				<ul>
+					<li><input type="radio" name="question1" value="A" /><label>书画</label></li>
+					<li><input type="radio" name="question1" value="B" /><label>红烧肉</label></li>
+					<li><input type="radio" name="question1" value="C" /><label>治理国家</label></li>
+					<input type="hidden" name="correct" value="A" />
+				</ul>
+			</div>
+		</div>
+		<div id="qu2" class="question">
+			<div class="qu_stem">
+				(2) 《清明上河图》出现在什么时代，谁据说是该作的第一位收藏者？
+			</div>
+			<div class="qu_option">
+				<ul>
+					<li><input type="radio" name="question2" value="A" /><label>唐代，李世民</label></li>
+					<li><input type="radio" name="question2" value="B" /><label>当代，小编我呀</label></li>
+					<li><input type="radio" name="question2" value="C" /><label>宋代，宋徽宗赵佶</label></li>
+					<input type="hidden" name="correct" value="C" />
+				</ul>
+			</div>
+		</div>
+		<div id="qu3" class="question">
+			<div class="qu_stem">
+				(3)徽宗皇帝首创的书法字体堪称书法艺术在奇葩，这种字体叫？
+			</div>
+			<div class="qu_option">
+				<ul>
+					<li><input type="radio" name="question3" value="A" /><label>胖金体</label></li>
+					<li><input type="radio" name="question3" value="B" /><label>瘦金体</label></li>
+					<li><input type="radio" name="question3" value="C" /><label>宋体</label></li>
+					<input type="hidden" name="correct" value="B" />
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".question:first").show();
+			$("input").iCheck({
+				checkboxClass:'icheckbox_square',
+				radioClass:'iradio_flat-green'
+				//increaseArea:'20%'
+			});
+			
+			var score = 0;
+			$(".qu_option li").click(function(){
+				var total = $(".question").length;			
+				$(this).find("input").iCheck('check');
+				if($(this).find("input:checked").val()==$(this).parent().find("input[name='correct']").val()){
+					score += 1;
+				}
+				var quid = $(this).parents(".question").attr("id");
+				var index = Number(quid.substring(2,quid.length))+1;
+				setTimeout(function(){					
+					$("#"+quid).hide();					
+					if($("#"+quid).next().length>0){
+						$(".qu_pos").text(index+"/"+total);
+						$("#"+quid).next().show();
+					}else{
+						if(score==total){
+							window.location.href='../wechat/certificate';
+						}else{
+							window.location.href='../wechat/encourage?score='+score;
+						}
+					}
+				},100);
+			});
+			$(".iCheck-helper").click(function(){
+				var total = $(".question").length;			
+				$(this).parent().find("input").iCheck('check');
+				if($(this).parent().find("input:checked").val()==$(this).parents("ul").find("input[name='correct']").val()){
+					score += 1;
+				}
+				var quid = $(this).parents(".question").attr("id");
+				var index = Number(quid.substring(2,quid.length))+1;
+				setTimeout(function(){					
+					$("#"+quid).hide();					
+					if($("#"+quid).next().length>0){
+						$(".qu_pos").text(index+"/"+total);
+						$("#"+quid).next().show();
+					}else{
+						if(score==total){
+							window.location.href='../wechat/certificate';
+						}else{
+							window.location.href='../wechat/encourage?score='+score;
+						}
+					}
+				},100);
+				return false;
+			});
+		});
+	</script>	
+</body>
+</html>
+

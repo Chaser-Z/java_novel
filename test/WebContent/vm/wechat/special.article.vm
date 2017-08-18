@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>${special.title}</title>
+    <link rel="stylesheet" href="../js/jquery-weui-build/dist/lib/weui.min.css">
+	<link rel="stylesheet" href="../js/jquery-weui-build/dist/css/jquery-weui.css">
+    <link href="../css/wechat.css" rel="stylesheet" type="text/css" />
+	<script src="../js/jquery-1.11.1.min.js"></script>
+	<script src="../js/jquery-weui-build/dist/js/jquery-weui.js"></script>
+	<script src="../js/jquery-weui-build/dist/js/swiper.js"></script>	
+	
+	<style>
+		/* html{ height:100%;}
+		body{background:#f4f4f4; height:100%;} */
+		.swiper-container {
+	        width: 100%;
+	    }
+	    .swiper-container img {
+	    	display: block;
+	        width: 100%;
+	    }
+	    .swiper-pagination{text-align:right;padding-right:10px;}
+	    .swiper-slide{ height:180px; overflow:hidden;}
+	    .weui_panel:before{border-top:none;}
+	    /* .weui_tab_bd{ height:450px;} */
+	    .weui_tab_bd{ padding-bottom:0;}
+	    .weui_navbar_item{color:#000;}
+	    .weui_navbar_item:after{border-right:none;}
+	    .weui_navbar_item.weui_bar_item_on{color:#21b100; background:none;}
+	    .weui_media_box.weui_media_appmsg .weui_media_hd{ width:80px; height:60px;}
+	    .weui_media_box.weui_media_appmsg .weui_media_hd img{ height:60px; border:solid 1px #e5e5e5;}
+	    .weui_media_box.weui_media_appmsg .weui_media_hd{ margin-left:.8em; margin-right:0;}
+	</style>
+</head>
+
+<body>
+	<div class="swiper-container">
+	    <!-- Additional required wrapper -->
+	    <div class="swiper-wrapper">
+	      <!-- Slides -->
+	      <div class="swiper-slide" style="height:auto;">
+	      	<!-- <div class="swiper-text">普洱茶的故事</div>
+	      	<a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5"></a> -->
+	      	<img src="..${special.coverLink}" />
+	      </div>
+	      <!-- <div class="swiper-slide">
+	      	<div class="swiper-text">乌龙茶 --降龙弹指间</div>
+	      	<a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5"><img src="../images/wechat/tea/wulongtea.jpg" /></a>
+	      </div>
+	      <div class="swiper-slide">
+	      	<div class="swiper-text">仙人茶</div>
+	      	<a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5"><img src="../images/wechat/tea/xianrencha001.jpg" /></a>
+	      </div> -->
+	    </div>
+	    <!-- If we need pagination -->
+	    <div class="swiper-pagination"></div>
+    </div>
+    
+    <div class="weui_tab">
+    	<div class="weui_tab_bd">
+    		<div class="articleList">
+    			<div class="weui_panel weui_panel_access">
+			      	<div class="weui_panel_bd">
+			      		#foreach($article in $articles)
+				        <a href="../wechat/articlDetail?specialId=${special.id}&id=${article.id}" class="weui_media_box weui_media_appmsg">
+				        	
+				          	<div class="weui_media_bd">
+				            	<h4 class="weui_media_title">${article.title}</h4>
+				            	<p class="weui_media_desc">${article.digest}</p>
+				          	</div>
+				          	#if(${article.coverLink})
+				          		<div class="weui_media_hd">
+						            <img class="weui_media_appmsg_thumb" src="..${article.coverLink}" />
+						        </div>
+				        	#end
+				        </a>
+				        #end
+			      	</div>
+			      	#if($articles.size()==20)
+			      	<div class="weui-infinite-scroll" style="clear:both;">
+				    	<div class="infinite-preloader"></div>正在加载
+				    </div>
+				    #end
+			    </div>
+    		</div>
+      	</div>
+    </div>
+    <input type="hidden" name="pageNum" value="0" />
+    <input type="hidden" name="specialId" value="${special.id}" />
+    <script type="text/javascript">		
+      	var loading = false;
+		$(document).ready(function(){
+			$(".weui_panel_bd .weui_media_appmsg_thumb").each(function(){
+				var src = $(this).attr("src");
+				if(src.indexOf("/resize_180x180")!=-1){
+					src = src.replace("/resize_180x180","");
+					$(this).attr("src",src);
+				}
+			});
+			$(document.body).infinite().on("infinite", function() {
+    	      	if(loading) return;
+    	        loading = true;
+    	        setTimeout(function() {   	        	
+    				var pageNum = parseInt($("input[name='pageNum']").val())+1;
+    				var specialId = $("input[name='specialId']").val()
+    				var param = "specialId="+specialId+"&pageNum="+pageNum;    				
+    				$.ajax({
+    					url:"../wechat/loadArticle",
+    					data:param,
+    					type:"post",
+    					success:function(result){
+    						var result = eval("("+result+")");
+    						if(result.success==true){
+    							$.each(result.data,function(n,item){
+    								if(item.coverLink!=null&&item.coverLink!=''){
+    									if(item.coverLink.indexOf("/resize_180x180")!=-1){
+    										item.coverLink = item.coverLink.replace("/resize_180x180","");
+    									}
+    									$(".articleList").find(".weui_panel_bd").append("<a href='../wechat/articlDetail?specialId="+specialId+"&id="+item.id+"' class='weui_media_box weui_media_appmsg'><div class='weui_media_bd'><h4 class='weui_media_title'>"+item.title+"</h4><p class='weui_media_desc'>"+item.digest+"</p></div><div class='weui_media_hd'><img class='weui_media_appmsg_thumb' src='.."+item.coverLink+"' /></div></a>");
+    								}else{
+    									$(".articleList").find(".weui_panel_bd").append("<a href='../wechat/articlDetail?specialId="+specialId+"&id="+item.id+"' class='weui_media_box weui_media_appmsg'><div class='weui_media_bd'><h4 class='weui_media_title'>"+item.title+"</h4><p class='weui_media_desc'>"+item.digest+"</p></div></a>");
+    								}    								
+    							});
+    							$("input[name='pageNum']").val(pageNum);
+    							if(result.data.length<20){
+    								//$(".weui-infinite-scroll").hide();
+    								$(".weui-infinite-scroll").html("真的没有了");
+    							}else{
+    								$(".weui-infinite-scroll").show();
+    							}
+    						}else{    							
+    							$(".weui-infinite-scroll").html("真的没有了");
+    							$(".weui-infinite-scroll").show();
+    						}
+    					}
+    				});
+    	        	loading = false;
+    	  		}, 1000);
+    	  });
+		});
+    </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="../js/wxEditor1.0.0/css/bootstrap/css/bootstrap.css?2023" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" href="../js/wxEditor1.0.0/css/bootstrap/css/bootstrap-ie6.css?2023">
+<![endif]-->
+<!--[if lte IE 7]>
+<link rel="stylesheet" type="text/css" href="../js/wxEditor1.0.0/css/bootstrap/css/ie.css?2023">
+<![endif]-->
+<link href="../js/wxEditor1.0.0/css/site.css?2023" rel="stylesheet" type="text/css">
+<link href="../js/wxEditor1.0.0/css/wwei_editor.css?2023" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="../js/wxEditor1.0.0/wxeditor/css/jquery.jgrowl.css">
+<link href="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/themes/default/css/ueditor.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/codemirror/codemirror.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/css/bootstrap/js/bootstrap.min.js"></script>
+<script src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/lang/zh-cn/zh-cn.js" type="text/javascript" defer="defer"></script>
+<script src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/codemirror/codemirror.js" type="text/javascript" defer="defer"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript" src="../js/module/weixin.media.js?v=$dateTool" ></script>
+<style id="style-1-cropbar-clipper">
+	.en-markup-crop-options {
+	    top: 18px !important;
+	    left: 50% !important;
+	    margin-left: -100px !important;
+	    width: 200px !important;
+	    border: 2px rgba(255,255,255,.38) solid !important;
+	    border-radius: 4px !important;
+	}
+	.en-markup-crop-options div div:first-of-type {
+	    margin-left: 0px !important;
+	}
+	#media_img{
+		height:inherit;
+		line-height:inherit;
+		font-size:12px;
+	}
+</style>
+</head>
+<div class="easyui-panel" fit="true" title="微信管理 - 素材管理 - 图文消息" border="0">
+	<div class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'west'" split="false" title="" style="width:250px;">
+            <div id="more_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+            <div id="more_tb" style="padding:3px">
+        		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="addMore()">新增</a>
+            </div>
+			<input type="hidden" id="temp_id" name="id" value="" />
+			<!-- <input type="hidden" id="temp_media_id" name="media_id" value="" /> -->
+		</div>
+		<div data-options="region:'center'" style="padding:5px;">
+    		<form id="more_form" method="post" action="../weixin/graphicMoreSave">
+    			<div class="row-fluid" style="box-sizing:border-box; padding:15px 0px 15px 25px;">
+					<div class="span12"><span style="color:#ff0000">*</span> 标题：<input id="title" name="title" value="" style="width:85%;" class="easyui-textbox" data-options="required:true"/></div>
+					<div class="span12" style="margin-left:0;"><span style="color:#ff0000">*</span> 作者：<input id="author" name="author" value="" style="width:85%;" class="easyui-textbox" data-options="required:true"/></div>
+					<div class="span12" style="margin-left:0;"><span style="color:#ff0000">*</span> 封面：<a href="javascript:void(0)" class="easyui-linkbutton c4" plain="true" iconCls="icon-add" onclick="showUploadImg()">上传素材</a></div>
+					<div class="span12" id="tw_fm" style="display:none;margin-left:0; padding-left:35px;"></div>
+					<div class="span12" style="margin-left:0;"><span style="color:#ff0000">*</span> 摘要：<input id="digest" name="digest" value="" style="width:85%;height:60px;" class="easyui-textbox" data-options="required:true,multiline:true"/></div>
+					<div class="span12" style="margin-left:0; padding-top:5px;">
+						<div style="float:left;"><span style="color:#ff0000">*</span> 内容：</div>
+						<div class="span5" style="margin-left:0;">
+							<ul class="nav nav-tabs" id="templateTab">
+							  <li class="active"><a href="#temp-title" data-type="title">标题</a></li>
+							  <li><a href="#temp-text" data-type="text">正文</a></li>
+							  <li><a href="#temp-img" data-type="img">图片</a></li>
+							  <li><a href="#temp-follow" data-type="follow">吸粉</a></li>
+							  <li><a href="#temp-scene" data-type="scene">场景</a></li>
+							  <li><a href="#temp-tpl" data-type="tpl">模板</a></li>
+							</ul>
+							<div class="tab-content template-content">
+								<div id="template-loading" class="hide" style="display: none;"><img src="../js/wxEditor1.0.0/images/loading.gif"> 加载中...</div>
+								<div class="tab-pane active" id="temp-title">
+									<ul class="template-list">
+										<li title="点击插入此内容" style="background-color: rgb(255, 255, 255);"><section class="wwei-editor"><h2 style="padding: 0px; margin: 8px 0px 0px; font-weight: normal; font-size: 16px; font-family: 微软雅黑; white-space: normal; height: 32px; text-align: justify; color: rgb(62, 62, 62); line-height: 18px; border-bottom-color: rgb(227, 227, 227); border-bottom-width: 1px; border-bottom-style: solid;"><span style="padding: 0px 2px 3px; color: rgb(0, 112, 192); line-height: 28px; border-bottom-color: rgb(0, 187, 236); border-bottom-width: 2px; border-bottom-style: solid; float: left; display: block;"><span style="padding: 4px 10px; border-top-left-radius: 80%; border-top-right-radius: 100%; border-bottom-right-radius: 90%; border-bottom-left-radius: 20%; color: rgb(255, 255, 255); margin-right: 8px; background-color: rgb(0, 187, 236);">序号.</span><span style="color: rgb(0, 187, 236);">标题党</span></span></h2></section></li>
+										<li title="点击插入此内容" style="background-color: rgb(255, 255, 255);"><section class="wwei-editor"><blockquote style="padding: 10px; margin: 5px 0px 0px; white-space: normal; max-width: 100%; line-height: 25px; font-size: 14px; font-family: arial, helvetica, sans-serif; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; color: rgb(255, 255, 255); border-left-color: rgb(0, 187, 236); border-left-width: 10px; border-left-style: solid; box-shadow: rgb(153, 153, 153) 2px 2px 4px; text-shadow: rgb(34, 95, 135) 0px 1px 0px; word-wrap: break-word !important; box-sizing: border-box !important; background-color: rgb(55, 57, 57);"><span style="max-width: 100%; word-wrap: break-word !important; box-sizing: border-box !important;"><span style="max-width: 100%; font-family: 微软雅黑; font-size: 16px; word-wrap: break-word !important; box-sizing: border-box !important;">1、这里输入标题</span></span></blockquote></section></li>
+										<li title="点击插入此内容" style="background-color: rgb(255, 255, 255);"><section class="wwei-editor"><section style="max-width: 100%;margin: 0.8em 0px 0.5em; overflow: hidden; "><section placeholder="请输入标题" style="box-sizing: border-box !important;  height:36px;display: inline-block;color: #FFF; font-size: 16px;font-weight:bold; padding:0 10px;line-height: 36px;float: left; vertical-align: top; background-color: rgb(249, 110, 87); " class="wweibrush">请输入标题</section><section style="box-sizing: border-box !important; display: inline-block;height:36px; vertical-align: top; border-left-width: 9px; border-left-style: solid; border-left-color: rgb(249, 110, 87); border-top-width: 18px !important; border-top-style: solid !important; border-top-color: transparent !important; border-bottom-width: 18px !important; border-bottom-style: solid !important; border-bottom-color: transparent !important;"></section></section></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><h2 style="margin: 8px 0px 0px; padding: 0px; font-weight:bold;font-size:16px;line-height:28px;  max-width: 100%;color:rgb(0, 112, 192); min-height: 32px;border-bottom: 2px solid rgb(0, 112, 192); text-align: justify;"><span class="autonum" placeholder="1" style="background-color:rgb(0, 112, 192); border-radius:80% 100% 90% 20%; color:rgb(255, 255, 255); display:block; float:left; line-height:20px; margin:0px 8px 0px 0px; max-width:100%; padding:4px 10px; word-wrap:break-word !important">1</span><strong class="wweibrush" data-brushtype="text">第一标题</strong></h2></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><h2 class="wweibrush" data-bcless="darken" placeholder="深色边框标题" style="margin: 10px 0px; padding: 10px; font-size: 16px; line-height: 25px; text-shadow: rgb(34, 95, 135) 0px 1px 0px; color: rgb(202, 251, 215); border-radius: 4px; box-shadow: rgb(153, 153, 153) 2px 2px 4px; border-left-width: 10px; border-left-style: solid; border-color: rgb(10, 137, 43); background-color: rgb(14, 184, 58);">深色边框标题</h2></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><section style="margin: 2px 0.8em 1em 0; text-align: center; font-size: 1em; vertical-align: middle; white-space: nowrap;"><section style="height: 0px; white-space: nowrap;  border-top: 1.5em solid rgb(71, 193, 168); border-bottom: 1.5em solid rgb(71, 193, 168); border-left-width: 1.5em ! important; border-left-style: solid ! important; border-right-width: 1.5em ! important; border-right-style: solid ! important; border-color: rgb(71, 193, 168);"></section><section style="height: 0; white-space: nowrap; margin: -2.75em 1.65em;border-top: 1.3em solid #ffffff;border-bottom: 1.3em solid #ffffff;border-left: 1.3em solid transparent;border-right: 1.3em solid transparent;"></section><section style="height: 0px; white-space: nowrap; margin: 0.45em 2.1em; vertical-align: middle; border-top: 1.1em solid rgb(71, 193, 168); border-bottom: 1.1em solid rgb(71, 193, 168); border-left-width: 1.1em ! important; border-left-style: solid ! important; border-right-width: 1.1em ! important; border-right-style: solid ! important; border-color: rgb(71, 193, 168);"><section class="wweibrush" data-ct="fix" placeholder="一行短标题" style="max-height: 1em; padding: 0px; margin-top: -0.5em; color: rgb(254, 255, 253); font-size: 1.2em; line-height: 1em; white-space: nowrap; overflow: hidden; font-style: normal;">一行短标题</section></section></section></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><h2 class="wweibrush" placeholder="请输入标题" style="white-space: normal; font-size: 16px; margin: 10px 0px; padding: 10px; max-width: 100%; border-top:solid 2px;border-left:0px; border-bottom:solid 2px; line-height: 25px; color: rgb(109, 151, 200);font-weight:bold; text-align: center;">请输入标题</h2></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><fieldset style="clear: both; padding: 0px; border: 0px none; margin: 1em 0px 0.5em;"><section style="border-top-width: 2px; border-top-style: solid; border-color: rgb(142, 201, 101); font-size: 1em; font-weight: inherit; text-decoration: inherit; color: rgb(255, 255, 255); box-sizing: border-box;"><section class="wweibrush" data-brushtype="text" style="padding: 0px 0.5em; background-color: rgb(142, 201, 101); display: inline-block; font-size: 16px;">微信编辑器</section></section></fieldset></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><section style="font-size: 1em; white-space: normal; margin: 1em 0px 0.8em; text-align: center; vertical-align: middle;"><section style="height: 0px; margin: 0px 1em; border: 1.5em solid rgb(255, 202, 0); border-left-color: transparent !important;border-right-color: transparent !important;"></section><section style="height: 0px; margin: -2.75em 1.65em; border-width: 1.3em; border-style: solid; border-color: rgb(255, 255, 255) transparent;"></section><section style="height: 0px; margin: 0.45em 2.1em; vertical-align: middle; border:1.1em solid rgb(255, 202, 0); border-left-color: transparent !important;  border-right-color: transparent !important;"><section class="wweibrush" data-brushtype="text" placeholder="一行短标题" style="max-height: 1em; padding: 0px; margin-top: -0.5em; color: rgb(255, 255, 255); font-size: 1.2em; line-height: 1em; overflow: hidden;">一行短标题</section></section></section></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><section style="border: 3px solid rgb(255, 129, 36); padding: 5px;"><section data-bcless="lighten" style="border: 1px solid rgb(255, 158, 87); padding: 15px; text-align: center; color: inherit;"><p style="color: inherit;">微信编辑器</p><p style="color:inherit; font-size:24px"><strong style="color:inherit"><span class="wweibrush" data-brushtype="text" style="color:inherit; font-size:24px">操作方便才是硬道理</span></strong></p></section></section></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><p class="wweibrush" placeholder="请输入标题" style="max-width: 100%; word-wrap: normal; min-height: 1em; white-space: pre-wrap;line-height: 25px;font-size:20px;box-sizing:border-box !important;text-shadow:rgb(0, 187, 236) 1px 0px 4px, rgb(0, 187, 236) 0px 1px 4px, rgb(0, 187, 236) 0px -1px 4px, rgb(0, 187, 236) -1px 0px 4px; word-wrap:break-word !important;color:rgb(255, 255, 255);font-weight:bold;">请输入标题</p></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><fieldset style="margin: 0.5em 0px; padding: 0px; max-width: 100%; box-sizing: border-box; color: rgb(62, 62, 62); font-size: medium; line-height: 25px; white-space: normal; border: none rgb(255, 175, 205); word-wrap: break-word !important; text-align: right;"><section style="margin: 0px; padding: 1.5em 0px; max-width: 100%; box-sizing: border-box; width: 12.5em; height: 9.3em;  text-align: center; color: rgb(175, 0, 66); word-wrap: break-word !important; background-image: url(http://pro.wwei.cn/Public/wxeditor/css/0.png); background-color: rgb(255, 175, 205); background-size: cover;display:inline-block"><section style="margin: 0px 0px 0px 20px; padding: 0px; max-width: 100%; box-sizing: border-box; width: 160px; overflow: hidden; -webkit-transform: rotate(-13deg); font-size: 22px;  font-weight: inherit; text-decoration: inherit; color: rgb(255, 255, 255); word-wrap: break-word !important;"><section style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box; word-wrap: break-word !important;">肆意</section></section><section style="margin: 10px 20px; padding: 0px; max-width: 100%; box-sizing: border-box; width: 150px; overflow: hidden; -webkit-transform: rotate(-15deg);  font-weight: inherit; text-decoration: inherit; color: rgb(255, 255, 255); word-wrap: break-word !important;"><section class="wweibrush" data-brushtype="text" style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box; word-wrap: break-word !important;"><p>青春，背景色你的地盘你做主</p></section></section></section></fieldset></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><fieldset style="border: 0px; text-align: center; box-sizing: border-box; padding: 0px;"><section style="display: inline-block; box-sizing: border-box; color: inherit;"><section class="wweibrush" data-brushtype="text" style="margin: 0.2em 0px 0px; padding: 0px 0.5em 5px; max-width: 100%; color: rgb(107, 77, 64); font-size: 1.8em; line-height: 1; border-bottom-width: 1px; border-bottom-style: solid; border-color: rgb(107, 77, 64);">微信编辑器</section><section class="wweibrush" data-brushtype="text" style="margin: 5px 1em; font-size: 1em; line-height: 1; color: rgb(107, 77, 64); box-sizing: border-box; border-color: rgb(107, 77, 64);">做最易用的编辑器</section></section></fieldset></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><p><span style="border-color:rgb(30, 155, 232); color:rgb(30, 155, 232); font-size:4em; font-weight:bolder; line-height:1em; vertical-align:middle">“</span><span class="wweibrush" data-brushtype="text" style="color:inherit; font-size:2em; font-style:normal; line-height:1.2em; vertical-align:middle">标题</span><span class="wweibrush" data-brushtype="text" style="border-color:rgb(30, 155, 232); color:rgb(30, 155, 232); font-size:2em; font-style:normal; line-height:1.2em; vertical-align:middle">标题</span><span style="border-color:rgb(30, 155, 232); color:rgb(30, 155, 232); font-size:4em; font-weight:bolder; line-height:1em; vertical-align:middle">”</span></p></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><section data-bcless="true" style="font-size:20px; background: rgb(223, 240, 203);border:0 none;"><span class="wweibrush" style="background:rgb(255, 255, 255); color:rgb(150, 206, 84); display:inline-block; padding:0px 15px 0px 0px">微信编辑器</span><span style="background:none repeat scroll 0 0 #fff; display:inline-block; margin-left:5px">&nbsp;</span><span style="background:none repeat scroll 0 0 #fff; display:inline-block; margin-left:5px">&nbsp;</span><span style="background:none repeat scroll 0 0 #fff; display:inline-block; margin-left:5px">&nbsp;</span></section></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><p class="wweibrush" data-brushtype="text" placeholder="请输入标题" style="max-width: 100%; line-height: 24px;font-weight:bold; background-color: rgb(244, 156, 4); color: rgb(255, 255, 255); border-radius: 45%; text-align: center; margin:10px 0px;padding: 10px 15px;">请输入标题</p></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><fieldset style="border: 0px rgb(107, 77, 64); text-align: center; margin: 0.8em 0px 0.5em; box-sizing: border-box; padding: 0px;"><section style="color: rgb(107, 77, 64); display: inline-block; width: 1em; font-size: 2.5em; font-weight: inherit; line-height: 1em; vertical-align: top; text-align: inherit; text-decoration: inherit; box-sizing: border-box; border-color: rgb(107, 77, 64);"><section class="wweibrush" data-brushtype="text" style="box-sizing: border-box; color: inherit; border-color: rgb(107, 77, 64);">两字</section></section><section style="display: inline-block; margin-left: 0.5em; margin-top: 0.2em; text-align: left; box-sizing: border-box; color: inherit;"><section style="box-sizing: border-box; color: inherit;"><section class="wweibrush" data-brushtype="text" style="background-color:rgb(107, 77, 64); border-color:rgb(107, 77, 64); box-sizing:border-box; color:rgb(224, 209, 202); display:inline-block; font-size:2em; font-weight:inherit; line-height:1; padding:0.1em; text-align:inherit; text-decoration:inherit">副标题1</section></section><section style="color: rgb(107, 77, 64); margin: 0.5em 0px; font-size: 1.5em; line-height: 1em; font-weight: inherit; text-align: inherit; text-decoration: inherit; box-sizing: border-box; border-color: rgb(107, 77, 64);"><section class="wweibrush" data-brushtype="text" style="box-sizing: border-box; color: inherit; border-color: rgb(107, 77, 64);">副标题2</section></section></section></fieldset></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor"><h2 class="wweibrush" data-brushtype="text" style="padding-bottom: 9px;border-bottom: 1px solid #eee;argin-top: 20px;margin-bottom: 10px;font-weight: 500;line-height: 1.1;font-size: 22px;">极简标题</h2></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor" style="color: rgb(51, 51, 51); font-family: 微软雅黑; font-size: 12px; white-space: normal; display: inline-block; height: 2em; max-width: 100%; line-height: 1em; box-sizing: border-box; border-top-width: 1.1em; border-top-style: solid; border-top-color: rgb(0, 187, 236); border-bottom-width: 1.1em; border-bottom-style: solid; border-bottom-color: rgb(0, 187, 236); border-right-width: 1em; border-right-style: solid; border-right-color: transparent;"><section style="height: 2em; margin-top: -1em; color: white; padding: 0.5em 1em; max-width: 100%; white-space: nowrap; text-overflow: ellipsis;">这里输入标题</section></section></li>
+										<li title="点击插入此内容"><section class="wwei-editor" style="color: rgb(51, 51, 51); font-family: 微软雅黑; font-size: 12px; white-space: normal; text-align: center; margin: 0px 1em; line-height: 1.6em;"><img src="http://pro.wwei.cn/Public/wxeditor/css/gs640.png" style="border: 0px; width: 266px; vertical-align: middle; height: 36px !important;"><section style="color: white; font-size: 1em; margin-top: -2.1em; white-space: nowrap;">请输入标题</section></section></li>
+									</ul>
+								</div>
+								<div class="tab-pane" id="temp-text"></div>
+								<div class="tab-pane" id="temp-img"></div>
+								<div class="tab-pane" id="temp-follow"></div>
+								<div class="tab-pane" id="temp-scene"></div>
+								<div class="tab-pane" id="temp-tpl"></div>
+							</div><!--tab-content-->
+						</div>
+						<div class="span6" id="wxcontent">
+							<fieldset>
+								<div style="width:414px;">
+									<span class="pull-right">
+										<a href="javascript:void(0);" id="copy-editor-html" class="btn btn-primary disabled">复制正文</a>
+										<a href="javascript:void(0);" id="clear-editor" class="btn btn btn-danger disabled">清空</a>
+									</span>
+									<label><!-- 正文 --></label>
+								</div>
+								<div style="clear:both"></div>
+								<div>
+									<textarea id="wwei_editor" name="content" style="width:414px;height: 480px;" data-options="required:true"></textarea>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+					<div class="span12" style="margin-left:0;padding-top:5px;">原文链接：<input id="content_source_url" name="content_source_url" value="" style="width:85%;" class="easyui-textbox" data-options="required:false"/></div>			
+				</div>
+				<input type="hidden" id="more_id" name="id" value="" />
+				<input type="hidden" id="more_media_id" name="media_id" value="" />
+            	<input type="hidden" id="more_msgid" name="msgid" value="" />
+				<input type="hidden" id="more_refer" name="refer" value="" />
+				<input type="hidden" id="more_type" name="type" value="" />
+				<input type="hidden" id="more_cover" name="cover" value="" />
+				<input type="hidden" id="more_index" name="index" />
+            	<input type="hidden" id="more_thumb_media_id" name="thumb_media_id" value="" />
+            	<input type="hidden" id="more_show_cover_pic" name="show_cover_pic" value="0" />
+    		</form>
+    	</div>
+    	<div data-options="region:'south',border:false" style="text-align:right;padding:10px 50px 8px 0;height:45px;">
+	        <a class="easyui-linkbutton c1" data-options="iconCls:'icon-save'" href="javascript:void(0)" onclick="javascript:doSubmitMore('save')" style="width:80px">保存</a>
+	        <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmitMore('submit')" style="width:120px">保存并提交</a>
+	        <a class="easyui-linkbutton" data-options="iconCls:'icon-back'" href="javascript:void(0)" onclick="window.location.href='../weixin/mediaView'" style="width:80px">返回</a>
+	    </div>
+	</div>
+		
+</div>
+
+##上传图片
+<div id="img_info" style="display:none;width:450px;height:220px;" title="上传图片" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true" style="width:350px;height:210px;">
+        <div title="" data-options="region:'center',border:false" style="height:210px;padding-left:16px;">
+    		<form id="img_form" action="../weixin/mediaUpload" method="post" enctype="multipart/form-data">
+				<br/><b>说明</b>：不大于2M，支持bmp/png/jpeg/jpg/gif格式。封面建议尺寸，900像素 * 500像素。<br/><br/>
+				<input type="hidden" id="img_type" name="type" value="image" />
+				<input type="hidden" id="isCover" name="isCover" value="1" />
+    			<b>文件</b>：<input id="media_img" type="file" name="media"/><br/><br/>
+				<a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doUploadImg()" style="width:80px">上传</a>
+            </form> 
+		</div>
+    </div>
+</div>
+
+<script src="../js/wxEditor1.0.0/wxeditor/css/jquery.jgrowl.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/less.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/colorPicker.js"></script>
+<!-- <script>
+	var UEDITOR_HOME_URL = "../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/";
+</script> -->
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/ueditor.config.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/ueditor.all.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/zeroclipboard/ZeroClipboard.min.js"></script>
+<script type="text/javascript" src="../js/wxEditor1.0.0/wxeditor/js/wwei_editor.js"></script>
+<script type="text/javascript">
+	var less_parser = new less.Parser;
+	ZeroClipboard.config({ swfPath: "../js/wxEditor1.0.0/wxeditor/js/ueditor1_4_3/third-party/zeroclipboard/ZeroClipboard.swf" } );
+	
+	var wwei_editor = UE.getEditor('wwei_editor');
+	
+	$(function () {
+		/*模板Tab */
+		var dataType = 'title';
+		
+		function _loadtemp(dataType){
+			$("#template-loading").show();
+			$.ajax({
+				type: "POST",
+				url: "../weixin/loadtemp",
+				data: {"type":dataType},
+				success: function(data){
+					$("#template-loading").hide();
+					var tabPane = $("#temp-"+dataType);
+					tabPane.html(data);
+					var _tempLi = tabPane.find('.template-list li');
+					_tempLi.hover(function(){
+						$(this).css({"background-color":"#f5f5f5"});
+					},function(){
+						$(this).css({"background-color":"#fff"});
+					});
+					_tempLi.click(function(){
+						if(dataType=='tpl')
+						{
+							var _tempHtml = $(this).find('.tpl-code').html();
+							wwei_editor.setContent("");
+							wwei_editor.execCommand('insertHtml', _tempHtml);
+						}else
+						{
+							var _tempHtml = $(this).html();
+							insertHtml(_tempHtml + "<p><br/></p>");
+						}
+						
+					});
+				}
+			});
+		}
+		_loadtemp(dataType);//加载
+		//TAB切换
+		$('#templateTab a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+			
+			dataType = $(this).attr("data-type");
+			if(dataType)
+			{
+				var tabPane = $("#temp-"+dataType);
+				if(tabPane.find('.template-list').length<=0)
+				{
+					_loadtemp(dataType);
+				}
+			}
+		});
+
+	
+		//清空
+		$('#clear-editor').click(function(){
+			if(confirm('是否确认清空内容，清空后内容将无法恢复')){
+				wwei_editor.setContent("");
+			}        
+		});
+		//复制
+		var client = new ZeroClipboard( $('#copy-editor-html') );
+		client.on( 'ready', function(event) {
+			client.on( 'copy', function(event) {
+				  event.clipboardData.setData('text/html', getEditorHtml());
+				  event.clipboardData.setData('text/plain', getEditorHtml());
+				  showSuccessMessage("已成功复制到剪切板");
+			});
+		});
+
+		//预览效果
+		$("#wx-template-name").blur(function(){
+			var val = $(this).val();
+			if(val)
+			{
+				$("#wxpreview h4").html(val);
+			}
+		});
+		$("#wx-template-dateline").blur(function(){
+			var val = $(this).val();
+			if(val)
+			{
+				$("#wxpreview em").html(val);
+			}
+		});
+		$("#wx-template-cover").blur(function(){
+			var val = $(this).val();
+			if(val)
+			{
+				$("#wxpreview .wxpreimg").html('<img src="'+ val +'" width="290" height="209">');
+			}
+		});
+		
+		$("#wx-template-intro").blur(function(){
+			var val = $(this).val();
+			if(val)
+			{
+				$("#wxpreview .wxstr").html(val);
+			}
+		});
+
+		$("#wx-template-wxid").change(function(){
+			var val = $(this).find("option:selected").val(),text = $(this).find("option:selected").text(),url=$(this).find("option:selected").attr("data-url");
+
+			if(text)
+			{
+				if(val==0) text = '';
+				if(!url) url = 'javascript:void(0);';
+				$("#wxpreview .wxhao").html('<a href="'+url+'" target="_blank">'+text+'</a>');
+			}
+		});
+		//定制效果
+		$("#is_show_title").click(function(){
+			var cked = $(this).attr("checked");
+			if(cked==undefined)
+			{
+				$("#wx_show_title").hide();
+				
+			}else
+			{
+				$("#wx_show_title").show();
+			}
+		});
+		$("#is_show_statis").click(function(){
+			var cked = $(this).attr("checked");
+			if(cked==undefined)
+			{
+				$("#wxpreview .wxfoot").hide();
+				
+			}else
+			{
+				$("#wxpreview .wxfoot").show();
+			}
+		});
+		
+		//颜色选择
+		$('.colorPicker').colorPicker({
+			customBG: '#222',
+			init: function(elm, colors) { // colors is a different instance (not connected to colorPicker)
+			  elm.style.backgroundColor = elm.value;
+			  elm.style.color = colors.rgbaMixCustom.luminance > 0.22 ? '#222' : '#ddd';
+			}
+		});
+		
+		//初始化多图文消息表单
+		var id = "$!request.getParameter('id')";		
+		if(id!=''){
+			initMoreForm(id);
+			moreList(id);
+		}else{
+			moreList("");
+		}		
+	});
+</script>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>证书</title>
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+    	window.onload=function(){
+    		var winH =  $(window).height();
+    		var certH = $(".certificate").height();
+    		$(".certificate").css("margin-top",winH/2-certH/2);
+    	}
+    </script>
+</head>
+
+<body>
+	<div class="certificate">
+		<img src="../images/wechat/certificate.jpg" width="100%" />
+	</div>
+</body>
+</html>
+

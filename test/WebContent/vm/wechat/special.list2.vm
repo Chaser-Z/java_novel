@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>专题</title>
+    <link rel="stylesheet" href="../js/jquery-weui-build/dist/lib/weui.min.css">
+	<link rel="stylesheet" href="../js/jquery-weui-build/dist/css/jquery-weui.css">
+    <link href="../css/wechat.css" rel="stylesheet" type="text/css" />
+	<script src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var winH = $(window).height();
+			var bodyH = $(document.body).height();
+			if(winH<568){
+				$(".speciallist").css("padding-bottom",150);
+			}
+			/* if(bodyH<winH&&winH>480){
+				$(document.body).css("height",winH);
+			} */
+		});
+	</script>
+	<style>
+		body{/* background:url(../images/wechat/specialbg.jpg) no-repeat left bottom; background-size:100%; */font-family:arial;}
+		*{box-sizing:border-box;}		
+		@media screen and (max-width: 320px) {
+			.demos-header{ padding:10px 0;}
+		}
+		.weui_media_box.weui_media_appmsg .weui_media_hd{
+			width:90px;
+			height:auto;
+		}
+		.weui_media_box .weui_media_desc{
+			-webkit-line-clamp:inherit;
+		}
+		.weui_media_box .weui_media_desc{
+			line-height:1.4;
+		}
+	</style>
+</head>
+
+<body>
+	<div><img src="../images/wechat/yuankantop-02.jpg" width="100%" style="display:block;" /></div>
+	<div class="pagebt">专题 SPECIAL</div>
+	<div class="weui_tab">
+    	<div class="weui_tab_bd">
+    		<div class="articleList">
+    			<div class="weui_panel weui_panel_access">
+			      	<div class="weui_panel_bd">
+				        #foreach($special in $specials)
+				        <a href="../wechat/specialList?id=${special.id}" class="weui_media_box weui_media_appmsg">
+				          <div class="weui_media_hd">
+				            #if($velocityCount==1)<img class="weui_media_appmsg_thumb" src="../images/wechat/1479691332558.jpg" />#end
+				            #if($velocityCount==2)<img class="weui_media_appmsg_thumb" src="../images/wechat/1479464098718.jpg" />#end
+				          </div>
+				          <div class="weui_media_bd">
+				            <h4 class="weui_media_title">${special.title}</h4>
+				            <p class="weui_media_desc">${special.digest}</p>
+				          </div>
+				        </a>
+				        #end
+			      	</div>
+			    </div>
+    		</div>
+      	</div>
+    </div>
+	<!-- <div class="specialBox">
+		<a href="#">
+			<div class="specialImg"><img src="../images/wechat/1479691332558.jpg" /></div>
+			<div class="specialTxt"></div>
+		</a>
+	</div> -->
+	<!-- <div class="speciallist">
+		<ul>
+			<li><a href="#" style="background:#3774B3"><p>特别报道</p><p class="enlan">Special Report</p></a></li>	
+			<li><a href="#" style="background:#D5A948"><p>人物访谈</p><p class="enlan">Interview</p></a></li>	
+			<li><a href="#" style="background:#B1503D"><p>文化广角</p><p class="enlan">Culture Corner</p></a></li>
+			<li><a href="#" style="background:#34937F"><p>畅游九州</p><p class="enlan">Tour around China</p></a></li>	
+			<li><a href="#" style="background:#7B9740"><p>华夏美食</p><p class="enlan">A Bite of China</p></a></li>
+			<li><a href="#" style="background:#6F547F"><p>艺术走廊</p><p class="enlan">Art Gallery</p></a></li>	
+			<li><a href="#" style="background:#5290B5"><p>时尚舞台</p><p class="enlan">Fashion</p></a></li>
+			<li><a href="#" style="background:#D5A948"><p>我与新汉学</p><p class="enlan">PCCSP Research</p></a></li>	
+			<li><a href="#" style="background:#B1503D"><p>汉语课堂</p><p class="enlan">Chinese Classrooms</p></a></li>
+			<li><a href="#" style="background:#34937F"><p>图片故事</p><p class="enlan">Photo Stories</p></a></li>
+			<li><a href="#" style="background:#7B9740"><p>学生园地</p><p class="enlan">Students Club</p></a></li>
+			<li><a href="#" style="background:#6F547F"><p>学术视界</p><p class="enlan">Academic Perception</p></a></li>	
+		</ul>	
+	</div> -->
+</body>
+</html>

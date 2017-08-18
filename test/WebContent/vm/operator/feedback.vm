@@ -1,0 +1,32 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style>
+.icon-jczn{
+	background:url('../js/jquery.accordion/icons/jczn.png') no-repeat center center;
+}
+.icon-wx{
+	background:url('../js/jquery.accordion/icons/wx.png') no-repeat center center;
+}
+.icon-cchy{
+	background:url('../js/jquery.accordion/icons/cchy.png') no-repeat center center;
+}
+a{
+	text-decoration:none
+}
+a:focus {
+    outline:none;
+    -moz-outline:none;
+}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript" src="../js/module/operator.feedback.js?v=$date" ></script>
+
+<div class="easyui-panel" fit="true" title="运营管理 - 用户反馈" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <table id="dg"></table>
+    <div id="tb">
+    	<input class="easyui-searchbox" data-options="prompt:'内容关键字',searcher:doSearch" style="width:200px"></input>
+	</div>
+</div>

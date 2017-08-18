@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content=" initial-scale=1.0,user-scalable=no" />
+    <title>文章列表</title>
+    <link href="../css/wechat.css" rel="stylesheet" type="text/css" />
+	<script src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+	
+    </script>
+	<style>
+		body{background:#f4f4f4;}
+		
+	</style>
+</head>
+
+<body>
+	<div class="page-main">
+		<div class="article">
+			<div class="article_date">2016年10月28日16:20</div>
+			<div class="article_title">旅行十分有益，使人浮想联翩旅行十分有益，使人浮想联翩</div>
+			<div class="article_cover"><a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5"><img src="../images/wechat/p52.JPG" /></a></div>
+			<div class="article_abstract">欧洲的城市，简单地说，风景大同。然而，无论是在繁华大都市巴黎、柏林、巴塞罗那，还是在皇室遗风犹存的……</div>
+			<div class="article_more"><a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">详情</a></div>
+		</div>
+		<div class="article">
+			<div class="article_date">2016年10月28日16:20</div>
+			<div class="article_title">中巴一家，共庆生日——巴林大学孔子学院师生参加巴林使馆国庆招待会</div>
+			<div class="article_cover"><a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5"><img src="../images/wechat/20161028095554.jpg" /></a></div>
+			<div class="article_abstract">2016年9月20日晚，中国驻巴林大使馆在丽兹卡尔顿酒店隆重举行庆祝中华人民共和国成立67周年国庆招待会。应大使馆邀请，巴林大学……</div>
+			<div class="article_more"><a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">详情</a></div>
+		</div>
+		<div class="article">
+			<div class="article_date">2016年10月28日16:20</div>
+			<div class="article_title">约旦安曼TAG孔子学院第八届理事会成功召开</div>
+			<div class="article_cover"><a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5"><img src="../images/wechat/20161028094356.jpg" /></a></div>
+			<div class="article_abstract">欧洲的城市，简单地说，风景大同。然而，无论是在繁华大都市巴黎、柏林、巴塞罗那，还是在皇室遗风犹存的……</div>
+			<div class="article_more"><a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">详情</a></div>
+		</div>
+		<div class="article">
+			<div class="article_date">2016年10月28日16:20</div>
+			<div class="article_title">兰州大学成功举办首届来华留学生运动会</div>
+			<div class="article_cover"><a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5"><img src="../images/wechat/1477381548423092948.jpg" /></a></div>
+			<div class="article_abstract">欧洲的城市，简单地说，风景大同。然而，无论是在繁华大都市巴黎、柏林、巴塞罗那，还是在皇室遗风犹存的……</div>
+			<div class="article_more"><a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">详情</a></div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript">
+	//搜索
+	function doSearch(value){
+		$('#list_data').datagrid('load',{
+			name:value
+		});
+		$('#list_data').datagrid('clearSelections');
+	}
+	
+	//新建
+	function doAdd(type){
+		$('#m_form').form('clear');
+		treeReset();
+		
+		$('#dialog_edit').show();
+        $('#dialog_edit').dialog({modal:true});
+	}
+	
+	//获取权限ID
+    function getChecked(){
+        var nodes = $('#limitIds').tree('getChecked');
+        var ids = '';
+        for(var i=0; i<nodes.length; i++){
+            if (ids != '') ids += ',';
+            ids += nodes[i].id;
+        }
+        return ids;
+    }
+	
+	//获取权限名称
+    function getCheckedNames(){
+        var nodes = $('#limitIds').tree('getChecked');
+        var names = '';
+        for(var i=0; i<nodes.length; i++){
+            if (names != '') names += ',';
+            names += nodes[i].text;
+        }
+        return names;
+    }
+	
+	//全部取消
+	function treeReset(){
+		var nodes=$('#limitIds').tree('getChildren');
+        $(nodes).each(function(i,o){        	
+        	var node = $('#limitIds').tree('getNode',o.target);
+        	$('#limitIds').tree('uncheck', node.target);
+        });
+	} 
+	
+	//提交
+	function doSubmit(){
+		var limitIds=getChecked();
+		var limitNames =getCheckedNames();
+		var name=$("#name").textbox("getText");
+        $('#m_form').form('submit', {
+            url:'../manage/limitSave',
+            onSubmit: function(param){
+        		var isValid = $(this).form('validate');
+        		if (!isValid){
+        			$.messager.progress('close');
+        		}
+				if(name==''){
+					return false;
+				}
+				if(limitIds==''){
+					alert("请选择权限！");
+					return false;
+				}
+				param.limitIds = limitIds;
+				param.limitNames =limitNames;
+				param.name=name;
+            },
+            success:function(data){
+			   var data = eval('(' + data + ')');
+               if(data.success==true){
+					$('#dialog_edit').dialog('close');
+					$('#list_data').datagrid('reload');
+				}else{
+					alert("error!");
+				}
+            }
+        });
+	}
+	
+	//编辑
+	function doEdit(id){
+		$('#m_form').form('clear');
+		treeReset();//全部取消
+		jQuery.ajax({
+	    	type:"post",
+	    	dataType: 'json',
+	    	url:'../manage/limitsLoad', 
+	    	data: {
+				id:id
+			},
+			error:function(data){
+				alert('error');
+			},
+	    	success:function(data){
+				if(data!=''){
+            		$('#dialog_edit').show();
+                    $('#dialog_edit').dialog({modal:true});
+				
+					//设置选中
+					$("#id").val(data.id);
+					$("#name").textbox("setValue",data.name);
+					$(data.limitIds.split(',')).each(function(i,o){
+						var node = $('#limitIds').tree('find', o);
+                        if (node){
+							$('#limitIds').tree('check', node.target);
+                        }
+                    });
+				}
+			}
+   		});
+	}
+	
+	//删除
+	function doDel(id){
+        $.messager.confirm('消息提示', '确定删除?', function(r){
+            if(r){
+        		jQuery.ajax({
+        	    	type:　"post",
+        	    	dataType: 'json',
+        	    	url:　'../manage/limitsDel', 
+        	    	data: {
+        				id:id
+        			},
+        			error:　function(data){
+        				alert('error');
+        			},
+        	    	success:　function(data){
+                        $('#list_data').datagrid('reload');
+        			}
+           		});
+    		}
+    	});
+	}
+	
+	//按钮
+	function qxButton(value,row,index){
+    	var c1='<a href="javascript:doEdit('+"'"+row.id+"'"+')"><img title="编辑" src="../images/icons/edit.png" style="vertical-align:middle;"/></a>';
+    	var c2='<a href="javascript:doDel('+"'"+row.id+"'"+')"><img title="删除" src="../images/icons/delete.png" style="vertical-align:middle;"/></a>';
+		return c1+'&nbsp;&nbsp;'+c2+'&nbsp;&nbsp;';
+	}
+	
+	//表格
+    $(document).ready(function() {
+    	$('#list_data').datagrid({
+			url:'../manage/limitlist',
+			toolbar:"#tb",
+            iconCls:'icon-edit',
+            width: 'auto',
+            height: 'auto',
+            nowrap: false,  
+            striped: true,
+            border: true,
+    		pageSize:15,
+    		showFooter: true,
+    		pageList:[10,15,20],
+            collapsible:false,
+            remoteSort:false,   
+            idField:'id',
+			singleSelect:true,
+			selectOnCheck: true,
+			checkOnSelect: true,
+			autoRowHeight:false,
+            pagination:true,
+            rownumbers:true,
+			fitColumns:true,
+    		loadMsg:'正在加载....',
+            columns:[[
+				{halign:'center',field:'name',width:'100',title: '权限名称' },
+                {halign:'center',align:'left',field:'limitNames',width:'350',title: '拥有权限' },
+                {align:'center',field:'createdTime_',width:'120',title: '创建时间' },
+                {align:'center',field:'operate',width:"80",formatter:qxButton,title: '操作' }
+            ]]
+        });
+    })
+</script>
+<div class="easyui-panel" fit="true" title="账号管理 - 权限管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="doAdd()">新建权限</a>
+		<input class="easyui-searchbox" data-options="prompt:'权限名称',searcher:doSearch" style="width:200px"></input>
+    </div>
+</div>
+
+##编辑窗口
+<div id="dialog_edit" style="display:none;width:350px;height:330px;padding:5px;" title="权限编辑" iconCls="icon-edit">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center',border:true">
+        		<form id="m_form" method="post" style="padding:13px;line-height:10px;">
+                	<input id="id" name="id" type="hidden" value="" />
+                    <label ><b>权限名称</b>：</label><input id="name" name="name"  value="" style="width:180px;" class="easyui-textbox" type="text" data-options="required:true"/>&nbsp;<br/><br/>
+                    <label ><b>拥有权限</b>：</label>
+                    <div class="easyui-panel" data-options="border:false" style="padding:5px;width:100%;;">
+            			<ul id="limitIds" name="limitIds" class="easyui-tree" data-options="animate:true,checkbox:true">
+							#foreach($menu in $menus)
+								<li id="$menu.id" data-options="iconCls:'icon-lock'"><span>$menu.name</span></li>
+							#end
+                         </ul>
+            		</div>
+        		</form>
+            </div>
+            <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px">保存</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+            </div>
+        </div>
+</div>

@@ -89,6 +89,9 @@ public class UserServiceImpl implements UserService {
 	public User valid(String username, String password) throws Exception {
 		User info = loadByName(username);
 		if (info != null && !StringUtil.isNull(info.getPassword()) && !StringUtil.isNull(password)) {
+			// 字符串转成md5
+			//System.out.println(Md5Util.EncoderByMd5(password));			
+			
 			if (Md5Util.checkpassword(password, info.getPassword())) {
 				info.setLastTime(new Date());
 				if (info.getFrequency() != null) {

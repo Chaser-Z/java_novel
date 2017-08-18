@@ -1,0 +1,41 @@
+.im {
+	border: 0px solid #ccc;
+	height: 600px;
+	width: auto;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.im span {
+	height: 100%;
+	width: 0;
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+img {
+	vertical-align: middle;
+}
+
+.portal-icon-cancel {
+	background: url('../images/icons/cancel.png') no-repeat center center;
+}
+.portal-icon-exit {
+	background: url('../images/icons/exit.png') no-repeat center center;
+}
+.portal-icon-unlock {
+	background: url('../images/icons/unlock.png') no-repeat center center;
+}
+.portal-icon-lock {
+	background: url('../images/icons/lock.png') no-repeat center center;
+}
+.portal-icon-wx32 {
+	background: url('../images/icons/wx32.png') no-repeat center center;
+}
+.portal-icon-user32 {
+	background: url('../images/icons/user.png') no-repeat center center;
+}
+.portal-icon-gear32 {
+	background: url('../images/icons/gear.png') no-repeat center center;
+}

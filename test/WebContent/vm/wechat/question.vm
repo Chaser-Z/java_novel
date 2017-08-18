@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content=" initial-scale=1.0,user-scalable=no" />
+    <title>文章列表</title>
+    <link href="../css/wechat.css" rel="stylesheet" type="text/css" />
+	<script src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+	function doSearch(){
+		var keyword=$("#keyword").val();
+		if(keyword==''){
+			//return;
+		}
+		$(".znwx_wtlb").find("ul").html("<li style='border:0;'>数据加载中..</li>");
+       	jQuery.ajax({
+       		url:'../wechat/questionSearch',
+       	    data:{    
+                   question:keyword
+       	    }, 
+       		type: "post",
+            dataType: "json",
+       		success:function(data){
+				$(".znwx_wtlb").find("ul").html("");
+                jQuery.each(data, function(i, item){      
+					  $(".znwx_wtlb").find("ul").append('<li><img src="../images/wechat/znwx_pic10.png" /><div class="znwx_wtlbbt">'+item.question+'</div><div class="znwx_wtlbhd">'+item.answer+'</div></li>');
+                });
+       		}
+       	});
+	}
+    </script>
+</head>
+
+<body>
+	<div class="znwx_top">
+       #*<div class="znwx_cjwtbt">常见问题&nbsp;<font>FAQ</font></div>*#
+    </div>
+    <div class="znwx_cjwtssk">
+    	<div class="znwx_cjwtssbg"><img src="../images/wechat/znwx_pic08.jpg" width="100%" /></div>
+        <div class="znwx_cjwtss">
+        	##<img src="../images/wechat/znwx_pic09_2.png"  onclick="doSearch()" />
+			<input type="submit" value="" class="znwx_wttj" onclick="doSearch()" /><input type="text" id="keyword" name="keyword" class="cjwtinp" placeholder="Search"/>
+        </div>
+    </div>
+    <div class="znwx_wtlb">
+    	<ul>
+    		#*
+			#foreach($faq in $faqs)
+        	<li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/znwx_pic10.png" /></div>
+	                <div class="znwx_wtlbbt">$!faq.question</div>
+                </a>
+            </li>
+			#end
+			*#
+			<li>
+        		<a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">
+	            	<div class="listImg"><img src="../images/wechat/p52.JPG" /></div>
+	                <div class="znwx_wtlbbt">旅行十分有益，使人浮想联翩</div>
+                </a>
+            </li>
+			<li>
+        		<a href="../wechat/articlDetail?id=32498da7a5e649c397d9efd30966dab5">
+	            	<div class="listImg"><img src="../images/wechat/20161028095554.jpg" /></div>
+	                <div class="znwx_wtlbbt">中巴一家，共庆生日——巴林大学孔子学院师生参加巴林使馆国庆招待会</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/20161028094356.jpg" /></div>
+	                <div class="znwx_wtlbbt">约旦安曼TAG孔子学院第八届理事会成功召开</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/1477381548423092948.jpg" /></div>
+	                <div class="znwx_wtlbbt">兰州大学成功举办首届来华留学生运动会</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/20161028092834.jpg" /></div>
+	                <div class="znwx_wtlbbt">中国青年政治学院孔院奖学金生参加2016年北京外语游园会活动</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/IMG_9545.jpg" /></div>
+	                <div class="znwx_wtlbbt">追逐梦想的日子</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/P20160129_141300000.jpg" /></div>
+	                <div class="znwx_wtlbbt">枣园情，中国梦</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/20150518_124111.jpg" /></div>
+	                <div class="znwx_wtlbbt">有志者事竟成</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/DSC_0294.jpg" /></div>
+	                <div class="znwx_wtlbbt">绽放梦想之花</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/MON_fmqr7468_CMYK.jpg" /></div>
+	                <div class="znwx_wtlbbt">“我几年就得来次脱胎换骨”</div>
+                </a>
+            </li>
+            <li>
+        		<a href="http://www.baidu.com">
+	            	<div class="listImg"><img src="../images/wechat/Colin-Flahive-II_CMYK.jpg" /></div>
+	                <div class="znwx_wtlbbt">改变一切的一天</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

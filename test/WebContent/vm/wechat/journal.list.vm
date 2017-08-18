@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>期刊</title>
+    <link rel="stylesheet" href="../js/jquery-weui-build/dist/lib/weui.min.css">
+	<link rel="stylesheet" href="../js/jquery-weui-build/dist/css/jquery-weui.css">
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/jquery-weui-build/dist/js/jquery-weui.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var winH = $(window).height();
+			$(".listcontent").css("height",winH-40);
+			
+			//点击tab
+			$(".weui_navbar_item").click(function(){
+				var tabId = $(this).attr("id");
+				var filterId = "filter-"+tabId;
+				$(".weui_navbar_item").find("span").removeAttr("style");
+				if($("#"+filterId).is(":hidden")){
+					$(".cover").show();
+					$(".filter-list").hide();
+					$(".weui_navbar_item").find("i").attr("class","filt-arrow");
+					$("#"+filterId).show();
+					$("#"+tabId).find("i").attr("class","filt-arrow-up");
+					$("#"+tabId).find("span").css("color","#F5C447");
+					if(tabId=="year"){
+						if($(this).find("span").text().length==4){
+							$(this).find("i").css("vertical-align",3);
+						}
+					}
+				}else{
+					$(".cover").hide();
+					$("#"+filterId).hide();
+					$("#"+tabId).find("i").attr("class","filt-arrow");
+					if(tabId=="year"){
+						if($(this).find("span").text().length==4){
+							$(this).find("i").css("vertical-align",0);
+						}
+					}
+				}
+			});
+			
+			//点击过滤条件
+			$(".filter-list ul li").click(function(){
+				$(".cover").hide();
+				var filterId = $(this).parents(".filter-list").attr("id");
+				var tabId = filterId.substring(7,filterId.length);
+				$("#"+tabId).attr("data-"+tabId,$(this).attr("data-"+tabId));
+				$("#"+tabId).find("span").html($(this).html());
+				$("#"+tabId).find("i").attr("class","filt-arrow");
+				if(tabId=="year"){
+					$("#year").find("i").css("vertical-align",0);
+				}
+				$(".filter-list").hide();
+				$("#"+tabId).find("span").removeAttr("style");	
+				var year = $("#year").attr("data-year");
+				var lan = $("#lan").attr("data-lan");
+				var issue = $("#issue").attr("data-issue");
+				var param = "pageNo=1&year="+year+"&lan="+lan+"&issue="+issue;
+				$.ajax({
+					url:"../wechat/loadJournal",
+					data:param,
+					type:"post",
+					success:function(result){
+						var result = eval("("+result+")");
+						if(result.success==true){
+							$(".listcontent ul").empty();
+							$("input[name='pageNo']").val("1");
+							$.each(result.data,function(n,item){
+								$(".listcontent ul").append("<li data-lan='"+item.langCode+"' data-year='"+item.year+"' data-issue='"+item.liveIssue+"'><div class='listcover'><a href='../wechat/journalDetail?id="+item.id+"'><img src='../"+item.cover+"' /></a></div><div class='listtext'>"+item.title+"</div></li>");
+							});
+							if(result.data.length<10){
+								$(".weui-infinite-scroll").hide();
+							}else{
+								$(".weui-infinite-scroll").show();
+							}
+						}
+					}
+				});
+				return false;
+			});
+			
+			/* $("#filter-year li").click(function(){
+				var year = $(this).attr("data-year");
+				var lan = $("#lan").attr("data-lan");
+				var issue = $("#issue").attr("data-issue");
+				$("#year").attr("data-year",year);
+				$(".listcontent li").hide();
+				var param = "li";
+				if(year!=''){
+					param += "[data-year='"+year+"']";
+				}else{
+					$("#year").find("span").html("年份<br/>Year");
+				}
+				if(lan!=''){
+					param += "[data-lan='"+lan+"']";
+				}
+				if(issue!=''){
+					param += "[data-issue='"+issue+"']";
+				}
+				$(".listcontent").find(param).show();
+			});
+			
+			$("#filter-lan li").click(function(){
+				var year = $("#year").attr("data-year");
+				var lan = $(this).attr("data-lan");
+				var issue = $("#issue").attr("data-issue");
+				$("#lan").attr("data-lan",lan);
+				$(".listcontent li").hide();
+				var param = "li";
+				if(year!=''){
+					param += "[data-year='"+year+"']";
+				}
+				if(lan!=''){
+					param += "[data-lan='"+lan+"']";
+				}else{
+					$("#lan").find("span").html("语种<br/>Language");
+				}
+				if(issue!=''){
+					param += "[data-issue='"+issue+"']";
+				}
+				$(".listcontent").find(param).show();
+			});
+			
+			$("#filter-issue li").click(function(){
+				var year = $("#year").attr("data-year");
+				var lan = $("#lan").attr("data-lan");
+				var issue = $(this).attr("data-issue");
+				$("#issue").attr("data-issue",issue);
+				$(".listcontent li").hide();
+				var param = "li";
+				if(year!=''){
+					param += "[data-year='"+year+"']";
+				}
+				if(lan!=''){
+					param += "[data-lan='"+lan+"']";
+				}
+				if(issue!=''){
+					param += "[data-issue='"+issue+"']";
+				}else{
+					$("#issue").find("span").html("刊次<br/>Issue");
+				}
+				$(".listcontent").find(param).show();
+			}); */			
+		});
+	</script>
+	
+    <style>
+    	html{ height:100%;}
+		body{background:#f9f9f9; height:100%;}
+		*{box-sizing:border-box}
+		.weui_navbar{background:#bc332d;align-items:center;}
+		.weui_navbar_item{ padding:8px 0; font-size:14px;}
+		.filter-list ul li:active{background-color:#ededed;}
+		.weui_navbar_item span{display:inline-block; line-height:15px; color:#fff;}
+		.weui_navbar_item.weui_bar_item_on{color:#21b100;}
+		.weui_navbar+.weui_tab_bd{padding-top:40px;}
+		.weui_navbar_item i{display:inline-block;}
+		.filt-arrow{
+		    margin-left: 4px;
+		    display: inline-block;
+		    font-size: 0;
+		    line-height: 0;
+		    vertical-align: 6px;
+		    width: 0;
+		    height: 0;
+		    border-style: solid;
+		    border-width: 4px;
+		    border-color: #E0D4D4 transparent transparent transparent;
+		}
+		.filt-arrow-up{
+			margin-left: 4px;
+		    display: inline-block;
+		    font-size: 0;
+		    line-height: 0;
+		    vertical-align: 10px;
+		    width: 0;
+		    height: 0;
+		    border-style: solid;
+		    border-width: 4px;
+			border-color: transparent transparent #F5C447 transparent;
+		}
+		.filter-list ul li{-webkit-tap-highlight-color:transparent;}
+		#filter-year li{padding:10px 8px;}
+    </style>
+</head>
+
+<body>
+	<div class="weui_tab">
+		<div class="weui_navbar">
+    		<div id="year" class="weui_navbar_item" data-year="">
+	          <span>年份<br/>Year</span><i class="filt-arrow"></i>	          
+	        </div>
+	        <div id="lan" class="weui_navbar_item" data-lan="" style="-webkit-box-flex:2; -webkit-flex:2; flex:2;">
+	          <span>语种<br/>Language</span><i class="filt-arrow"></i>
+	          
+	        </div>
+	        <div id="issue" class="weui_navbar_item" data-issue="">
+	          <span>刊次<br/>Issue</span><i class="filt-arrow"></i>
+	          
+	        </div>
+	        <div class="filter">
+    		<div id="filter-year" class="filter-list">
+	          	<ul>
+	          		<li data-year="">全部All</li>
+	          		#foreach($year in $years)
+	          		<li data-year="$!{year}">$!{year}</li>
+	          		#end
+	          	</ul>
+	        </div>
+	        <div id="filter-lan" class="filter-list">
+	          	<ul>
+	          		<li data-lan="">全部<br/>All</li>
+	          		#foreach($lang in $langs)
+	          		<li data-lan="$!{lang.id}">$!{lang.nameCn}<br/>$!{lang.nameEn}</li>
+	          		#end
+	          	</ul>
+	        </div>
+	        <div id="filter-issue" class="filter-list">
+	          	<ul>
+	          		<li data-issue="">全部<br/>All</li>
+	          		<li data-issue="1">第1期<br/>Issue 1</li>
+	          		<li data-issue="2">第2期<br/>Issue 2</li>
+	          		<li data-issue="3">第3期<br/>Issue 3</li>
+	          		<li data-issue="4">第4期<br/>Issue 4</li>
+	          		<li data-issue="5">第5期<br/>Issue 5</li>
+	          		<li data-issue="6">第6期<br/>Issue 6</li>	          		
+	          	</ul>
+	        </div>
+    	</div>
+    	</div>    	
+    	<div class="weui_tab_bd">
+    		<!-- <div class="listTitle">中英对照版</div> -->
+    		<div class="listcontent" style="overflow-y:auto; overflow-x:hidden; width:100%; height:520px;">
+				<ul>
+					#foreach($journal in $journals)
+						<li>
+							<div class="listcover"><a href="../wechat/journalDetail?id=${journal.id}"><img src="../${journal.cover}" /></a></div>
+							<div class="listtext">${journal.title}</div>
+						</li>
+					#end
+				</ul>
+				<div class="weui-infinite-scroll" style="clear:both">
+			      <div class="infinite-preloader"></div>
+			      正在加载
+			    </div>
+			</div>		
+    	</div>
+	</div>	
+	<div class="cover"></div>
+	<input type="hidden" name="pageNo" value="1" />
+</body>
+	<script>
+      var loading = false;
+      $(document).ready(function(){
+    	  $(".listcontent").infinite().on("infinite", function() {
+    	      	if(loading) return;
+    	        loading = true;
+    	        setTimeout(function() {
+    	        	var year = $("#year").attr("data-year");
+    				var lan = $("#lan").attr("data-lan");
+    				var issue = $("#issue").attr("data-issue");
+    				var pageNo = parseInt($("input[name='pageNo']").val())+1;
+    				var param = "pageNo="+pageNo+"&year="+year+"&lan="+lan+"&issue="+issue;    				
+    				$.ajax({
+    					url:"../wechat/loadJournal",
+    					data:param,
+    					type:"post",
+    					success:function(result){
+    						var result = eval("("+result+")");
+    						if(result.success==true){
+    							$.each(result.data,function(n,item){
+    								$(".listcontent ul").append("<li><div class='listcover'><a href='../wechat/journalDetail?id="+item.id+"'><img src='../"+item.cover+"' /></a></div><div class='listtext'>"+item.title+"</div></li>");
+    							});
+    							$("input[name='pageNo']").val(pageNo);
+    							if(result.data.length<10){
+    								$(".weui-infinite-scroll").hide();
+    							}else{
+    								$(".weui-infinite-scroll").show();
+    							}
+    						}else{
+    							$(".weui-infinite-scroll").html("真的没有了");
+    						}
+    					}
+    				});
+    	        	loading = false;
+    	  		}, 1000);
+    	  });
+      });
+	</script>
+</html>
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content=" initial-scale=1.0,user-scalable=no" />
+	<title>个人中心</title>
+    <script src="../js/jquery-1.11.1.min.js"></script>
+	<link href="../css/wechat.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body style="background-color:#EDEDED;">
+	<input type="hidden" id="http_url" name="http_url" value="$!http_url"/>
+	#if(!$binding)
+	<div class="znwx_top">
+        <div class="znwx_logok"><img src="../images/wechat/znwx_logo.png" width="100%" /></div>
+        <div class="znwx_mkbt">个人中心-绑定网站</div>
+    </div>
+    <div class="znwx_mid">
+        <div class="znwx_zcimg"><img src="../images/wechat/znwx_pic11.png" /></div>
+        <div class="znwx_zcform">
+			<form id="validForm" method="post" action="../wechat/validUser">
+				<input type="hidden" id="openid" name="openid" value="$!openid"/>
+            	<div class="srbd"><input type="text" id="username" name="username" placeholder="用户名" class="znwx_zcsr" /><s class="user"></s></div>
+                <div class="srbd"><input type="password" id="password" name="password" placeholder="密　码" class="znwx_zcsr" /><s class="pwd"></s></div>
+                <div><input type="button" name="regbtn" value="提 交" class="znwx_regbtn" id="validFormSave" onclick="validFormSave()"/></div>
+				<div id="msg_bind" style="color:red;text-align:center;padding-top:8px;"></div>
+            </form>
+			##刷新时，无法获取openid，设置调整404
+			<script type="text/javascript">
+             var openid=$("#openid").val();
+			 if(openid==''){
+				 window.location.href="../wechat/error";
+			 }
+			 </script>
+        </div>
+    </div>
+	#else
+	<div class="znwx_top">
+        <div class="znwx_logok"><img src="../images/wechat/znwx_logo.png" width="100%" /></div>
+        <div class="znwx_mkbt">个人中心-用户信息</div>
+    </div>
+    <div class="znwx_mid2">
+        <div class="znwx_zcimg">
+			#if($cover)
+				<img style="border-radius:50%;border:1px solid #fff" src="$!{cover}" />
+			#else
+				<img src="../images/wechat/znwx_pic11.png" />
+			#end
+		</div>
+        <div class="znwx_yhxx">
+        	<div class="znwx_yhxxbg"><img src="../images/wechat/znwx_pic12.png" width="100%" /></div>
+            <div class="znwx_yhxxnr">
+            	<table width="100%" cellpadding="1" cellspacing="0" border="0" style="display:none;">
+					<input type="hidden" id="username" name="username" value="$!username"/>
+                	<tr>
+                    	<td align="right" width="30%"><label>用户名：</label></td><td><span id="loginname"></span></td>
+                    </tr>
+                    <tr>
+                    	<td align="right"><label>昵　称：</label></td><td><span id="name"></span></td>
+                    </tr>
+					#* 
+                    <tr>
+                    	<td align="right"><label>性　别：</label></td><td><span id="gender"></span></td>
+                    </tr>
+					*#
+                    <tr>
+                    	<td align="right"><label>生　日：</label></td><td><span id="birthday"></span></td>
+                    </tr>
+                    <tr>
+                    	<td align="right"><label>邮　箱：</label></td><td><span id="email"></span></td>
+                    </tr>
+                    <tr>
+                    	<td align="right"><label>电　话：</label></td><td><span id="tel"></span></td>
+                    </tr>
+                </table>
+				<div id="msg_info" style="text-align:center;">信息加载中...</div>
+            </div>
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+               	var username=$("#username").val();
+               	var http_url=$("#http_url").val();
+               	//获取用户信息
+               	jQuery.ajax({
+               		url:http_url+'wechat/loadUserByLoginName',
+               	    data:{    
+                           username:username
+               	    }, 
+               		type: "post",
+                    dataType: "json",
+               		success:function(data){
+						$(".znwx_yhxxnr").find("table").hide();
+               			if(data.success==true){
+							//信息设置
+               				$("#loginname").text(data.info.loginName!=null?data.info.loginName:'暂无');
+               				$("#name").text(data.info.name!=null?data.info.name:'暂无');
+               				//$("#gender").text(data.info.gender!=null?(data.info.gender=='1'?"男":"女"):'暂无');
+               				$("#birthday").text(data.info.birthday!=null?data.info.birthday:'暂无');
+               				$("#email").text(data.info.email!=null?data.info.email:'暂无');
+               				$("#tel").text(data.info.tel!=null?data.info.tel:'暂无');
+							
+               				$("#msg_info").html("");
+							$(".znwx_yhxxnr").find("table").show();
+               			}else{
+               				$("#msg_info").html("<span style='color:red;'>抱歉，网站连接异常，请稍后重试！</span>");
+               			}
+               		}
+               	});
+    		});
+    		</script>
+        </div>
+    </div>
+#end
+</body>
+<script type="text/javascript" src="../js/module/wechat.personal.js?v=$dateTool" ></script>
+</html>

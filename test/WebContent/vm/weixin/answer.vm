@@ -1,0 +1,109 @@
+##回复管理
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style type="text/css">
+	a{text-decoration:none}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/themes/default/default.css" />
+<link rel="stylesheet" href="../js/kindeditor-4.1.10/plugins/code/prettify.css" />
+<script charset="utf-8" src="../js/kindeditor-4.1.10/kindeditor.js"></script>
+<script charset="utf-8" src="../js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<style type="text/css">
+	a{text-decoration:none}
+	form {
+		margin: 0;
+	}
+	textarea {
+		display: block;
+	}
+    .ke-icon-wzcj {
+    	background: url(../images/weixin/wxedit.png) 0 -30px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+    .ke-icon-tpcj {
+    	background: url(../images/weixin/wxedit.png) 0 -90px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+    .ke-icon-yycj {
+    	background: url(../images/weixin/wxedit.png) 0 -210px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+    .ke-icon-spcj {
+    	background: url(../images/weixin/wxedit.png) 0 -150px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+    .ke-icon-twxx {
+    	background: url(../images/weixin/wxedit.png) 0 -270px no-repeat;
+    	width: 20px;
+    	height: 20px;
+    }
+</style>
+<script type="text/javascript" src="../js/module/weixin.answer.js?v=$!dateTool" ></script>
+<div class="easyui-panel" fit="true" title="微信管理 - 回复管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <div id="list_data" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+    <div id="tb" style="padding:3px">
+		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="doAdd('text')">新建回复</a>
+		<input class="easyui-searchbox" data-options="prompt:'问题',searcher:doSearch" style="width:200px"></input>
+    </div>
+</div>
+
+<div id="dialog_edit" style="display:none;width:500px;height:390px;padding:5px;" title="回复编辑" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:true">
+    		<form id="m_form" method="post" style="padding:10px;line-height:10px;">
+            	<input type="hidden" id="id" name="id"" value="" />
+            	<input type="hidden" id="type" name="type" value="text" />
+				<input type="hidden" id="media_id" name="media_id" value="" />
+				<input type="hidden" id="frequency" name="frequency" value="" />
+				#* 
+                <label><b>类型</b>：</label><select class="easyui-combobox" id="type" name="type" style="width:100px;" data-options="required:true,editable:false">
+                    <option value="text">文本</option>
+                    <option value="image">图片</option>
+                    <option value="voice">语音</option>
+                    <option value="video">视频</option>
+                    <option value="music">音乐</option>
+                    <option value="news">图文</option>
+                </select>
+				*#
+				##<br/><br/>
+                <label><b>问题</b>：</label><input id="question" name="question"  value="" style="width:250px;" class="easyui-textbox" type="text" data-options="required:true"/>&nbsp;<br/><br/>
+				<textarea id="answer" name="answer" style="width:100%;height:250px;"></textarea>
+    		</form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton c6" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:doSubmit()" style="width:80px">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_edit').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_tw" style="display:none;width:700px;height:500px;padding:5px;" title="选择图文" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false">
+    		 <div id="tw_data" cellspacing="0" cellpadding="0"></div>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_tw').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_mt" style="display:none;width:670px;height:500px;padding:5px;" title="选择素材" iconCls="icon-edit">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false">
+    		 <div id="mt_data" cellspacing="0" cellpadding="0"></div>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:$('#dialog_mt').dialog('close')" style="width:80px">关闭</a>
+        </div>
+    </div>
+</div>

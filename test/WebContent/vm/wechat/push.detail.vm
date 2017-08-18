@@ -1,0 +1,33 @@
+##教师必看.查看详情
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <link href="../css/wechat.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".testBtn").click(function(){
+				window.location.href="../wechat/quiz";
+			});
+		});
+    </script>
+	<style>
+		body{padding:5px 10px;}
+		img{max-width:100%;}
+		.articleContent{font-size:1em;padding: 15px 5px 30px 5px;}
+		.articleContent p{line-height:25px; text-align:justify; text-indent:2em;color:#666; font-size:17px;}
+		a{color:#0066cc;}
+	</style>
+</head>
+<body>
+    <div style="width:100%;">
+        <p style="font-size:1.2em;font-weight:bold;">$info.title</p>
+        <p style="font-size:1.0em;">$!date.format('yyyy-MM-dd',$info.createdTime)  <span style="color:#7D9EC0;">孔子学院杂志</span></p>
+        <div style="text-align:center"><img src="../upload/${info.cover}"/></div>
+        <div class="articleContent">$info.content</div>
+    	<div style="font-size:0.8em;color:#C2C2C2;padding: 10 10 10 0;">阅读#if($info.readCount) $!info.readCount #else 0 #end</div>
+    </div>
+</body>
+</html>

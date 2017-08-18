@@ -1,0 +1,48 @@
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.4/themes/color.css">
+<style>
+.icon-jczn{
+	background:url('../js/jquery.accordion/icons/jczn.png') no-repeat center center;
+}
+.icon-wx{
+	background:url('../js/jquery.accordion/icons/wx.png') no-repeat center center;
+}
+.icon-cchy{
+	background:url('../js/jquery.accordion/icons/cchy.png') no-repeat center center;
+}
+a{
+	text-decoration:none
+}
+a:focus {
+    outline:none;
+    -moz-outline:none;
+}
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript" src="../js/module/operator.user.js?v=$date" ></script>
+
+<div class="easyui-panel" fit="true" title="运营管理 - 用户信息" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
+    <!-- <div id="tt" class="easyui-tabs" style="width:100%;"  fit="true" plain="true">
+        <div title="移动应用-用户信息" closable="true" style="padding:1px;" iconCls="icon-wx">
+            <div id="jcznwx" cellspacing="0" cellpadding="0" style="margin-top:1px;"></div>
+            <div id="jcznwx_tb" style="padding:3px">
+        		
+            </div>
+        </div>
+    </div> -->
+    <table id="dg"></table>
+    <div id="tb">
+		<!-- <input class="easyui-searchbox" data-options="prompt:'昵称',searcher:doSearchJcznwx" style="width:200px"></input> -->
+		<input id="nickname" class="easyui-textbox" data-options="prompt:'昵称'" style="width:200px" />&nbsp;
+		注册方式：<select id="regway" class="easyui-combobox" name="identityType" editable="false" style="width:100px;">
+		    <option value="">全部</option>
+		    <option value="email">email</option>
+		    <option value="qq">QQ</option>
+		    <option value="wechat">微信</option>
+		</select>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">Search</a>
+	</div>
+</div>

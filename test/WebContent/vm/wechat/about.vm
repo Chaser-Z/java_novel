@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>联系我们</title>
+    <link rel="stylesheet" href="../css/wechat.css" type="text/css" />
+    <style>
+    	a{color:#507CA9;}
+    </style>
+</head>
+
+<body>
+	<div><img src="../images/wechat/ci-top.jpg" width="100%" style="display:block;" /></div>
+	<!-- <div class="aboutTitle">联系我们</div> -->
+	<div class="aboutcontent">
+		<h4>《孔子学院》多语种期刊</h4>
+		<p>《孔子学院》创办于2009年，由现任国务院副总理、孔子学院总部理事会主席刘延东发表创刊词，欧阳中石先生题写中文刊名。</p>
+		<p>期刊目前有11个语种的双语对照版（中英、中西、中法、中俄、中泰、中韩、中日、中阿、中德、中葡、中意），拥有标准国际连续出版物号（ISSN）和中国国内统一刊号（CN）的正式出版物，由孔子学院总部/国家汉办主办。编辑模式采用中外双方公共组成编辑部方式运行，除中英刊由总部主办外，其他语种内容完全不同杂志基本实现了各国本土编辑、出版和发行。目前均为双月刊，每期80页，公开发行到140个国家和地区孔子学院（课堂）学生、汉语和中华文化爱者、当地政要、使领馆，国内奖学金生、中外双方合作院校、图书馆。</p>
+		<p>期刊主要介绍中华文化，报道孔子学院活动、汉语教学与学习、讲述中外人文交流故事等。作为国内唯一拥有多文种独立刊号并实现本土编辑、出版和发行的刊物，《孔子学院》“走出去”期刊领域独树一帜，成为跨文化交流的亮丽名片，各国人民学习汉语了解中国的鲜活教材。2016年，被中国期刊协会、中国期刊年鉴杂志社、中国期刊交易博览会评选为“最美期刊”百强。</p>
+		<h4>联系我们</h4>
+		<div class="mycell">
+			<div class="cellleft"><label>地址：</label></div>
+			<div class="cellright">中国北京西城区德胜门外大街129号</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>邮编：</label></div>
+			<div class="cellright">100088</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>电话：</label></div>
+			<div class="cellright">(86)-10-58595915</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>传真：</label></div>
+			<div class="cellright">(86)-10-58595900</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>电邮：</label></div>
+			<div class="cellright">kongzi@hanban.org</div>
+		</div>
+		<div class="mycell">
+			<div class="cellleft"><label>网址：</label></div>
+			<div class="cellright"><a href="http://www.cim.chinesecio.com">http://www.cim.chinesecio.com</a></div>
+		</div>
+	</div>
+</body>
+</html>
+
