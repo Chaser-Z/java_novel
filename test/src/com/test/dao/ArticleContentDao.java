@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.miger.commons.hibernate.SimpleDao;
 import com.test.model.ArticleContent;
-import com.test.model.ArticleHot;
+import com.test.model.NovelList;
 
 public interface ArticleContentDao extends SimpleDao<ArticleContent, Integer>{
 	

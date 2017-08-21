@@ -13,32 +13,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.test.model.ArticleHot;
-import com.test.service.ArticleHotService;
+import com.test.model.NovelList;
+import com.test.service.NovelListService;
 import com.test.utils.JsonMapper;
 import com.test.utils.ObjectMapper;
 import com.test.webservice.constants.ErrorCode;
-import com.test.webservice.dto.ArticleHotDTO;
+import com.test.webservice.dto.NovelListDTO;
 import com.test.webservice.dto.BaseDTO;
 import com.test.webservice.param.ArticleSearchParam;
 
 
 @Controller
 @RequestMapping(value = "/article")
-public class ArticleHotWebservice {
+public class NovelListWebservice {
 	
-	private static Logger logger = Logger.getLogger(ArticleHotWebservice.class);
+	private static Logger logger = Logger.getLogger(NovelListWebservice.class);
 	
 	@Autowired
-	private ArticleHotService articleHotService;
+	private NovelListService novelListService;
 	
 	// Get Hot Article
 	@RequestMapping(value = "/getHot", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String getHot(@RequestBody BaseDTO baseDTO) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try{
-			List<ArticleHot> articleHots = articleHotService.getHot();
-			map.put("data", convert(articleHots));
+			List<NovelList> novelLists = novelListService.getHot();
+			map.put("data", convert(novelLists));
             map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
 			
 		} catch(Exception e) {
@@ -51,12 +51,12 @@ public class ArticleHotWebservice {
 	
 	// Get type Article
 	@RequestMapping(value = "/getArticleByType", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public @ResponseBody String getArticleByType(@RequestBody ArticleHotDTO articleHotDTO) {
+	public @ResponseBody String getArticleByType(@RequestBody NovelListDTO articleHotDTO) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			List<ArticleHot> articleHots = articleHotService.getArticleByType(articleHotDTO.getArticle_type());
-			map.put("data", convert(articleHots));
+			List<NovelList> novelLists = novelListService.getArticleByType(articleHotDTO.getArticle_type());
+			map.put("data", convert(novelLists));
             map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
 			
 		} catch(Exception e) {
@@ -70,12 +70,12 @@ public class ArticleHotWebservice {
 	
 	// Get type Article
 	@RequestMapping(value = "/getHomeArticle", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public @ResponseBody String getHomeArticle(@RequestBody ArticleHotDTO articleHotDTO) {
+	public @ResponseBody String getHomeArticle(@RequestBody NovelListDTO articleHotDTO) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			List<ArticleHot> articleHots = articleHotService.getHome();
-			map.put("data", convert(articleHots));
+			List<NovelList> novelLists = novelListService.getHome();
+			map.put("data", convert(novelLists));
             map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
 			
 		} catch(Exception e) {
@@ -97,7 +97,7 @@ public class ArticleHotWebservice {
             if (param != null) {
                 String keyword = param.getKeyword();
                 if (keyword != null && keyword.length() > 0) {
-                    List<ArticleHot> articles = articleHotService.getArticleByKeyword(keyword);
+                    List<NovelList> articles = novelListService.getArticleByKeyword(keyword);
                     map.put("data", convert(articles));
                     map.put(ErrorCode.KEY, ErrorCode.SUCCESS);
                 } else {
@@ -116,18 +116,18 @@ public class ArticleHotWebservice {
 	}
 	
 	
-	private static ArticleHotDTO convert(ArticleHot articleHot) {
+	private static NovelListDTO convert(NovelList articleHot) {
 		if (articleHot == null) {
 			return null;
 		}
-		ArticleHotDTO result = ObjectMapper.map(articleHot, ArticleHotDTO.class);
+		NovelListDTO result = ObjectMapper.map(articleHot, NovelListDTO.class);
 		//result.setArticle_id(articleHot.getId());
 		return result;
 	}
-	private static List<ArticleHotDTO> convert(List<ArticleHot> articleHot) {
-		List<ArticleHotDTO> results = new ArrayList<ArticleHotDTO>();
-		for (ArticleHot hot : articleHot) {
-			ArticleHotDTO dto = convert(hot);
+	private static List<NovelListDTO> convert(List<NovelList> articleHot) {
+		List<NovelListDTO> results = new ArrayList<NovelListDTO>();
+		for (NovelList hot : articleHot) {
+			NovelListDTO dto = convert(hot);
 			if (dto != null) {
 				results.add(dto);
 			}

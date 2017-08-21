@@ -10,19 +10,19 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.miger.commons.hibernate.impl.SimpleDaoImpl;
-import com.test.dao.ArticleHotDao;
+import com.test.dao.NovelListDao;
 import com.test.dao.helper.ConnManager;
-import com.test.model.ArticleHot;
+import com.test.model.NovelList;
 
-@Repository("articleHotDao")
-public class ArticleHotDaoImpl extends SimpleDaoImpl<ArticleHot, String> implements ArticleHotDao {
+@Repository("novelListDao")
+public class NovelListImpl extends SimpleDaoImpl<NovelList, String> implements NovelListDao {
 
 	
 	
 	@Override
-	public List<ArticleHot> getArticleByKeyword(String keyword) {
+	public List<NovelList> getArticleByKeyword(String keyword) {
 		System.out.println(keyword);
-		List<ArticleHot> articleHots = new ArrayList<ArticleHot>();
+		List<NovelList> articleHots = new ArrayList<NovelList>();
 		String sql = "select * from c_article_list where title like ?";
 		
 		 try {
@@ -31,7 +31,7 @@ public class ArticleHotDaoImpl extends SimpleDaoImpl<ArticleHot, String> impleme
 	            stmt.setString(1, "%" + keyword + "%");
 	            ResultSet rs = stmt.executeQuery();
 	            while (rs.next()) {
-	            	ArticleHot articleHot = convertResultSetToArticle(rs);
+	            	NovelList articleHot = convertResultSetToArticle(rs);
 	            	articleHots.add(articleHot);
 	            }
 	            
@@ -48,9 +48,9 @@ public class ArticleHotDaoImpl extends SimpleDaoImpl<ArticleHot, String> impleme
 	
 	
 	@Override
-	public List<ArticleHot> getHome() {
+	public List<NovelList> getHome() {
 		
-        List<ArticleHot> articleHots = new ArrayList<ArticleHot>();
+        List<NovelList> articleHots = new ArrayList<NovelList>();
         String sql = "SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '热门'  ORDER BY id desc  LIMIT 3) as a  " 
         			 + "  UNION   " 
         		     + "  SELECT * from (SELECT * FROM c_article_list  x WHERE x.article_type = '玄幻' ORDER BY id DESC LIMIT 6) as b  "
@@ -88,7 +88,7 @@ public class ArticleHotDaoImpl extends SimpleDaoImpl<ArticleHot, String> impleme
             //stmt.setString(2, lastDate);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-            	ArticleHot articleHot = convertResultSetToArticle(rs);
+            	NovelList articleHot = convertResultSetToArticle(rs);
             	articleHots.add(articleHot);
             }
             
@@ -103,8 +103,8 @@ public class ArticleHotDaoImpl extends SimpleDaoImpl<ArticleHot, String> impleme
         return articleHots;
 	}
 	
-	private static ArticleHot convertResultSetToArticle(ResultSet rs) throws SQLException {
-		ArticleHot articleInfo = new ArticleHot();
+	private static NovelList convertResultSetToArticle(ResultSet rs) throws SQLException {
+		NovelList articleInfo = new NovelList();
 		
 		articleInfo.setId(rs.getString("id"));
 		articleInfo.setTitle(rs.getString("title"));

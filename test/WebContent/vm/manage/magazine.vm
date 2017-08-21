@@ -43,39 +43,75 @@
 	}
 	
 	//编辑
-	function doEdit(id,cover,pdfFilePath){
-		$("#coversimg").find("img").attr("src","");
-		$("#coversimg").hide();
-		$("#pdfFilePath").find("a").attr("href","#");
-		$("#pdfFilePath").hide();
-		if(cover != 'undefined'&& typeof(cover) != 'undefined' && cover != null && cover != ''){
-			$("#coversimg").find("img").attr("src","../"+cover);
-			$("#coversimg").show();
-		}
-		if(pdfFilePath != 'undefined'&& typeof(pdfFilePath) != 'undefined' && pdfFilePath != null && pdfFilePath != ''){
-			$("#pdfFilePath").find("a").attr("href","../"+pdfFilePath);
-			$("#pdfFilePath").show();
-		}
+	function doEdit(article_id){
+		
 		$('#m_form').form('clear');
-		$("#update_id").val(id);
-		$('#m_form').form('load', '../manage/magazineLoad?id='+id);
+		$("#article_id").val(article_id);
+		$('#m_form').form('load', '../manage/magazineLoad?article_id='+article_id);
 		$('#dialog_edit').show();
         $('#dialog_edit').dialog({modal:true});
         
-        $("#id").textbox({ disabled: true });
+        //$("#article_id").textbox({ disabled: true });
 	}
 	
 	//提交
 	function doSubmit(){
+		
         $('#m_form').form('submit', {
             url:'../manage/magazineSave',
             onSubmit: function(param){
-            	var langCode = $("input[name='langCode']").val();
-            	if(langCode == null || langCode == ''){
-            		return false;
-            	}
+			
+				var article_id = $("input[name='article_id']").val();
+				if(article_id == null || article_id == '') {
+					alert("需要填写小说id");
+					return false;
+				}
+				
+				var title = $("input[name='title']").val();
+				if(title == null || title == '') {
+					alert("需要填写名字");
+					return false;
+				}
+				
+				var author = $("input[name='author']").val();
+				if(author == null || author == '') {
+					alert("需要填写作者名字");
+					return false;
+				}
+				
+				var article_abstract = $("input[name='article_abstract']").val();
+				if(article_abstract == null || article_abstract == '') {
+					alert("需要填写小说简介");
+					return false;
+				}
+				
+				var link = $("input[name='link']").val();
+				if(link == null || link == '') {
+					alert("需要填写小说链接");
+					return false;
+				}
+				
+				var image_link = $("input[name='image_link']").val();
+				if(image_link == null || image_link == '') {
+					alert("需要填写小说图片链接");
+					return false;
+				}
+				
+				var article_type = $("input[name='article_type']").val();
+				if(article_type == null || article_type == '') {
+					alert("需要选择小说类型");
+					return false;
+				}
+				
+				var status = $("input[name='status']").val();
+				if(status == null || status == '') {
+					alert("需要选择小说状态");
+					return false;
+				}
+			
             	var v = $(this).form('enableValidation').form('validate');
             	if(!v){
+            		alert("error!");
             		return false;
             	}
             	return true;
@@ -93,7 +129,7 @@
 	}
 	
 	//删除
-	function doDel(id){
+	function doDel(article_id){
         $.messager.confirm('消息提示', '确定删除?', function(r){
             if(r){
         		jQuery.ajax({
@@ -101,7 +137,7 @@
         	    	dataType: 'json',
         	    	url:　'../manage/magazineDel', 
         	    	data: {
-        				id:id
+        				article_id:article_id
         			},
         			error:　function(data){
         				alert('error');
@@ -117,8 +153,8 @@
 	//按钮
 	function qxButton(value,row,index){
     	//var c1='<a href="javascript:doChild('+"'"+row.id+"'"+')"><img title="二级菜单" src="../images/icons/into.png" style="vertical-align:middle;"/></a>';
-    	var c2='<a href="javascript:doEdit('+"'"+row.id+"'"+','+"'"+row.cover+"'"+','+"'"+row.pdfFilePath+"'"+')"><img title="编辑" src="../images/icons/edit.png" style="vertical-align:middle;"/></a>';
-    	var c3='<a href="javascript:doDel('+"'"+row.id+"'"+')"><img title="删除" src="../images/icons/delete.png" style="vertical-align:middle;"/></a>';
+    	var c2='<a href="javascript:doEdit('+"'"+row.article_id+"'"+')"><img title="编辑" src="../images/icons/edit.png" style="vertical-align:middle;"/></a>';
+    	var c3='<a href="javascript:doDel('+"'"+row.article_id+"'"+')"><img title="删除" src="../images/icons/delete.png" style="vertical-align:middle;"/></a>';
 		//if(row.pid!=''){
 			return c2+'&nbsp;&nbsp;'+c3+'&nbsp;&nbsp;';
 		//}
@@ -153,13 +189,14 @@
             columns:[[
 				{halign:'center',align:'center',field:'id',width:'40',title: 'id',hidden:false },
                 //{halign:'center',align:'left',field:'link',width:'50',title: 'link' },
-                {halign:'center',align:'center',field:'pdfFilePath',width:'200',title: 'pdfFilePath',hidden:true },
+                //{halign:'center',align:'center',field:'pdfFilePath',width:'200',title: 'pdfFilePath',hidden:true },
                 {halign:'center',align:'center',field:'article_id',width:'50',title: '小说id' },
                 {halign:'center',align:'center',field:'title',width:"55",title: '名称' },
                 {halign:'center',align:'center',field:'author',width:"60",title: '作者' },
                 {halign:'center',align:'center',field:'article_abstract',width:"400",title: '简介' },
-                {halign:'center',align:'center',field:'link',width:"40",title: '链接' },
-                {halign:'center',align:'center',field:'image_link',width:"150",title: '图片链接' ,formatter:txView},
+                {halign:'center',align:'center',field:'link',width:"100",title: '链接' },
+                {halign:'center',align:'center',field:'image_link',width:"100",title: '图片链接'},
+                //{halign:'center',align:'center',field:'image_link',width:"50",title: '图片显示' ,formatter:txView},
                 {halign:'center',align:'center',field:'article_type',width:"40",title: '类型' },
                 {halign:'center',align:'center',field:'status',width:"40",title: '状态' },
                 /* {halign:'center',align:'center',field:'createTime',width:"150",title: 'createTime',formatter: function(value,row,index){
@@ -228,40 +265,36 @@
 	            		<td><input id="id" name="id"  value="" style="width:390px;" class="easyui-textbox" data-options="required:false"/></td>
             	 	</tr>
             		<tr style="">
-	            		<td><label ><b>标题</b>：</label></td>
-	            		<td><input id="title" name="title"  value="" style="width:390px;" class="easyui-textbox" data-options="required:false"/></td>
+	            		<td><label ><b>小说id</b>：</label></td>
+	            		<td><input id="article_id" name="article_id"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/></td>
             	 	</tr>
             		<tr style=""> 
-	            		<td><label ><b>链接</b>：</label></td>
-	            		<td><input id="link" name="link"  value="" style="width:390px;" class="easyui-textbox" data-options="required:false"/></td>
+	            		<td><label ><b>名称</b>：</label></td>
+	            		<td><input id="title" name="title"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/></td>
             	 	</tr>
             	 
 	           		<tr style="">
-	            	 	<td><label ><b>封面</b>：</label></td>
-	            	 	<td><!-- <input id="cover" name="cover"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/> -->
-	            		<input type="file" name = "covers"/></td>
+	            	 	<td><label ><b>作者</b>：</label></td>
+	            	 	<td><input id="author" name="author"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/></td>
+	            	 	<!-- <td><input id="cover" name="cover"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/>
+	            		<input type="file" name = "covers"/></td> -->
 	           		</tr>
-	           		<tr id="coversimg" style="display: none;">
+	           		<!-- <tr id="coversimg" style="display: none;">
 	            	 	<td><label ><b>当前封面</b>：</label></td>
 	            	 	<td><img alt="" src="../hbcms/userfiles/images/cms/article/63bec27e8bee4dbf8c16237129849f32.jpg" style="width: 80px;height: 80px;"></td>
-	           		</tr>
+	           		</tr> -->
 	           	 	<tr style="">
-	            	 	<td><label ><b>PDF</b>：</label></td>
-	            	 	<td><!-- <input id="cover" name="cover"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/> -->
-	            	 	<input type="file" name = "pdfFile"/></td>
-	           	 	</tr>
-	           	 	<tr style="display: none;" id="pdfFilePath" style="">
-	            	 	<td><label ><b>当前pdf</b>：</label></td>
-	            	 	<td>
-	            	 	<a href="#" target="_blank">下载</a></td>
+	            	 	<td><label ><b>简介</b>：</label></td>
+	            	 	<td><input id="article_abstract" name="article_abstract"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/></td>
 	           	 	</tr>
 	           	 	<tr style="">
-		            	 <td><label ><b>年份</b>：</label></td>
-		            	 <td><input id="year" name="year"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/></td>
+		            	 <td><label ><b>链接</b>：</label></td>
+		            	 <td><input id="link" name="link"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/></td>
 		           	 </tr>
 		           	 <tr style="">
-		            	 <td><label ><b>语种</b>：</label></td>
-		            	 <td><!-- <input id="langCode" name="langCode"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/> -->
+		            	 <td><label ><b>图片链接</b>：</label></td>
+		            	 <td><input id="image_link" name="image_link"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/></td>
+		            	 <!-- <td><input id="langCode" name="langCode"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/>
 		            	      <select id="langCodes" class="easyui-combobox" name="langCode" style="width:390px;" data-options="required:true,editable:false">
 		            	        <option value="1">中法</option>
 		            	        <option value="2">中阿</option>
@@ -275,29 +308,33 @@
 		            	        <option value="10">中葡</option>
 		            	        <option value="11">中韩</option>
 		            	      </select>
-		            	 </td>
+		            	 </td> -->
 		           	 </tr>
 		           	 <tr style="">
-		            	 <td><label ><b>年度刊次</b>：</label></td>
+		            	 <td><label ><b>类型</b>：</label></td>
 		            	 <td><!-- <input id="liveIssue" name="liveIssue"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/> -->
-		            	     <select id="liveIssue" class="easyui-combobox" name="liveIssue" style="width:390px;" data-options="required:true,editable:false">
-		            	        <option value="01">1</option>
-		            	        <option value="02">2</option>
-		            	        <option value="03">3</option>
-		            	        <option value="04">4</option>
-		            	        <option value="05">5</option>
-		            	        <option value="06">6</option>
-		            	        <!-- <option value="07">7</option>
-		            	        <option value="08">8</option>
-		            	        <option value="09">9</option>
-		            	        <option value="10">10</option>
-		            	        <option value="11">11</option> -->
+		            	     <select id="article_type" class="easyui-combobox" name="article_type" style="width:390px;" data-options="required:true,editable:false">
+		            	        <option value="热门">热门</option>
+		            	        <option value="玄幻">玄幻</option>
+		            	        <option value="修真">修真</option>
+		            	        <option value="都市">都市</option>
+		            	        <option value="历史">历史</option>
+		            	        <option value="网游">网游</option>
+		            	        <option value="科幻">科幻</option>
+		            	        <option value="恐怖">恐怖</option>
+		            	        <option value="全本">全本</option>
 		            	      </select>
 		            	 </td>
 		           	 </tr>
 		           	 <tr style="">
-		            	 <td><label ><b>语种总刊次</b>：</label></td>
-		            	 <td><input id="issue" name="issue"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/></td>
+		            	 <td><label ><b>状态</b>：</label></td>
+		            	 <td>
+		            	  <select id="status" class="easyui-combobox" name="status" style="width:390px;" data-options="required:true,editable:false">
+		            	        <option value="0">0</option>
+		            	        <option value="1">1</option>
+		            	        <option value="2">2</option>
+		            	  </select>
+		            	 </td>
 		           	 </tr>
             	</table>
                 <!-- <label ><b>id</b>：</label><input id="id" name="id"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/>&nbsp;<br/><br/>

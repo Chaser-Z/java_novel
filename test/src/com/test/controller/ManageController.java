@@ -1,19 +1,14 @@
 package com.test.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,13 +21,16 @@ import com.alibaba.fastjson.JSON;
 import com.miger.commons.dto.Page;
 import com.miger.commons.utils.Md5Util;
 import com.miger.commons.utils.StringUtil;
+import com.test.model.NovelList;
+import com.test.model.NovelSave;
 import com.test.model.manager.Limit;
 import com.test.model.manager.Menu;
 import com.test.model.manager.User;
-import com.test.service.ArticleHotService;
+import com.test.service.NovelListService;
 import com.test.service.LimitService;
 import com.test.service.LogService;
 import com.test.service.MenuService;
+import com.test.service.NovelSaveService;
 import com.test.service.UserService;
 import com.test.utils.RequestUtil;
 
@@ -61,7 +59,10 @@ public class ManageController {
 	@Autowired
 	private LogService logService;
 	@Autowired
-	private ArticleHotService articleHotService;
+	private NovelListService articleHotService;
+	@Autowired
+	private NovelSaveService novelSaveService;
+
 	
 	
 	/**
@@ -674,7 +675,7 @@ public class ManageController {
 	
 	
 	/**
-	 * 杂志页面
+	 * 小说页面
 	 */
 	@RequestMapping(value = "/magazine")
 	public ModelAndView magazine(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -683,7 +684,7 @@ public class ManageController {
 		return view;
 	}
 	/**
-	 * 杂志列表
+	 * 小说列表
 	 */
 	@RequestMapping(value = "/magazinelist")
 	public void magazinelist(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -694,44 +695,45 @@ public class ManageController {
 		Map<String, Object> jsonMap = articleHotService.page(rows, curr);
 		response.getWriter().print(JSON.toJSONString(jsonMap));
 	}
-//	/**
-//	 * 杂志删除
-//	 */
-//	@RequestMapping(value = "/magazineDel")
-//	public void magazineDel(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		String id = request.getParameter("id");
-//		if (!StringUtil.isNull(id)) {
-//			journalSaveService.delete(id);
-//		}
-//		Map<String, Object> jsonMap = new HashMap<String, Object>();
-//		jsonMap.put("success", !StringUtil.isNull(id));
-//		response.getWriter().print(JSON.toJSONString(jsonMap));
-//	}
-//	/**
-//	 * 根据杂志id 获取 杂志信息
-//	 */
-//	@RequestMapping(value = "/magazineLoad")
-//	public void magazineLoad(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		String id = request.getParameter("id");
-//		if (!StringUtil.isNull(id)) {
-//			Journal info = journalService.load(id);
-//			System.out.println(JSON.toJSONString(info));
-//			response.getWriter().print(JSON.toJSONString(info));
-//		}
-//	}
-//	
-//	@RequestMapping(value = "/magazineSave")
-//	public void magazineSave(@RequestParam(value = "covers", required = false) MultipartFile mediacovers,@RequestParam(value = "pdfFile", required = false) MultipartFile pdfFile,HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		String updateid = request.getParameter("update_id");
-//		String id = request.getParameter("id");
-//		String link = request.getParameter("link");
-//		String title = request.getParameter("title");
-//		//String cover = request.getParameter("cover");
-//		String year = request.getParameter("year");
-//		String langCode = request.getParameter("langCode");
-//		String liveIssue = request.getParameter("liveIssue");
-//		String issue = request.getParameter("issue");
-//
+	/**
+	 * 小说删除
+	 */
+	@RequestMapping(value = "/magazineDel")
+	public void magazineDel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String id = request.getParameter("article_id");
+		if (!StringUtil.isNull(id)) {
+			novelSaveService.delete(id);
+		}
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
+		jsonMap.put("success", !StringUtil.isNull(id));
+		response.getWriter().print(JSON.toJSONString(jsonMap));
+	}
+	/**
+	 * 根据小说id 获取 小说信息
+	 */
+	@RequestMapping(value = "/magazineLoad")
+	public void magazineLoad(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String id = request.getParameter("article_id");
+		if (!StringUtil.isNull(id)) {
+			NovelList info = articleHotService.load(id);
+			System.out.println(JSON.toJSONString(info));
+			response.getWriter().print(JSON.toJSONString(info));
+		}
+	}
+	
+	@RequestMapping(value = "/magazineSave")
+	public void magazineSave(@RequestParam(value = "covers", required = false) MultipartFile mediacovers,@RequestParam(value = "pdfFile", required = false) MultipartFile pdfFile,HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String article_id = request.getParameter("article_id");
+		String id = request.getParameter("id");
+		String link = request.getParameter("link");
+		String title = request.getParameter("title");
+		String author = request.getParameter("author");
+		String article_abstract = request.getParameter("article_abstract");
+		String image_link = request.getParameter("image_link");
+		
+		String article_type = request.getParameter("article_type");
+		String status = request.getParameter("status");
+
 //		String templangCode = "";
 //		if("1".equals(langCode)){templangCode = "FR";}
 //		else if( "2".equals(langCode)){templangCode = "AR";}
@@ -762,53 +764,32 @@ public class ManageController {
 //	            log.error("图片上传异常", e);
 //	        }
 //		}
-//		String temppdfpath = "" ;
-//		String pdfpath = request.getSession().getServletContext().getRealPath(File.separator) + File.separator + "journalpdf" + File.separator;
-//		if(pdfFile !=null && !pdfFile.isEmpty()){
-//			String fileType = "." + pdfFile.getOriginalFilename().substring(pdfFile.getOriginalFilename().lastIndexOf(".") + 1);// 文件后缀
-//			String fileName = templangCode +year+liveIssue+ fileType;// 文件名称
-//			// 1.保存文件
-//	        File targetFile = new File(pdfpath, fileName);
-//	        if (!targetFile.exists()) {
-//	            targetFile.mkdirs();
-//	        }
-//	        try {
-//	        	pdfFile.transferTo(targetFile);
-//	        	temppdfpath = "journalpdf/"+fileName;
-//	        } catch (Exception e) {
-//	            log.error("pdf上传异常", e);
-//	        }
-//		}
-//		
-//		JournalSave info = journalSaveService.findUnique(updateid);
-//		if (info == null) {
-//			info = new JournalSave();
-//			info.setId(id);
-//			info.setIsDel(0);
-//			info.setCreateTime(new Date().getTime());
-//		}
-//		//info.setId(id);;
-//		info.setLink(link);
-//		info.setTitle(title);
-//		if(StringUtils.isNotBlank(tempimagePath)){
-//			info.setCover(tempimagePath);
-//		}
-//		if(StringUtils.isNotBlank(temppdfpath)){
-//			info.setPdfFilePath(temppdfpath);
-//		}
-//		info.setYear(Integer.parseInt(year));
-//		info.setLangCode(Integer.parseInt(langCode));
-//		info.setLiveIssue(Integer.parseInt(liveIssue));
-//		info.setIssue(Integer.parseInt(issue));
-//		info.setLastUpdateTime(new Date().getTime());
-//		journalSaveService.save(info);
-//
-//		Map<String, Object> jsonMap = new HashMap<String, Object>();
-//		jsonMap.put("success", info != null ? true : false);
-//		response.getWriter().print(JSON.toJSONString(jsonMap));
-//
-//	}
-//	
+		
+		NovelSave info = novelSaveService.findUnique(article_id);
+		if (info == null) {
+			info = new NovelSave();
+			info.setId(id);
+			//info.setIsDel(0);
+			//info.setCreateTime(new Date().getTime());
+		}
+		info.setId(id);
+		info.setArticle_id(article_id);
+		info.setTitle(title);
+		info.setAuthor(author);
+		info.setArticle_abstract(article_abstract);
+		info.setLink(link);
+		info.setImage_link(image_link);
+		info.setArticle_type(article_type);
+		info.setStatus(status);
+		
+		novelSaveService.save(info);
+
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
+		jsonMap.put("success", info != null ? true : false);
+		response.getWriter().print(JSON.toJSONString(jsonMap));
+
+	}
+	
 //	/**
 //	 * 文章页面
 //	 */

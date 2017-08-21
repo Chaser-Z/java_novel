@@ -19,7 +19,7 @@ import com.test.service.ArticleInfoService;
 import com.test.utils.JsonMapper;
 import com.test.utils.ObjectMapper;
 import com.test.webservice.constants.ErrorCode;
-import com.test.webservice.dto.ArticleHotDTO;
+import com.test.webservice.dto.NovelListDTO;
 import com.test.webservice.dto.ArticleInfoDTO;
 
 @Controller
@@ -67,7 +67,7 @@ public class ArticleInfoWebservice {
 	
 	
 	@RequestMapping(value = "getArticlesByArticleId", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-    public @ResponseBody String getArticlesBySpecialId(@RequestBody ArticleHotDTO articleHotDTO) {
+    public @ResponseBody String getArticlesBySpecialId(@RequestBody NovelListDTO articleHotDTO) {
 		System.out.println("---------");
 		Map<String, Object> map = new HashMap<String, Object>();
 		
