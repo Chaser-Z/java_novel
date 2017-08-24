@@ -218,31 +218,6 @@
 			var d = date.getDate();
 			return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
 		}
-    	function language(value,row,index){
-    		if(value==1){
-    			return "中法";
-    		}else if(value==2){
-    			return "中阿";
-    		}else if(value==3){
-    			return "中泰";
-    		}else if(value==4){
-    			return "中俄";
-    		}else if(value==5){
-    			return "中英";
-    		}else if(value==6){
-    			return "中西";
-    		}else if(value==7){
-    			return "中日";
-    		}else if(value==8){
-    			return "中意";
-    		}else if(value==9){
-    			return "中德";
-    		}else if(value==10){
-    			return "中葡";
-    		}else if(value==11){
-    			return "中韩";
-    		}
-    	}
     })
 </script>
 <div class="easyui-panel" fit="true" title="小说列表 - 小说管理" plain="true" border="0" style="width:expression(document.body.clientWidth + 'px');padding:1px;">
@@ -294,21 +269,6 @@
 		           	 <tr style="">
 		            	 <td><label ><b>图片链接</b>：</label></td>
 		            	 <td><input id="image_link" name="image_link"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/></td>
-		            	 <!-- <td><input id="langCode" name="langCode"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/>
-		            	      <select id="langCodes" class="easyui-combobox" name="langCode" style="width:390px;" data-options="required:true,editable:false">
-		            	        <option value="1">中法</option>
-		            	        <option value="2">中阿</option>
-		            	        <option value="3">中泰</option>
-		            	        <option value="4">中俄</option>
-		            	        <option value="5">中英</option>
-		            	        <option value="6">中西</option>
-		            	        <option value="7">中日</option>
-		            	        <option value="8">中意</option>
-		            	        <option value="9">中德</option>
-		            	        <option value="10">中葡</option>
-		            	        <option value="11">中韩</option>
-		            	      </select>
-		            	 </td> -->
 		           	 </tr>
 		           	 <tr style="">
 		            	 <td><label ><b>类型</b>：</label></td>
@@ -337,14 +297,6 @@
 		            	 </td>
 		           	 </tr>
             	</table>
-                <!-- <label ><b>id</b>：</label><input id="id" name="id"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/>&nbsp;<br/><br/>
-                <label ><b>link</b>：</label><input id="link" name="link"  value="" style="width:390px;" class="easyui-textbox" data-options="required:false"/>&nbsp;<br/><br/>
-                <label ><b>title</b>：</label><input id="title" name="title"  value="" style="width:390px;" class="easyui-textbox" data-options="required:false"/>&nbsp;<br/><br/>
-                <label ><b>cover</b>：</label><input id="cover" name="cover"  value="" style="width:390px;" class="easyui-textbox" data-options="required:true"/>&nbsp;<br/><br/>
-                <label ><b>year</b>：</label><input id="year" name="year"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/>&nbsp;<br/><br/>
-                <label ><b>langCode</b>：</label><input id="langCode" name="langCode"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/>&nbsp;<br/><br/>
-                <label ><b>liveIssue</b>：</label><input id="liveIssue" name="liveIssue"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/>&nbsp;<br/><br/>
-                <label ><b>issue</b>：</label><input id="issue" name="issue"  value="" style="width:390px;" class="easyui-numberbox" data-options="required:true"/>&nbsp;<br/><br/> -->
     		</form>
         </div>
         <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;height:35px;">

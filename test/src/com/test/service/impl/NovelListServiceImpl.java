@@ -20,10 +20,10 @@ public class NovelListServiceImpl  implements NovelListService{
 	@Override
 	public NovelList load(String id) throws Exception {
 		
-		NovelList articleHot = new NovelList();
+		NovelList novelList = new NovelList();
 		List<NovelList> list = novelListDao.find("from NovelList a where a.article_id = ?", id);
-		articleHot = list.size() > 0 ? list.get(0) : null;
-		return articleHot;
+		novelList = list.size() > 0 ? list.get(0) : null;
+		return novelList;
 	}
 	
 	@Override

@@ -20,7 +20,7 @@ import com.test.utils.ObjectMapper;
 import com.test.webservice.constants.ErrorCode;
 import com.test.webservice.dto.NovelListDTO;
 import com.test.webservice.dto.BaseDTO;
-import com.test.webservice.param.ArticleSearchParam;
+import com.test.webservice.param.NovelSearchParam;
 
 
 @Controller
@@ -89,7 +89,7 @@ public class NovelListWebservice {
 	
 	// Get Article by keyword
 	@RequestMapping(value = "/getArticleByKeyword", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public @ResponseBody String getArticleByKeyword(@RequestBody ArticleSearchParam param) {
+	public @ResponseBody String getArticleByKeyword(@RequestBody NovelSearchParam param) {
 		System.out.println("getArticleByKeyword");
 		Map<String, Object> map = new HashMap<String, Object>();
 		
